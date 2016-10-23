@@ -1,0 +1,21 @@
+{
+  "name": "thes-o-nese_server",
+  "version": "0.0.1",
+  "description": "Der Server fuer Thes-O-Nese EIS PROJEKT",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Jessica Lee Schulz & Enrico Gette",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "https": "^1.0.0",
+    "password-hash-and-salt": "^0.1.4",
+    "random-token": "0.0.8",
+    "redis": "^2.6.2"
+  }
+}
