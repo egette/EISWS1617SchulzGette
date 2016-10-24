@@ -1,60 +1,132 @@
  //Funktion zum registerien von Wähler und Kandidaten
- exports.register = function(db){
-	return function(req, res){
-		console.log(req.body);
-		
-		var typ = req.body.typ;
-		var email = req.body.email;	
+ exports.register = function (db) {
+ 	return function (req, res) {
+ 		console.log(req.body);
 
+ 		var typ = req.body.typ;
+ 		var emaildata = req.body.email;
+		
+		if(!typ){
+			res.status(409).end();
+		}
 			
-		//EMAIL CHECK
-		if (email != null ||email != undefined ){
-			//Überprüfung ob im SET "email" die geschickte EMAIL dabei ist
-			if ( db.ISMEMBER("email", email) == 1) {
-				res.status(409).end();
-			}
-		}
-		
+ 		//EMAIL CHECK
+ 		if (emaildata != null || emaildata != undefined) {
+ 			//Überprüfung ob im SET "email" die geschickte EMAIL dabei ist
+ 			checkSET("email", emaildata).then(function (check) {
+ 				if (check == 1) {
+ 					console.log("Die email adresse ist schon im set", emaildata);
+ 					res.status(409).end();
+ 				} else {
 
-		//TYP = Waehler
-		if (typ = "waehler"){
+ 					//TYP = Waehler
+ 					if (typ == "waehler") {
+ 						
+ 						var Waehler = {
+ 							username: req.body.username,
+ 							password: req.body.password,
+ 							wahlkreis: req.body.wahlkreis,
+ 							email: req.body.email,
+ 							WID: ""
 
-			var Waehler = {
-					username: req.body.username,
-					password: req.body.password,
-					wahlkreis: req.body.wahlkreis,
-					email: req.body.email
-					
-			};
-			//LETZTE ID WÄHLER			
-			var last_Waehler_ID;
-			db.get('last_Waehler_ID', function (err, reply) { 
-				if(err) throw err;
-				
-				last_Waehler_ID = reply.toString();
-				if (last_Waehler_ID == undefined) last_Waehler_ID = "WID_1";
-				var old_WID = last_Waehler_ID.substring(5);
-				var old_WID_INT = parseInt(old_WID);
-				var new_WID = old_WID_INT + 1;
-				var new_Waehler_ID = "WID_" + new_WID.toString();
-				//Wähler in Redis speichern
-				db.set(new_Weahler_ID, JSON.stringify(Waehler), redis.print);
-				//Email Adresse zum Set "email" hinzufügen
-				db.SADD("email", email, redis.print);
-				//last_Wahler_ID wird aktuallierst
-				db.set('last_Waehler_ID', new_Waehler_ID, redis.print);	
-			});
+ 						};
+						
+						var Client_JSON = {
+ 							Client_ID: ""
+						};
+						
+ 						//LETZTE ID WÄHLER
+ 						var last_Waehler_ID;
+ 						db.get('last_Waehler_ID', function (err, reply) {
+ 							if (err)
+ 								throw err;
 
-				res.status(201).end();
-		}
-		
-		
-		// TYP = KANDIDAT
-		if (typ = "kandidat"){
-			//TODO
-		} else {
-			//TYP des USERS wurde nicht richtig angegeben
-			res.status(500).end();
-		}
-	}
+ 							if (!reply || reply == "WID_NaN") {
+ 								last_Waehler_ID = "WID_1";
+ 							} else {
+ 								last_Waehler_ID = reply.toString();
+ 							}
+
+ 							var old_WID = last_Waehler_ID.substring(4);
+ 							var old_WID_INT = parseInt(old_WID);
+ 							var new_WID = old_WID_INT + 1;
+ 							var new_Waehler_ID = "WID_" + new_WID.toString();
+ 							console.log("NEUE WID:  ", new_Waehler_ID);
+ 							Waehler.WID = new_Waehler_ID;
+ 							//Wähler in Redis speichern
+ 							db.set(new_Waehler_ID, JSON.stringify(Waehler), redis.print);
+ 							//Email Adresse zum Set "email" hinzufügen
+ 							db.SADD("email", emaildata, redis.print);
+ 							db.SADD("user", Waehler.username);
+
+ 							//last_Wahler_ID wird aktuallierst
+ 							db.set('last_Waehler_ID', new_Waehler_ID, redis.print);
+							Client_JSON.Client_ID = new_Waehler_ID;
+							res.status(201).send(Client_JSON).end();
+ 						});
+ 						
+ 						
+
+ 						
+ 					}
+
+ 					// TYP = KANDIDAT
+ 					if (typ == "kandidat") {
+ 						var new_Kandidat_ID;
+ 						var Kandidat = {
+ 							username: req.body.username,
+							vorname: req.body.vorname,
+							nachname: req.body.nachname,
+ 							password: req.body.password,
+ 							wahlkreis: req.body.wahlkreis,
+ 							email: req.body.email,
+ 							KID: ""
+
+ 						};							
+						var Client_JSON = {
+ 							Client_ID: ""
+ 						};
+ 						//LETZTE ID WÄHLER
+ 						var last_Kandidat_ID;
+ 						db.get('last_Kandidat_ID', function (err, reply) {
+ 							if (err)
+ 								throw err;
+
+ 							if (!reply || reply == "KID_NaN") {
+ 								last_Kandidat_ID = "KID_1";
+ 							} else {
+ 								last_Kandidat_ID = reply.toString();
+ 							}
+
+ 							var old_KID = last_Kandidat_ID.substring(4);
+ 							var old_KID_INT = parseInt(old_KID);
+ 							var new_KID = old_KID_INT + 1;
+ 							new_Kandidat_ID = "KID_" + new_KID.toString();
+ 							Kandidat.KID = new_Kandidat_ID;
+ 							//Kandidat in Redis speichern
+ 							db.set(new_Kandidat_ID, JSON.stringify(Kandidat), redis.print);
+ 							//Email Adresse zum Set "email" hinzufügen
+ 							db.SADD("email", emaildata, redis.print);
+ 							db.SADD("user", Kandidat.username);
+ 							//last_Kandidat_ID wird aktuallierst
+ 							db.set('last_Kandidat_ID', new_Kandidat_ID, redis.print); 						
+							Client_JSON.Client_ID = new_Kandidat_ID;
+ 						    res.status(201).send(Client_JSON).end();
+						});
+
+ 					} 
+ 				}
+ 			});
+ 		}
+ 	}
+ }
+
+ function checkSET(set, data) {
+ 	var promises = [];
+ 	promises.push(db.SISMEMBERAsync(set, data));
+
+ 	return Promise.all(promises).then(function (arrayOfResults) {
+
+ 		return arrayOfResults[0];
+ 	});
  }

@@ -10,6 +10,12 @@ exports.publish = function(db){
 			Anzahl_Ablehnung: "0",
 			Anzahl_Neutral: "0",
 			TID: "",
+			K_PRO: [], 
+			K_NEUTRAL: [],
+			K_CONTRA: [],
+			W_PRO: [], 
+			W_NEUTRAL: [],
+			W_CONTRA: []
 		};
 		
 		var wahlkreis = req.body.wahlkreis;
@@ -19,16 +25,19 @@ exports.publish = function(db){
 		//Überprüfung welche Thesen-ID die letzte war
 		db.get('last_Thesen_ID', function (err, reply) { 
 			if(err) throw err;
-			
-			var last_Thesen_ID = reply.toString();
-			if (last_Thesen_ID == undefined) last_Thesen_ID = "TID_1";
-			console.log('last_Thesen_ID', last_Thesen_ID);
+			var last_Thesen_ID;
+			if (!reply || reply == "TID_NaN") {
+ 				last_Thesen_ID = "TID_1";
+			} else {
+ 				last_Thesen_ID = reply.toString();
+ 			}
 					
 			var old_TID = last_Thesen_ID.substring(4);
 			var old_TID_INT = parseInt(old_TID);
 			var new_TID = old_TID_INT + 1;
 		    var new_Thesen_ID = "TID_" + new_TID.toString();
 			These.TID = new_Thesen_ID;
+			console.log("neue Thesenid :  ", new_Thesen_ID);
 			//These wird in Redis gespeichert
 			db.set(new_Thesen_ID, JSON.stringify(These), redis.print);
 			//Dem Set des Wahlkreises die Thesen_ID hinzufügen
@@ -39,11 +48,9 @@ exports.publish = function(db){
 			db.SADD(wahlkreis_kategorie, new_Thesen_ID);
 			
 			//last_Thesen_ID wird aktuallierst
-			db.set('last_Thesen_ID', new_Thesen_ID, redis.print);	
+			db.set('last_Thesen_ID', new_Thesen_ID, redis.print);        
+			res.status(201).end();	
 		});
-		
-
-        res.status(201).end();
 		
 	}
 }
@@ -69,6 +76,85 @@ var Thesen_JSONOBJECT = { "Thesen" : [], "Anzahl": "0" };
     });
 }
 
+function begruendung_hinzufuegen(tid, typ, uid, textdata, richtung){
+	db.get(tid, function(err, reply){
+		if(err) throw err;
+		if (!reply ) {
+			return 0;
+		} else {
+			
+			var These = JSON.parse(reply);
+			var typ2;
+			if( typ == 'waehler') typ2 = "W";
+			if( typ == 'kandidat') typ2 = "K";
+			var richtungsarrayname = typ2 + "_" + richtung;
+			console.log("richtungsarrayname:  ", richtungsarrayname);
+			
+			var begruendung_json = {
+				UID: uid,
+				Text: textdata,
+				likes: "0",
+				Kommentare: []
+			};
+			if(richtungsarrayname == "K_PRO"){
+				var arraylength = These.K_PRO.length;
+				if(arraylength > 0 ) arraylength + 1; 
+				These.K_PRO[arraylength] = begruendung_json;
+			}
+			if(richtungsarrayname == "W_PRO"){
+				var arraylength = These.W_PRO.length;
+				if(arraylength > 0 ) arraylength + 1; 
+				These.W_PRO[arraylength] = begruendung_json;
+			}
+			if(richtungsarrayname == "K_NEUTRAL"){
+				var arraylength = These.K_NEUTRAL.length;
+				if(arraylength > 0 ) arraylength + 1; 
+				These.K_NEUTRAL[arraylength] = begruendung_json;
+			}
+			if(richtungsarrayname == "W_NEUTRAL"){
+				var arraylength = These.W_NEUTRAL.length;
+				if(arraylength > 0 ) arraylength + 1; 
+				These.W_NEUTRAL[arraylength] = begruendung_json;
+			}
+			if(richtungsarrayname == "K_CONTRA"){
+				var arraylength = These.K_CONTRA.length;
+				if(arraylength > 0 ) arraylength + 1; 
+				These.K_CONTRA[arraylength] = begruendung_json;
+			}
+			if(richtungsarrayname == "W_CONTRA"){
+				var arraylength = These.W_CONTRA.length;
+				if(arraylength > 0 ) arraylength + 1; 
+				These.W_CONTRA[arraylength] = begruendung_json;
+			}
+			
+			
+			
+			
+			db.set(tid, JSON.stringify(These));
+			return 1;
+		}
+					
+	});
+};
+		
+exports.putBegruendung = function(db){
+	return function (req, res){
+		var tid = req.query.tid;
+		var typ = req.body.typ;
+		var uid = req.body.uid;
+		var richtung = req.body.richtung;
+		var textdata = req.body.textdata;
+		if(!tid || !typ || !uid || !richtung) res.status(409).end();
+		if(!textdata) textdata = "";
+		if (tid.substring(0, 4) == "TID_"){
+			if(begruendung_hinzufuegen(tid, typ, uid, textdata, richtung) == 1){
+				res.status(201).end();
+			}else {
+				//res.status(409).end();
+			}
+			
+		}
+}};
 
 exports.getThesen = function(db){
 	return function (req, res){
@@ -94,7 +180,7 @@ exports.getThesen = function(db){
 					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
 					makeThesenJSON(anzahl_thesen, Thesen_IDS).then(function(json){
 						res.status(201).send(json).end();
-					});;	
+					});	
 				}	
 			});	
 		}

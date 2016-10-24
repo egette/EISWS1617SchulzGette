@@ -50,6 +50,7 @@ app.use(function (req, res, next) {
 app.post('/register', register.register(db));
 app.post('/thesen', thesen.publish(db));
 app.get('/thesen', thesen.getThesen(db));
+app.put('/thesen', thesen.putBegruendung(db));
 
 
 
