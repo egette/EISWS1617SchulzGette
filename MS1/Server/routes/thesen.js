@@ -58,7 +58,7 @@ exports.publish = function(db){
 function makeThesenJSON(anzahl_thesen, Thesen_IDS){
 var promises = [];
 var Thesen_JSONOBJECT = { "Thesen" : [], "Anzahl": "0" };
-//if(anzahl_thesen > Thesen_IDS.length) anzahl_thesen = Thesen_IDS.length();
+if(anzahl_thesen > Thesen_IDS.length) anzahl_thesen = Thesen_IDS.length;
 	Thesen_JSONOBJECT.Anzahl = anzahl_thesen;
 
 

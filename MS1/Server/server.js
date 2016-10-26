@@ -3,19 +3,39 @@ var http        = require('http'),
     https       = require('https'), 
     express 	= require('express'),
     bodyParser 	= require('body-parser'),
-	jsonParser  = bodyParser.json();
-	randomToken = require('random-token'),
-	pw			= require('password-hash-and-salt');
+	jsonParser  = bodyParser.json(),
     redis 		= require('redis'),
-    db          = redis.createClient(),
+	db          = redis.createClient(),
     app         = express(),
-    Promise    = require("bluebird");
+	session = require('express-session'),
+	RedisStore  = require('connect-redis')(session),
+    Promise    = require('bluebird');
 	Promise.promisifyAll(redis.RedisClient.prototype);
     Promise.promisifyAll(redis.Multi.prototype);
+	
+
+
+var optionsStore = {
+client: db,
+};
+
+app.use( session({
+   store: new RedisStore(optionsStore),
+   secret : 's3Cur3',
+   name : 'sessionId',
+   resave: false,
+   saveUninitialized: true,
+   cookie: { secure: false} // noch kein HTTPS implementiert
+   
+  })
+);
+
+
 
 const host = '127.0.0.1';
 const port = 3000;
 app.use(bodyParser.json());
+app.disable('x-powered-by');
 
 var env = process.env.NODE_ENV || 'development';
 if ('development' == env) {
