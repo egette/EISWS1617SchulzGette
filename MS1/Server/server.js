@@ -26,7 +26,6 @@ app.use( session({
    resave: false,
    saveUninitialized: true,
    cookie: { secure: false} // noch kein HTTPS implementiert
-   
   })
 );
 
@@ -67,7 +66,7 @@ app.use(function (req, res, next) {
 	next();
 });
 
-app.post('/register', register.register(db));
+app.post('/register', register.register(db, redis));
 app.post('/thesen', thesen.publish(db));
 app.get('/thesen', thesen.getThesen(db));
 app.put('/thesen', thesen.putBegruendung(db));

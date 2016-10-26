@@ -1,5 +1,5 @@
  //Funktion zum registrieren von Wähler und Kandidaten
- exports.register = function (db) {
+ exports.register = function (db, redis) {
  	return function (req, res) {
  		console.log(req.body);
 
@@ -131,7 +131,7 @@
  				}
  			});
  		}
- 	}
+ 	
  }
 
  function checkSET(set, data) {
@@ -143,3 +143,5 @@
  		return arrayOfResults[0];
  	});
  }
+
+}
