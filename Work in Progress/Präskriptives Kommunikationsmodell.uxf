@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>60</x>
-      <y>560</y>
+      <x>80</x>
+      <y>580</y>
       <w>220</w>
       <h>190</h>
     </coordinates>
@@ -15,100 +15,31 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>80</y>
-      <w>220</w>
+      <x>940</x>
+      <y>100</y>
+      <w>210</w>
       <h>260</h>
     </coordinates>
     <panel_attributes>Kandidat</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>550</x>
-      <y>190</y>
-      <w>180</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>Anonymes Profil</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>530</x>
-      <y>60</y>
-      <w>220</w>
-      <h>640</h>
+      <x>560</x>
+      <y>90</y>
+      <w>200</w>
+      <h>280</h>
     </coordinates>
     <panel_attributes>Thes-O-Naise</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>550</x>
-      <y>90</y>
-      <w>180</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>Öffentliches Profil</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>550</x>
-      <y>290</y>
-      <w>180</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>Thesen</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>550</x>
-      <y>390</y>
-      <w>180</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>Begründungen 
-von Thesen</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>550</x>
-      <y>490</y>
-      <w>180</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>Kommentare zu 
-Begründungen</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>550</x>
-      <y>590</y>
-      <w>180</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>Berechnung der 
-Übereinstimmung</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>170</x>
-      <y>80</y>
-      <w>220</w>
+      <x>190</x>
+      <y>100</y>
+      <w>200</w>
       <h>260</h>
     </coordinates>
     <panel_attributes>Wähler</panel_attributes>
@@ -117,8 +48,8 @@ Begründungen</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>100</x>
-      <y>430</y>
+      <x>120</x>
+      <y>450</y>
       <w>150</w>
       <h>70</h>
     </coordinates>
@@ -130,8 +61,8 @@ von Thesen</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>250</x>
-      <y>150</y>
+      <x>260</x>
+      <y>170</y>
       <w>60</w>
       <h>120</h>
     </coordinates>
@@ -142,8 +73,8 @@ von Thesen</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>140</x>
-      <y>620</y>
+      <x>160</x>
+      <y>640</y>
       <w>60</w>
       <h>110</h>
     </coordinates>
@@ -153,8 +84,8 @@ von Thesen</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>980</x>
-      <y>150</y>
+      <x>1010</x>
+      <y>170</y>
       <w>60</w>
       <h>110</h>
     </coordinates>
@@ -164,132 +95,8 @@ von Thesen</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>120</y>
-      <w>200</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-Eingabe</panel_attributes>
-    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>380</x>
-      <y>210</y>
-      <w>190</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-Eingabe</panel_attributes>
-    <additional_attributes>170.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>380</x>
-      <y>310</y>
-      <w>190</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-Hinzufügen</panel_attributes>
-    <additional_attributes>170.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>350</x>
-      <y>330</y>
-      <w>220</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-Hinzufügen</panel_attributes>
-    <additional_attributes>200.0;100.0;10.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>330</x>
-      <y>330</y>
-      <w>240</w>
-      <h>230</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-Kommentieren</panel_attributes>
-    <additional_attributes>220.0;210.0;10.0;210.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>310</x>
-      <y>330</y>
-      <w>260</w>
-      <h>320</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-gibt Ergebniss raus</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;300.0;240.0;300.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>720</x>
-      <y>310</y>
-      <w>200</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-Hinzufügen</panel_attributes>
-    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>720</x>
-      <y>330</y>
-      <w>230</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-Hinzufügen</panel_attributes>
-    <additional_attributes>10.0;100.0;210.0;100.0;210.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>720</x>
-      <y>330</y>
-      <w>250</w>
-      <h>230</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-Kommentieren</panel_attributes>
-    <additional_attributes>10.0;210.0;230.0;210.0;230.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>180</x>
-      <y>330</y>
+      <x>200</x>
+      <y>350</y>
       <w>30</w>
       <h>120</h>
     </coordinates>
@@ -299,8 +106,8 @@ Kommentieren</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
-      <y>490</y>
+      <x>200</x>
+      <y>510</y>
       <w>30</w>
       <h>90</h>
     </coordinates>
@@ -310,14 +117,293 @@ Kommentieren</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>290</x>
-      <y>330</y>
-      <w>300</w>
-      <h>360</h>
+      <x>380</x>
+      <y>160</y>
+      <w>200</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
+veröffentlicht Thesen</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>160</y>
+      <w>210</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+veröffentlicht Thesen</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>240</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+gibt Ergebniss raus</panel_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>350</y>
+      <w>230</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
 
-Beantwortet Thesen</panel_attributes>
-    <additional_attributes>280.0;330.0;10.0;330.0;10.0;10.0</additional_attributes>
+
+informiert </panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;210.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>350</y>
+      <w>260</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+
+
+
+
+
+
+
+
+
+
+informiert </panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0;240.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>740</x>
+      <y>350</y>
+      <w>330</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+
+
+berichtet über</panel_attributes>
+    <additional_attributes>230.0;10.0;230.0;80.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>740</x>
+      <y>350</y>
+      <w>410</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+
+
+
+
+
+berichtet über</panel_attributes>
+    <additional_attributes>310.0;10.0;310.0;200.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1190</x>
+      <y>450</y>
+      <w>160</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Interview</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1140</x>
+      <y>320</y>
+      <w>120</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;130.0;100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>740</x>
+      <y>520</y>
+      <w>500</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;480.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>740</x>
+      <y>460</y>
+      <w>480</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;460.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>350</y>
+      <w>280</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+kommentiert</panel_attributes>
+    <additional_attributes>260.0;110.0;10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>240</y>
+      <w>210</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+Feedback</panel_attributes>
+    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1170</x>
+      <y>600</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+asynchron</panel_attributes>
+    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1170</x>
+      <y>650</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+synchron</panel_attributes>
+    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>200</y>
+      <w>210</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+bezieht Stellung zu Thesen</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>200</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+bezieht Stellung zu Thesen</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>560</x>
+      <y>620</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Wahlkampfveranstaltung</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>350</y>
+      <w>280</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+besucht</panel_attributes>
+    <additional_attributes>260.0;320.0;10.0;320.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>350</y>
+      <w>340</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+veranstaltet</panel_attributes>
+    <additional_attributes>10.0;320.0;320.0;320.0;320.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>510</y>
+      <w>180</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>
+
+Medien</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>390</y>
+      <w>180</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>
+
+Internet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>290</x>
+      <y>30</y>
+      <w>760</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;
+direkte Kommunikation</panel_attributes>
+    <additional_attributes>740.0;70.0;740.0;20.0;10.0;20.0;10.0;70.0</additional_attributes>
   </element>
 </diagram>
