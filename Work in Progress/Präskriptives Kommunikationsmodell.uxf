@@ -117,24 +117,12 @@ von Thesen</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>160</y>
-      <w>200</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-veröffentlicht Thesen</panel_attributes>
-    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
       <x>750</x>
       <y>160</y>
       <w>210</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
+    <panel_attributes>lt=&lt;&lt;.
 veröffentlicht Thesen</panel_attributes>
     <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
   </element>
@@ -317,7 +305,7 @@ synchron</panel_attributes>
       <w>210</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
+    <panel_attributes>lt=&lt;&lt;.
 bezieht Stellung zu Thesen</panel_attributes>
     <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
   </element>
@@ -329,7 +317,7 @@ bezieht Stellung zu Thesen</panel_attributes>
       <w>200</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
+    <panel_attributes>lt=&lt;&lt;.
 bezieht Stellung zu Thesen</panel_attributes>
     <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -405,5 +393,17 @@ Internet</panel_attributes>
     <panel_attributes>lt=&lt;&lt;-&gt;&gt;
 direkte Kommunikation</panel_attributes>
     <additional_attributes>740.0;70.0;740.0;20.0;10.0;20.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>160</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+veröffentlicht Thesen</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>
