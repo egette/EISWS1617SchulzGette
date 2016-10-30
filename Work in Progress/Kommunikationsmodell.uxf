@@ -366,7 +366,7 @@ berichtet über</panel_attributes>
       <w>370</w>
       <h>610</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
+    <panel_attributes>lt=&lt;&lt;.
 kommentiert</panel_attributes>
     <additional_attributes>350.0;590.0;10.0;590.0;10.0;10.0</additional_attributes>
   </element>
@@ -502,10 +502,10 @@ informiert</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>90</x>
+      <x>140</x>
       <y>390</y>
-      <w>220</w>
-      <h>190</h>
+      <w>140</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>Wähler</panel_attributes>
     <additional_attributes/>
@@ -513,7 +513,7 @@ informiert</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>170</x>
+      <x>180</x>
       <y>440</y>
       <w>60</w>
       <h>110</h>
@@ -570,8 +570,8 @@ direkte Kommunikation
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>100</x>
-      <y>650</y>
+      <x>150</x>
+      <y>630</y>
       <w>170</w>
       <h>40</h>
     </coordinates>
@@ -582,13 +582,35 @@ asynchron</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>100</x>
-      <y>700</y>
+      <x>150</x>
+      <y>660</y>
       <w>170</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 synchron</panel_attributes>
     <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>140</y>
+      <w>150</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>300</y>
+      <w>30</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
 </diagram>
