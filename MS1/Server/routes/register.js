@@ -64,14 +64,14 @@
 								console.log("NEUE WID:  ", new_Waehler_ID);
 								Waehler.WID = new_Waehler_ID;
 								//Wähler in Redis speichern
-								db.set(new_Waehler_ID, JSON.stringify(Waehler), redis.print);
+								db.set(new_Waehler_ID, JSON.stringify(Waehler));
 								//Email Adresse zum Set "email" hinzufügen
-								db.SADD("email", emaildata, redis.print);
-								db.SADD("user", username, redis.print);
+								db.SADD("email", emaildata);
+								db.SADD("user", username);
 								db.set(emaildata, new_Waehler_ID);
 								db.set(username, new_Waehler_ID);
 								//last_Wahler_ID wird aktuallierst
-								db.set('last_Waehler_ID', new_Waehler_ID, redis.print);
+								db.set('last_Waehler_ID', new_Waehler_ID,);
 								Client_JSON.Client_ID = new_Waehler_ID;
 								res.status(201).send(Client_JSON).end();
 							});
@@ -115,15 +115,15 @@
 								new_Kandidat_ID = "KID_" + new_KID.toString();
 								Kandidat.KID = new_Kandidat_ID;
 								//Kandidat in Redis speichern
-								db.set(new_Kandidat_ID, JSON.stringify(Kandidat), redis.print);
+								db.set(new_Kandidat_ID, JSON.stringify(Kandidat),);
 								//Email Adresse zum Set "email" hinzufügen
-								db.SADD("email", emaildata, redis.print);
-								db.SADD("user", username, redis.print);
+								db.SADD("email", emaildata);
+								db.SADD("user", username);
 								db.SADD("Kandidaten_"+wahlkreis, new_Kandidat_ID);
 								db.set(emaildata, new_Kandidat_ID);
 								db.set(username, new_Kandidat_ID);
 								//last_Kandidat_ID wird aktuallierst
-								db.set('last_Kandidat_ID', new_Kandidat_ID, redis.print); 						
+								db.set('last_Kandidat_ID', new_Kandidat_ID); 						
 								Client_JSON.Client_ID = new_Kandidat_ID;
 								res.status(201).send(Client_JSON).end();
 							});

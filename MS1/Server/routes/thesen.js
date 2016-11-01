@@ -39,17 +39,17 @@ exports.publish = function(db){
 			These.TID = new_Thesen_ID;
 			console.log("neue Thesenid :  ", new_Thesen_ID);
 			//These wird in Redis gespeichert
-			db.set(new_Thesen_ID, JSON.stringify(These), redis.print);
+			db.set(new_Thesen_ID, JSON.stringify(These));
 			//Dem Set des Wahlkreises die Thesen_ID hinzufügen
-			db.SADD(wahlkreis, new_Thesen_ID, redis.print);
+			db.SADD(wahlkreis, new_Thesen_ID);
 			//Dem Set der Kategorie die Thesen_ID hinzufügen
-			db.SADD(kategorie, new_Thesen_ID, redis.print);
+			db.SADD(kategorie, new_Thesen_ID);
 			//Dem Set der Kategorie des Wahlkreises die Thesen_ID hinzufügen
 			db.SADD(wahlkreis_kategorie, new_Thesen_ID);
 			
 			//last_Thesen_ID wird aktuallierst
-			db.set('last_Thesen_ID', new_Thesen_ID, redis.print);        
-			res.status(201).end();	
+			db.set('last_Thesen_ID', new_Thesen_ID);        
+			res.json({'TID': new_Thesen_ID}).status(201).end();	
 		});
 		
 	}
