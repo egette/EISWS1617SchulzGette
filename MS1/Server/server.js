@@ -7,27 +7,29 @@ var http        = require('http'),
     redis 		= require('redis'),
 	db          = redis.createClient(),
     app         = express(),
-	session = require('express-session'),
+	session     = require('express-session'),
 	RedisStore  = require('connect-redis')(session),
     Promise    = require('bluebird');
 	Promise.promisifyAll(redis.RedisClient.prototype);
     Promise.promisifyAll(redis.Multi.prototype);
+	Promise.promisifyAll(redis);
+	Promise.promisifyAll(db);
 	
 
 
-var optionsStore = {
-client: db,
-};
+// var optionsStore = {
+// client: db,
+// };
 
-app.use( session({
-   store: new RedisStore(optionsStore),
-   secret : 's3Cur3',
-   name : 'sessionId',
-   resave: false,
-   saveUninitialized: true,
-   cookie: { secure: false} // noch kein HTTPS implementiert
-  })
-);
+// app.use( session({
+   // store: new RedisStore(optionsStore),
+   // secret : 's3Cur3',
+   // name : 'sessionId',
+   // resave: false,
+   // saveUninitialized: true,
+   // cookie: { secure: false} // noch kein HTTPS implementiert
+  // })
+// );
 
 
 
@@ -49,6 +51,7 @@ if ('development' == env) {
 //Setting up Routes
 var register	= require('./routes/register');
 var thesen  	= require('./routes/thesen');
+var login       = require('./routes/login');
 
 
 //Connecting to redis Server
@@ -70,6 +73,7 @@ app.post('/register', register.register(db, redis));
 app.post('/thesen', thesen.publish(db));
 app.get('/thesen', thesen.getThesen(db));
 app.put('/thesen', thesen.putBegruendung(db));
+app.post('/login', login.auth(app, db, redis, session, RedisStore));
 
 
 

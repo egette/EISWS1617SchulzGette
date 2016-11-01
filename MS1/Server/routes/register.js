@@ -68,7 +68,8 @@
 								//Email Adresse zum Set "email" hinzufügen
 								db.SADD("email", emaildata, redis.print);
 								db.SADD("user", username, redis.print);
-
+								db.set(emaildata, new_Waehler_ID);
+								db.set(username, new_Waehler_ID);
 								//last_Wahler_ID wird aktuallierst
 								db.set('last_Waehler_ID', new_Waehler_ID, redis.print);
 								Client_JSON.Client_ID = new_Waehler_ID;
@@ -119,6 +120,8 @@
 								db.SADD("email", emaildata, redis.print);
 								db.SADD("user", username, redis.print);
 								db.SADD("Kandidaten_"+wahlkreis, new_Kandidat_ID);
+								db.set(emaildata, new_Kandidat_ID);
+								db.set(username, new_Kandidat_ID);
 								//last_Kandidat_ID wird aktuallierst
 								db.set('last_Kandidat_ID', new_Kandidat_ID, redis.print); 						
 								Client_JSON.Client_ID = new_Kandidat_ID;
