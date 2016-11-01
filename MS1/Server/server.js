@@ -1,42 +1,28 @@
 //Module
 var http        = require('http'),
-    https       = require('https'), 
-    express 	= require('express'),
-    bodyParser 	= require('body-parser'),
-	jsonParser  = bodyParser.json(),
-    redis 		= require('redis'),
-	db          = redis.createClient(),
-    app         = express(),
-	session     = require('express-session'),
-	RedisStore  = require('connect-redis')(session),
-    Promise    = require('bluebird');
+	https       = require('https');
+const   express 	= require('express');
+const   bodyParser 	= require('body-parser');
+const	jsonParser  = bodyParser.json();
+const   redis 		= require('redis');
+const	db          = redis.createClient();
+const   jwt         = require('jsonwebtoken');
+const	app         = express();
+
+const host = '127.0.0.1';
+const port = 3000;
+
+var	Promise    = require('bluebird');
 	Promise.promisifyAll(redis.RedisClient.prototype);
     Promise.promisifyAll(redis.Multi.prototype);
 	Promise.promisifyAll(redis);
 	Promise.promisifyAll(db);
-	
+var config = require('./config');
 
-
-// var optionsStore = {
-// client: db,
-// };
-
-// app.use( session({
-   // store: new RedisStore(optionsStore),
-   // secret : 's3Cur3',
-   // name : 'sessionId',
-   // resave: false,
-   // saveUninitialized: true,
-   // cookie: { secure: false} // noch kein HTTPS implementiert
-  // })
-// );
-
-
-
-const host = '127.0.0.1';
-const port = 3000;
 app.use(bodyParser.json());
 app.disable('x-powered-by');
+app.set('superSecret', config.secret);
+
 
 var env = process.env.NODE_ENV || 'development';
 if ('development' == env) {
@@ -73,7 +59,7 @@ app.post('/register', register.register(db, redis));
 app.post('/thesen', thesen.publish(db));
 app.get('/thesen', thesen.getThesen(db));
 app.put('/thesen', thesen.putBegruendung(db));
-app.post('/login', login.auth(app, db, redis, session, RedisStore));
+app.post('/login', login.auth(app, db, redis, jwt));
 
 
 

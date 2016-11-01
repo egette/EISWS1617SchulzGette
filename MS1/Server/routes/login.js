@@ -1,4 +1,4 @@
-exports.auth = function(app, db, redis, session, RedisStore){
+exports.auth = function(app, db, redis, jwt){
 	return function(req, res){
 		console.log('REQ BODY:  ', req.body);
 		
@@ -6,7 +6,7 @@ exports.auth = function(app, db, redis, session, RedisStore){
 		var username = req.body.username;
 		var reqPassword = req.body.password;
 		var userID = "";
-		var userDataJSON;
+
 		
 		if(!emaildata && !username || !reqPassword ){
 				res.status(400).end();
@@ -18,7 +18,7 @@ exports.auth = function(app, db, redis, session, RedisStore){
 				if(userID == 0) res.status(400).end();
 				return userID;
 			}).then(function(userID){
-			 makeSession(userID, db, reqPassword, app, session, RedisStore, res);
+			 makeToken(userID, db, reqPassword, app, res, jwt);
 			});
 		}else if (emaildata != null || emaildata != undefined) {
 			getDB(emaildata, db).then(function(reply){
@@ -26,7 +26,7 @@ exports.auth = function(app, db, redis, session, RedisStore){
 				if(userID == 0) res.status(400).end();
 				return userID;
 			}).then(function(userID){
-			 makeSession(userID, db, reqPassword, app, session, RedisStore, res);
+			 makeToken(userID, db, reqPassword, app, res, jwt);
 			});
 		}	
 	}
@@ -39,25 +39,19 @@ function getDB(data, db) {
 		});
  };
  
-function makeSession(userID, db, reqPassword, app, session, RedisStore, res){
+function makeToken(userID, db, reqPassword, app, res, jwt){
 	getDB(userID, db).then(function(reply){
 		console.log("reply:  ", reply); 
-		userDataJSON = JSON.parse(reply);
+		var userDataJSON = JSON.parse(reply);
 		console.log("user data json:  ", userDataJSON); 
 		if(userDataJSON.password == reqPassword){
-			var optionsStore = {
-				client: db,
-			};
-			app.use( session({
-					   store: new RedisStore(optionsStore),
-					   secret : 's3Cur3',
-					   name : 'sessionId',
-					   resave: false,
-					   saveUninitialized: true,
-					   cookie: { secure: false} // noch kein HTTPS implementiert
-					  })
-			);
-			res.status(200).end();
+			var token = jwt.sign(userID, app.get('superSecret'));
+			
+			res.json({
+			userID : userID,
+			sucess: true,
+			token: token
+			}).status(200).end();
 		}else{
 			res.status(400).end();
 		};
