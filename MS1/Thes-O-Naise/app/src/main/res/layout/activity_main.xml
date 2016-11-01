@@ -24,4 +24,16 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/navbutton"
+        android:layout_alignRight="@+id/thesenbutton"
+        android:layout_alignEnd="@+id/thesenbutton" />
+
 </RelativeLayout>

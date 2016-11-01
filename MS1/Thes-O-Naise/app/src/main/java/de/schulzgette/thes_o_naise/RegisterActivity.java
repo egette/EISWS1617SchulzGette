@@ -106,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
 //                                break;
 //                        }
                         response.body().close();
-                        Intent i = new Intent (RegisterActivity.this, HomeActivity.class);
+                        Intent i = new Intent (RegisterActivity.this, NavigationActivity.class);
                         startActivity(i);
                     } else {
                         //statusCode is 409

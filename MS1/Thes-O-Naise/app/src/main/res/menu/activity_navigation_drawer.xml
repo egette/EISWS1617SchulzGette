@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_publishThesen"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Thesen veröffentlichen" />
+        <item
+            android:id="@+id/nav_showthesen"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Thesen sehen" />
+        <item
+            android:id="@+id/nav_matching"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Matching" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+
+</menu>

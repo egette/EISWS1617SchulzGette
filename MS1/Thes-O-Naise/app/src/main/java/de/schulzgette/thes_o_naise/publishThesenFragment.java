@@ -1,15 +1,17 @@
 package de.schulzgette.thes_o_naise;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,40 +23,58 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class HomeActivity extends AppCompatActivity {
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
+import static de.schulzgette.thes_o_naise.R.id.publishthesebutton;
+import static de.schulzgette.thes_o_naise.R.id.spinner2;
+import static de.schulzgette.thes_o_naise.R.id.thesentext;
+
+public class publishThesenFragment extends Fragment{
+    private static final String BASE_URL = "http://10.0.3.2:3000/";
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
-    String thesentext;
+    String thesentext2;
     String kategorie;
+    View myView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        spinner = (Spinner) findViewById(R.id.spinner2);
-        adapter = ArrayAdapter.createFromResource(this, R.array.kategorien, android.R.layout.simple_spinner_item);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        myView = inflater.inflate(R.layout.layout_publish_thesen, container, false);
+
+        spinner = (Spinner) myView.findViewById(spinner2);
+        adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.kategorien, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+ " wurde ausgewählt", Toast.LENGTH_SHORT).show();
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 kategorie = (String) parent.getItemAtPosition(position);
                 Log.d("ausgewählte Kategorie:", kategorie);
             }
-        });
-        EditText thesentextid =  (EditText) findViewById(R.id.thesentextid);
-        thesentext = thesentextid.getText().toString();
 
-        Button theseabschickenbutton = (Button) findViewById(R.id.theseabschickenbutton);
+        });
+
+        Button theseabschickenbutton = (Button) myView.findViewById(publishthesebutton);
         theseabschickenbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("Button  clicked", "Mal sehen");
 
+                EditText thesentextid =  (EditText) myView.findViewById(thesentext);
+                thesentext2 = thesentextid.getText().toString();
+
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.accumulate("thesentext", thesentext);
+                    jsonObject.accumulate("thesentext", thesentext2);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -63,13 +83,19 @@ public class HomeActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                try {
+                    jsonObject.accumulate("wahlkreis", "Gummersbach");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-            String jsondata =  jsonObject.toString();
+                String jsondata =  jsonObject.toString();
+                publishThese(jsondata);
 
             }
         });
 
-
+        return myView;
     }
 
     private void publishThese(String Thesendata) {

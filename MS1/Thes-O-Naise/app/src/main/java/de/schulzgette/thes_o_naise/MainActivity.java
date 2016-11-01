@@ -20,5 +20,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
+        Button navbutton = (Button) findViewById(R.id.navbutton);
+        navbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent (MainActivity.this, NavigationActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }

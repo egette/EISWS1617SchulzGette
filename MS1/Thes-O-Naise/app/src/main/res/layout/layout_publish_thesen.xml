@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.schulzgette.thes_o_naise.HomeActivity">
+    tools:context="de.schulzgette.thes_o_naise.publishThesenFragment">
 
     <EditText
         android:layout_width="wrap_content"
@@ -16,7 +16,7 @@
         android:ems="10"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/thesentextid"
+        android:id="@+id/thesentext"
         android:hint="These"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -28,7 +28,7 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/thesentextid"
+        android:layout_below="@+id/thesentext"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/spinner2" />
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="110dp"
-        android:id="@+id/theseabschickenbutton"
+        android:id="@+id/publishthesebutton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
