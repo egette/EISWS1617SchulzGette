@@ -162,6 +162,10 @@ exports.getThesen = function(db){
 		var wahlkreis = req.query.wahlkreis;
 		var wahlkreis_kategorie = wahlkreis + "_" + kategorie;
 		
+		if(!wahlkreis && !kategorie){
+		 res.status(401).end();
+		}
+		
 		var anzahl_thesen = req.query.anzahl;
 		if (!anzahl_thesen) anzahl_thesen = 20;
 		console.log('anzahl gefragt:', anzahl_thesen);
@@ -183,9 +187,35 @@ exports.getThesen = function(db){
 					});	
 				}	
 			});	
+		//Thesen aus einem Wahlkreis ohne Kategorie
+		}else if (wahlkreis != undefined && kategorie == undefined){
+			db.smembers(wahlkreis, function(err, replies){
+				if( !replies || replies.length==0){
+					//KEINE Thesen in dem Wahlkreis
+				   res.status(401).end();
+				}else{
+					Thesen_IDS = replies;
+					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
+					makeThesenJSON(anzahl_thesen, Thesen_IDS).then(function(json){
+						res.status(201).send(json).end();
+					});	
+				}	
+			});	
+		//Thesen aus einer Kategorie ohne Wahlkreis
+		}else if (wahlkreis == undefined && kategorie != undefined){
+			db.smembers(kategorie, function(err, replies){
+				if( !replies || replies.length==0){
+					//KEINE Thesen in der Kategorie
+				   res.status(401).end();
+				}else{
+					Thesen_IDS = replies;
+					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
+					makeThesenJSON(anzahl_thesen, Thesen_IDS).then(function(json){
+						res.status(201).send(json).end();
+					});	
+				}	
+			});	
 		}
-		
-		//TODO Thesen nur von einem Wahlkreis, oder nur aus einer Kategorie
 	}
 }	
 
