@@ -9,6 +9,7 @@ exports.publish = function(db){
 			Anzahl_Zustimmung: "0",
 			Anzahl_Ablehnung: "0",
 			Anzahl_Neutral: "0",
+			Likes: "0";
 			TID: "",
 			K_PRO: [], 
 			K_NEUTRAL: [],
@@ -55,7 +56,7 @@ exports.publish = function(db){
 	}
 }
 
-function makeThesenJSON(anzahl_thesen, Thesen_IDS){
+function makeThesenJSON(anzahl_thesen, Thesen_IDS, db){
 var promises = [];
 var Thesen_JSONOBJECT = { "Thesen" : [], "Anzahl": "0" };
 if(anzahl_thesen > Thesen_IDS.length) anzahl_thesen = Thesen_IDS.length;
@@ -182,7 +183,7 @@ exports.getThesen = function(db){
 				}else{
 					Thesen_IDS = replies;
 					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
-					makeThesenJSON(anzahl_thesen, Thesen_IDS).then(function(json){
+					makeThesenJSON(anzahl_thesen, Thesen_IDS, db).then(function(json){
 						res.status(201).send(json).end();
 					});	
 				}	
@@ -196,7 +197,7 @@ exports.getThesen = function(db){
 				}else{
 					Thesen_IDS = replies;
 					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
-					makeThesenJSON(anzahl_thesen, Thesen_IDS).then(function(json){
+					makeThesenJSON(anzahl_thesen, Thesen_IDS, db).then(function(json){
 						res.status(201).send(json).end();
 					});	
 				}	
@@ -210,7 +211,7 @@ exports.getThesen = function(db){
 				}else{
 					Thesen_IDS = replies;
 					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
-					makeThesenJSON(anzahl_thesen, Thesen_IDS).then(function(json){
+					makeThesenJSON(anzahl_thesen, Thesen_IDS, db).then(function(json){
 						res.status(201).send(json).end();
 					});	
 				}	
