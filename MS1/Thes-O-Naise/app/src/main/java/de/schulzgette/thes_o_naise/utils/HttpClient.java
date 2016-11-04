@@ -48,7 +48,7 @@ public class HttpClient extends Application {
 
     public static Call GET(String url, Callback callback) throws IOException {
         Request request = new Request.Builder()
-                .addHeader("Cookie", token)
+//                .addHeader("Cookie", token)
                 .url(url)
                 .build();
 
@@ -61,7 +61,7 @@ public class HttpClient extends Application {
     public static Call PUT(String url, String json, Callback callback) throws IOException{
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .addHeader("Cookie", token)
+//                .addHeader("Cookie", token)
                 .url(url)
                 .put(body)
                 .build();
@@ -75,7 +75,7 @@ public class HttpClient extends Application {
     public static Call DELETE (String url, String json, Callback callback) throws IOException{
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .addHeader("Cookie", token)
+//                .addHeader("Cookie", token)
                 .url(BASE_URL+url)
                 .delete(body)
                 .build();

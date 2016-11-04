@@ -109,30 +109,17 @@ public class publishThesenFragment extends Fragment{
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-//                    int statusCode = response.code();
+
 
                     if (response.isSuccessful()) {
-                        //statusCode is 201
-//                        switch (statusCode) {
-//                            case 201:
+
                         Log.d("Response", response.toString());
-                        // String token = response.header("set-cookie").toString();
-                        //System.out.println(token);
-                        //Authentication.setToken(token);
-                        //showToast(getString(R.string.toast_registersuccessful));
-                        //switchToProfile();
-//                                break;
-//                        }
+                        //TODO : Rückmeldung für den Benutzer
                         response.body().close();
                     } else {
-                        //statusCode is 409
-//                        switch (statusCode) {
-//                            case 409:
+
                         Log.d("Statuscode", String.valueOf(response.code()));
-                        //showToast(getString(R.string.toast_alreadyregistered));
-                        // switchToLogin();
-//                                break;
-//                        }
+
                         response.body().close();
                     }
                 }
