@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.schulzgette.thes_o_naise.ThesenModel;
+import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,6 +22,7 @@ import okhttp3.Response;
 public class GetThesenFromAPI extends Service {
     private static final String BASE_URL = "http://10.0.3.2:3000/";
     JSONArray jArray;
+
 
     public GetThesenFromAPI() {
     }
@@ -54,9 +56,9 @@ public class GetThesenFromAPI extends Service {
 
     public void makeThesenList(JSONArray jArray) throws JSONException {
         ArrayList<ThesenModel> thesenModels = new ArrayList<>();
-
         JSONObject json_data;
-        Log.d("MAKE THESEN LIST:  ", "?");
+        Database db = new Database(getApplicationContext());
+        int done = 0;
         if (jArray != null) {
 
             for (int i = 0; i < jArray.length(); i++) {
@@ -72,13 +74,19 @@ public class GetThesenFromAPI extends Service {
                 JSONArray K_PRO = (JSONArray) json_data.get("K_PRO");
                 JSONArray K_NEUTRAL = (JSONArray) json_data.get("K_NEUTRAL");
                 JSONArray K_CONTRA = (JSONArray) json_data.get("K_CONTRA");
-                thesenModels.add(new ThesenModel(TID, thesentext, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA ));
+                String kategorie = (String) json_data.get("kategorie");
+                String wahlkreis = (String) json_data.get("wahlkreis");
+                String likes = (String) json_data.get("Likes");
+                Integer likesINT = Integer.parseInt(likes);
+                thesenModels.add(new ThesenModel(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA ));
             }
-
+             done = db.insertArrayListThesen(thesenModels);
         }
 
-        //TODO : Die ArrayLIST  mit den Thesen zwischen speichern.
+
+        Log.d("ThesenModels", "In der Datenbank");
         EventBus.fireThesenUpdate();
+        stopSelf();
     }
 
 

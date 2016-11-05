@@ -1,5 +1,7 @@
 package de.schulzgette.thes_o_naise.services;
 
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
 

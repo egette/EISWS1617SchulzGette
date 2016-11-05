@@ -10,7 +10,7 @@ public class ThesenModel {
 
 
     String thesentext;
-    Integer anzahl_bewertung;
+    Integer likes;
     Integer Pro;
     Integer Neutral;
     Integer Contra;
@@ -18,12 +18,16 @@ public class ThesenModel {
     JSONArray PositionNeutral;
     JSONArray PositionContra;
     String TID;
+    String Kategorie;
+    String Wahlkreis;
 
 
-    public ThesenModel(String TID, String thesentext,  Integer Pro, Integer Neutral, Integer Contra, JSONArray PositionPro, JSONArray PositionNeutral, JSONArray PositionContra) {
+    public ThesenModel(String TID, String thesentext, String Kategorie, String Wahlkreis, Integer likes, Integer Pro, Integer Neutral, Integer Contra, JSONArray PositionPro, JSONArray PositionNeutral, JSONArray PositionContra) {
         this.TID = TID;
         this.thesentext = thesentext;
-       // this.anzahl_bewertung = anzahl_bewertung;
+        this.likes = likes;
+        this.Kategorie = Kategorie;
+        this.Wahlkreis = Wahlkreis;
         this.Pro = Pro;
         this.Neutral = Neutral;
         this.Contra = Contra;
@@ -40,9 +44,9 @@ public class ThesenModel {
         return TID;
     }
 
-//    public Integer getAnzahlbewertungen() {
-//        return anzahl_bewertung;
-//    }
+   public Integer getLikes() {
+       return likes;
+    }
 
     public Integer getPro() {
         return Pro;
@@ -53,7 +57,21 @@ public class ThesenModel {
     public Integer getContra() {
         return Neutral;
     }
+    public JSONArray getPositionPro(){
+        return PositionPro;
+    }
+    public JSONArray getPositionNeutral(){
+        return PositionNeutral;
+    }
+    public JSONArray getPositionContra(){
+        return PositionContra;
+    }
 
+    public String getWahlkreis(){
+        return Wahlkreis;
+    }
 
-
+    public String getKategorie(){
+        return Kategorie;
+    }
 }
