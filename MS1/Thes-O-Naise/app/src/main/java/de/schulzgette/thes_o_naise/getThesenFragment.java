@@ -77,7 +77,6 @@ public class getThesenFragment extends Fragment{
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //listadapter.notifyDataSetChanged();
                 kategorie = (String) parent.getItemAtPosition(position);
                 Log.d("ausgewählte Kategorie:", kategorie);
                 thesenModels.clear();
@@ -92,6 +91,7 @@ public class getThesenFragment extends Fragment{
             }
 
         });
+
 
         return myView;
     }

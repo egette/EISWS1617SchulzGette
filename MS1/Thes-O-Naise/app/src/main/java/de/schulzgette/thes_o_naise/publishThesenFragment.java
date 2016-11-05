@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,6 +92,7 @@ public class publishThesenFragment extends Fragment{
 
                 String jsondata =  jsonObject.toString();
                 publishThese(jsondata);
+               // Toast.makeText(getContext(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -114,7 +116,7 @@ public class publishThesenFragment extends Fragment{
                     if (response.isSuccessful()) {
 
                         Log.d("Response", response.toString());
-                        //TODO : Rückmeldung für den Benutzer
+
                         response.body().close();
                     } else {
 

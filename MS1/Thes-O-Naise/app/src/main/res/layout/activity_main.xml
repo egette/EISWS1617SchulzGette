@@ -10,11 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="de.schulzgette.thes_o_naise.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
     <Button
         android:text="Registierung"
         android:layout_width="wrap_content"
@@ -26,14 +21,15 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:text="Home"
+        android:text="Eingeloggt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:id="@+id/navbutton"
+        android:layout_marginTop="80dp"
+        android:layout_below="@+id/registeractivity"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/navbutton"
-        android:layout_alignRight="@+id/thesenbutton"
-        android:layout_alignEnd="@+id/thesenbutton" />
+        android:layout_alignRight="@+id/registeractivity"
+        android:layout_alignEnd="@+id/registeractivity" />
 
 </RelativeLayout>
