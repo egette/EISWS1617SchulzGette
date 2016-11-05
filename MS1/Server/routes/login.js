@@ -9,13 +9,13 @@ exports.auth = function(app, db, redis, jwt){
 
 		
 		if(!emaildata && !username || !reqPassword ){
-				res.status(400).end();
+				res.status(403).end();
 		}
 			
 		if (username != null || username != undefined) {
 			getDB(username, db).then(function(reply){
 				userID = reply;
-				if(userID == 0) res.status(400).end();
+				if(userID == 0) res.status(403).end();
 				return userID;
 			}).then(function(userID){
 			 makeToken(userID, db, reqPassword, app, res, jwt);
@@ -23,7 +23,7 @@ exports.auth = function(app, db, redis, jwt){
 		}else if (emaildata != null || emaildata != undefined) {
 			getDB(emaildata, db).then(function(reply){
 				userID = reply;
-				if(userID == 0) res.status(400).end();
+				if(userID == 0) res.status(403).end();
 				return userID;
 			}).then(function(userID){
 			 makeToken(userID, db, reqPassword, app, res, jwt);
@@ -40,8 +40,7 @@ function getDB(data, db) {
  };
  
 function makeToken(userID, db, reqPassword, app, res, jwt){
-	getDB(userID, db).then(function(reply){
-		console.log("reply:  ", reply); 
+	getDB(userID, db).then(function(reply){ 
 		var userDataJSON = JSON.parse(reply);
 		console.log("user data json:  ", userDataJSON); 
 		if(userDataJSON.password == reqPassword){
@@ -53,7 +52,7 @@ function makeToken(userID, db, reqPassword, app, res, jwt){
 			token: token
 			}).status(200).end();
 		}else{
-			res.status(400).end();
+			res.status(403).end();
 		};
 	});
 };

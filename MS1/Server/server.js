@@ -34,12 +34,6 @@ if ('development' == env) {
 	});
 }
 
-//Setting up Routes
-var register	= require('./routes/register');
-var thesen  	= require('./routes/thesen');
-var login       = require('./routes/login');
-
-
 //Connecting to redis Server
 db.on('connect', function() {
     console.log('connected to redis');
@@ -55,13 +49,46 @@ app.use(function (req, res, next) {
 	next();
 });
 
-app.post('/register', register.register(db, redis));
-app.post('/thesen', thesen.publish(db));
-app.get('/thesen', thesen.getThesen(db));
-app.put('/thesen', thesen.putBegruendung(db));
+//Setting up Routes
+var register	= require('./routes/register');
+var thesen  	= require('./routes/thesen');
+var login       = require('./routes/login');
+var userroute   = require('./routes/user');
+var kandidatenroute = require('./routes/kandidaten');
+var apiRoutes   =  express.Router();
+
+//Routen ohne Login
 app.post('/login', login.auth(app, db, redis, jwt));
+app.post('/register', register.register(db, redis));
+app.get('/thesen', thesen.getThesen(db));
+app.get('/kandidaten', kandidatenroute.getKandidaten(db));
 
+apiRoutes.use(function(req, res, next) {
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+      } else {
+        req.decoded = decoded;    
+        next();
+      }
+    });
+  } else {
+	//kein Token
+    return res.status(403).send({ 
+        success: false, 
+        message: 'No token provided.' 
+    });
+  }
+});
 
+//Routen mit Login
+//app.use('/', apiRoutes); //beim Client ist noch keine login function implementiert
+app.post('/thesen', thesen.publish(db));
+app.put('/thesen', thesen.putBegruendung(db));
+app.put('/user', userroute.updateUserdata(db));
+app.delete('/user', userroute.deleteUserdata(db));
 
 
 app.listen(port,  function() {

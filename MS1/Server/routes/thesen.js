@@ -9,7 +9,7 @@ exports.publish = function(db){
 			Anzahl_Zustimmung: "0",
 			Anzahl_Ablehnung: "0",
 			Anzahl_Neutral: "0",
-			Likes: "0";
+			Likes: "0",
 			TID: "",
 			K_PRO: [], 
 			K_NEUTRAL: [],
