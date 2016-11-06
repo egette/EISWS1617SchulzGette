@@ -79,14 +79,14 @@ public class GetThesenFromAPI extends Service {
                 String likes = (String) json_data.get("Likes");
                 Integer likesINT = Integer.parseInt(likes);
                 thesenModels.add(new ThesenModel(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA ));
+
             }
-             done = db.insertArrayListThesen(thesenModels);
+           if(db.insertArrayListThesen(thesenModels) == 1 ) {
+               Log.d("ThesenModels", "In der Datenbank");
+               EventBus.fireThesenUpdate();
+               stopSelf();
+           }
         }
-
-
-        Log.d("ThesenModels", "In der Datenbank");
-        EventBus.fireThesenUpdate();
-        stopSelf();
     }
 
 

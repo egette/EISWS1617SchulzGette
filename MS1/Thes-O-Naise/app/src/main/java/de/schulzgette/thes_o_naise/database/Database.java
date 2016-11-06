@@ -155,6 +155,7 @@ public class Database {
     public int insertArrayListThesen (ArrayList<ThesenModel> thesenModels){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+        SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
         int done = 0;
 
         for(int i = 0; i< thesenModels.size(); i++) {
@@ -170,23 +171,48 @@ public class Database {
             String postionen_pro = thesenModels.get(i).getPositionPro().toString();
             String postionen_neutral = thesenModels.get(i).getPositionNeutral().toString();
             String postionen_contra = thesenModels.get(i).getPositionContra().toString();
-            try {
-                ContentValues values = new ContentValues();
-                values.put(ThesenTable.COLUMN_NAME_TID, tid);
-                values.put(ThesenTable.COLUMN_NAME_THESENTEXT, thesentext);
-                values.put(ThesenTable.COLUMN_NAME_KATEGORIE, kategorie);
-                values.put(ThesenTable.COLUMN_NAME_WAHLKREIS, wahlkreis);
-                values.put(ThesenTable.COLUMN_NAME_LIKES, likes);
-                values.put(ThesenTable.COLUMN_NAME_ANZAHL_PRO, anzahl_pro);
-                values.put(ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, anzahl_neutral);
-                values.put(ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, anzahl_contra);
-                values.put(ThesenTable.COLUMN_NAME_K_PRO, postionen_pro);
-                values.put(ThesenTable.COLUMN_NAME_K_NEUTRAL, postionen_neutral);
-                values.put(ThesenTable.COLUMN_NAME_K_CONTRA, postionen_contra);
-                dbwrite.insert(ThesenTable.TABLE_NAME, null, values);
-            } finally {
 
-                dbwrite.close();
+            if (tid != null){
+                Cursor cursor = dbread.query(ThesenTable.TABLE_NAME, new String[]{UserdataTable.COLUMN_NAME_TID}, "tid = ?", new String[]{tid}, null, null, null);
+                if (cursor.getCount() < 1) {
+                    try {
+                        ContentValues values = new ContentValues();
+                        values.put(ThesenTable.COLUMN_NAME_TID, tid);
+                        values.put(ThesenTable.COLUMN_NAME_THESENTEXT, thesentext);
+                        values.put(ThesenTable.COLUMN_NAME_KATEGORIE, kategorie);
+                        values.put(ThesenTable.COLUMN_NAME_WAHLKREIS, wahlkreis);
+                        values.put(ThesenTable.COLUMN_NAME_LIKES, likes);
+                        values.put(ThesenTable.COLUMN_NAME_ANZAHL_PRO, anzahl_pro);
+                        values.put(ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, anzahl_neutral);
+                        values.put(ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, anzahl_contra);
+                        values.put(ThesenTable.COLUMN_NAME_K_PRO, postionen_pro);
+                        values.put(ThesenTable.COLUMN_NAME_K_NEUTRAL, postionen_neutral);
+                        values.put(ThesenTable.COLUMN_NAME_K_CONTRA, postionen_contra);
+                        dbwrite.insert(ThesenTable.TABLE_NAME, null, values);
+                    } finally {
+                        dbread.close();
+                        dbwrite.close();
+                    }
+                }else {
+                    try {
+                        ContentValues values = new ContentValues();
+                        values.put(ThesenTable.COLUMN_NAME_TID, tid);
+                        values.put(ThesenTable.COLUMN_NAME_THESENTEXT, thesentext);
+                        values.put(ThesenTable.COLUMN_NAME_KATEGORIE, kategorie);
+                        values.put(ThesenTable.COLUMN_NAME_WAHLKREIS, wahlkreis);
+                        values.put(ThesenTable.COLUMN_NAME_LIKES, likes);
+                        values.put(ThesenTable.COLUMN_NAME_ANZAHL_PRO, anzahl_pro);
+                        values.put(ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, anzahl_neutral);
+                        values.put(ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, anzahl_contra);
+                        values.put(ThesenTable.COLUMN_NAME_K_PRO, postionen_pro);
+                        values.put(ThesenTable.COLUMN_NAME_K_NEUTRAL, postionen_neutral);
+                        values.put(ThesenTable.COLUMN_NAME_K_CONTRA, postionen_contra);
+                        dbwrite.update(ThesenTable.TABLE_NAME, values, "tid=?", new String[]{tid});
+                    }finally {
+                        dbread.close();
+                        dbwrite.close();
+                    }
+                }
             }
         }
         done = 1;
@@ -198,7 +224,7 @@ public class Database {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
 
-        Log.d("getarrylisdt", kategorie);
+
         try{
             if(kategorie != null) {
                 Cursor  c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT, ThesenTable.COLUMN_NAME_KATEGORIE, ThesenTable.COLUMN_NAME_WAHLKREIS, ThesenTable.COLUMN_NAME_LIKES, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA}, "kategorie = ?", new String[]{kategorie}, null, null, null);

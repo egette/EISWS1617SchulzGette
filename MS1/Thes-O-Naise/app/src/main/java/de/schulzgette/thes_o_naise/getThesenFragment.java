@@ -40,13 +40,10 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     String kategorie;
     ListView lv;
     Database db;
-    ArrayList<ThesenModel> thesenModels = new ArrayList<>();
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new Database(getContext());
     }
 
     @Nullable
@@ -54,20 +51,6 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.layout_get_thesen, container, false);
 
-        lv = (ListView) myView.findViewById(R.id.listviewthesen);
-        listadapter =  new ThesenItemAdapter(thesenModels, this.getActivity()); //TODO thesenModels holen
-        lv.setAdapter(listadapter);
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                ThesenModel thesenmodel= thesenModels.get(position);
-
-                Snackbar.make(view, "TID :" + thesenmodel.getTID(), Snackbar.LENGTH_LONG)
-                        .setAction("No action", null).show();
-            }
-        });
 
         spinner = (Spinner) myView.findViewById(spinner_kategorie);
         adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.kategorien, android.R.layout.simple_spinner_item);
@@ -84,12 +67,10 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
                 kategorie = (String) parent.getItemAtPosition(position);
                 Log.d("ausgewählte Kategorie:", kategorie);
 
-                thesenModels.clear();
-
                 Intent intent = new Intent(getActivity(), GetThesenFromAPI.class);
                 intent.putExtra("kategorie", kategorie);
                 getActivity().startService(intent);
-                thesenModels = db.getArraylistThesen(kategorie);
+
             }
 
         });
@@ -112,6 +93,26 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
 
     @Override
     public void onThesenUpdate(){
+        ArrayList<ThesenModel> thesenModels;
+        db = new Database(getContext());
+        thesenModels = db.getArraylistThesen(kategorie);
+
+        if(thesenModels != null) {
+            lv = (ListView) myView.findViewById(R.id.listviewthesen);
+            listadapter = new ThesenItemAdapter(thesenModels, this.getActivity());
+            lv.setAdapter(listadapter);
+
+//            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                    ThesenModel thesenmodel = thesenModels.get(position);
+//
+//                    Snackbar.make(view, "TID :" + thesenmodel.getTID(), Snackbar.LENGTH_LONG)
+//                            .setAction("No action", null).show();
+//                }
+//            });
+        }
         Log.d("listadapterupdate", "kommt");
         listadapter.notifyDataSetChanged();
     }
