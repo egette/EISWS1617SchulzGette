@@ -15,6 +15,7 @@ import android.view.MenuItem;
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    FragmentManager fragmentManager = getSupportFragmentManager();
 
 
     @Override
@@ -33,6 +34,9 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame_nav, new publishThesenFragment())
+                .commit();
     }
 
     @Override
@@ -72,7 +76,6 @@ public class NavigationActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_publishThesen) {
             fragmentManager.beginTransaction()

@@ -101,16 +101,17 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
             listadapter = new ThesenItemAdapter(thesenModels, this.getActivity());
             lv.setAdapter(listadapter);
 
-//            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//           lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                @Override
 //                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //
 //                    ThesenModel thesenmodel = thesenModels.get(position);
-//
+//                    Log.d("ThesenItemclicked", thesenmodel.getTID());
 //                    Snackbar.make(view, "TID :" + thesenmodel.getTID(), Snackbar.LENGTH_LONG)
 //                            .setAction("No action", null).show();
 //                }
 //            });
+
             Log.d("Thesenmodels aus Db", "nicht null");
             listadapter.notifyDataSetChanged();
         }
