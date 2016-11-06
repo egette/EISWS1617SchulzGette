@@ -40,6 +40,7 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     String kategorie;
     ListView lv;
     Database db;
+    ArrayList<ThesenModel> thesenModels = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.layout_get_thesen, container, false);
-
 
         spinner = (Spinner) myView.findViewById(spinner_kategorie);
         adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.kategorien, android.R.layout.simple_spinner_item);
@@ -93,7 +93,6 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
 
     @Override
     public void onThesenUpdate(){
-        ArrayList<ThesenModel> thesenModels;
         db = new Database(getContext());
         thesenModels = db.getArraylistThesen(kategorie);
 
@@ -112,12 +111,10 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
 //                            .setAction("No action", null).show();
 //                }
 //            });
+            Log.d("Thesenmodels aus Db", "nicht null");
+            listadapter.notifyDataSetChanged();
         }
-        Log.d("listadapterupdate", "kommt");
-        listadapter.notifyDataSetChanged();
+
     }
-
-
-
 
 }

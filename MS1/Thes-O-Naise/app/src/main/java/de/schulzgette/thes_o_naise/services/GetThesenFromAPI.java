@@ -36,11 +36,7 @@ public class GetThesenFromAPI extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String kategorie = intent.getStringExtra("kategorie");
-        try {
-            makeThesenList(getThesen(kategorie));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        getThesen(kategorie);
         return START_STICKY;
     }
 
@@ -54,43 +50,9 @@ public class GetThesenFromAPI extends Service {
         super.onDestroy();
     }
 
-    public void makeThesenList(JSONArray jArray) throws JSONException {
-        ArrayList<ThesenModel> thesenModels = new ArrayList<>();
-        JSONObject json_data;
-        Database db = new Database(getApplicationContext());
-        int done = 0;
-        if (jArray != null) {
-
-            for (int i = 0; i < jArray.length(); i++) {
-                json_data = new JSONObject((String) jArray.get(i));
-                String TID = (String) json_data.get("TID");
-                String thesentext = (String) json_data.get("thesentext");
-                String pro = (String) json_data.get("Anzahl_Zustimmung");
-                Integer proINT = Integer.parseInt(pro);
-                String neutral = (String) json_data.get("Anzahl_Neutral");
-                Integer neutralINT = Integer.parseInt(neutral);
-                String contra = (String) json_data.get("Anzahl_Ablehnung");
-                Integer contraINT = Integer.parseInt(contra);
-                JSONArray K_PRO = (JSONArray) json_data.get("K_PRO");
-                JSONArray K_NEUTRAL = (JSONArray) json_data.get("K_NEUTRAL");
-                JSONArray K_CONTRA = (JSONArray) json_data.get("K_CONTRA");
-                String kategorie = (String) json_data.get("kategorie");
-                String wahlkreis = (String) json_data.get("wahlkreis");
-                String likes = (String) json_data.get("Likes");
-                Integer likesINT = Integer.parseInt(likes);
-                thesenModels.add(new ThesenModel(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA ));
-
-            }
-           if(db.insertArrayListThesen(thesenModels) == 1 ) {
-               Log.d("ThesenModels", "In der Datenbank");
-               EventBus.fireThesenUpdate();
-               stopSelf();
-           }
-        }
-    }
 
 
-    private  JSONArray getThesen (String kategorie) {
+    private  void getThesen (String kategorie) {
 
         try {
             HttpClient.GET(BASE_URL + "thesen"+ "?kategorie=" + kategorie,  new Callback() {
@@ -106,26 +68,45 @@ public class GetThesenFromAPI extends Service {
                     if (response.isSuccessful()) {
 
                         Log.d("Response", response.toString());
-
                         String jsonData = response.body().string();
-                        JSONObject Jobject = null;
-                        try {
-                            Jobject = new JSONObject(jsonData);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
                         try {
+                            JSONObject Jobject = new JSONObject(jsonData);
                             jArray = Jobject.getJSONArray("Thesen");
-                            Log.d("THESEN ARRAY: ", jArray.toString());
+                            //Log.d("THESEN ARRAY: ", jArray.toString());
+
+                            JSONObject these_data;
+                            Database db = new Database(getApplicationContext());
+                            if (jArray != null) {
+
+                                for (int i = 0; i < jArray.length(); i++) {
+                                    these_data = new JSONObject((String) jArray.get(i));
+                                    String TID = (String) these_data.get("TID");
+                                    String thesentext = (String) these_data.get("thesentext");
+                                    String pro = (String) these_data.get("Anzahl_Zustimmung");
+                                    Integer proINT = Integer.parseInt(pro);
+                                    String neutral = (String) these_data.get("Anzahl_Neutral");
+                                    Integer neutralINT = Integer.parseInt(neutral);
+                                    String contra = (String) these_data.get("Anzahl_Ablehnung");
+                                    Integer contraINT = Integer.parseInt(contra);
+                                    JSONArray K_PRO = (JSONArray) these_data.get("K_PRO");
+                                    JSONArray K_NEUTRAL = (JSONArray) these_data.get("K_NEUTRAL");
+                                    JSONArray K_CONTRA = (JSONArray) these_data.get("K_CONTRA");
+                                    String kategorie = (String) these_data.get("kategorie");
+                                    String wahlkreis = (String) these_data.get("wahlkreis");
+                                    String likes = (String) these_data.get("Likes");
+                                    Integer likesINT = Integer.parseInt(likes);
+                                    db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA);
+                                }
+                            }
+                            Log.d("Thesen", "In der Datenbank");
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         response.body().close();
                     } else {
-
                         Log.d("Statuscode", String.valueOf(response.code()));
-
                         response.body().close();
                     }
                 }
@@ -134,6 +115,7 @@ public class GetThesenFromAPI extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return jArray;
+        EventBus.fireThesenUpdate();
+        stopSelf();
     }
 }

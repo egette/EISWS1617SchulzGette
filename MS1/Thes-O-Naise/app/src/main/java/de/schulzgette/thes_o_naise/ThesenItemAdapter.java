@@ -117,7 +117,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Contra Butten clicked", Toast.LENGTH_SHORT).show();
                 db.insertposition("Contra", thesenModel.getTID());
-                db.getall();
+                db.getallPositions();
             }
         });
 
