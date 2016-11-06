@@ -19,8 +19,6 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
     String username;
     String mail;
     String password;
@@ -83,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(String registerData) {
 
         try {
-            HttpClient.POST(BASE_URL + "register", registerData, new Callback() {
+            HttpClient.POST("register", registerData, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -91,32 +89,16 @@ public class RegisterActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-//                    int statusCode = response.code();
 
                     if (response.isSuccessful()) {
-                        //statusCode is 201
-//                        switch (statusCode) {
-//                            case 201:
+
                         Log.d("Response", response.toString());
-                       // String token = response.header("set-cookie").toString();
-                        //System.out.println(token);
-                        //Authentication.setToken(token);
-                        //showToast(getString(R.string.toast_registersuccessful));
-                        //switchToProfile();
-//                                break;
-//                        }
+
                         response.body().close();
                         Intent i = new Intent (RegisterActivity.this, NavigationActivity.class);
                         startActivity(i);
                     } else {
-                        //statusCode is 409
-//                        switch (statusCode) {
-//                            case 409:
                         Log.d("Statuscode", String.valueOf(response.code()));
-                        //showToast(getString(R.string.toast_alreadyregistered));
-                        // switchToLogin();
-//                                break;
-//                        }
                         response.body().close();
                     }
                 }

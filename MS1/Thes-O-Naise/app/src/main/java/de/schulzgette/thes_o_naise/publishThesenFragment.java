@@ -29,7 +29,6 @@ import static de.schulzgette.thes_o_naise.R.id.spinner2;
 import static de.schulzgette.thes_o_naise.R.id.thesentext;
 
 public class publishThesenFragment extends Fragment{
-    private static final String BASE_URL = "http://10.0.3.2:3000/";
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
     String thesentext2;
@@ -103,7 +102,7 @@ public class publishThesenFragment extends Fragment{
     private void publishThese(String Thesendata) {
 
         try {
-            HttpClient.POST(BASE_URL + "thesen", Thesendata, new Callback() {
+            HttpClient.POST("thesen", Thesendata, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();

@@ -10,7 +10,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-//import okhttp3.Response;
+
 
 
 /**
@@ -18,9 +18,10 @@ import okhttp3.RequestBody;
  */
 public class HttpClient extends Application {
 
-
-    private static final String BASE_URL ="http://10.0.2.2:3000/";
-
+    //SERVER URL für GENYMOTION
+    private static final String BASE_URL ="http://10.0.3.2:3000/";
+    //SERVER URL für Android Studio VD
+    //private static final String BASE_URL ="http://10.0.2.2:3000/";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static String token = Authentication.token;
@@ -31,8 +32,9 @@ public class HttpClient extends Application {
     }
 
 
-    public static Call POST(String url, String json, Callback callback) throws IOException {
+    public static Call POST(String path, String json, Callback callback) throws IOException {
 
+        String url = BASE_URL + path;
         RequestBody body = RequestBody.create(JSON, json);
 
         Request request = new Request.Builder()
@@ -46,7 +48,8 @@ public class HttpClient extends Application {
         return call;
     }
 
-    public static Call GET(String url, Callback callback) throws IOException {
+    public static Call GET(String path, Callback callback) throws IOException {
+        String url = BASE_URL + path;
         Request request = new Request.Builder()
 //                .addHeader("Cookie", token)
                 .url(url)
@@ -58,7 +61,8 @@ public class HttpClient extends Application {
 
     }
 
-    public static Call PUT(String url, String json, Callback callback) throws IOException{
+    public static Call PUT(String path, String json, Callback callback) throws IOException{
+        String url = BASE_URL + path;
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
 //                .addHeader("Cookie", token)
@@ -72,7 +76,8 @@ public class HttpClient extends Application {
 
     }
 
-    public static Call DELETE (String url, String json, Callback callback) throws IOException{
+    public static Call DELETE (String path, String json, Callback callback) throws IOException{
+        String url = BASE_URL + path;
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
 //                .addHeader("Cookie", token)

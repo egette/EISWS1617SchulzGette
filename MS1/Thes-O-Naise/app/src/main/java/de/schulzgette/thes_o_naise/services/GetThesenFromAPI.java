@@ -20,7 +20,6 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class GetThesenFromAPI extends Service {
-    private static final String BASE_URL = "http://10.0.3.2:3000/";
     JSONArray jArray;
 
 
@@ -55,7 +54,7 @@ public class GetThesenFromAPI extends Service {
     private  void getThesen (String kategorie) {
 
         try {
-            HttpClient.GET(BASE_URL + "thesen"+ "?kategorie=" + kategorie,  new Callback() {
+            HttpClient.GET("thesen"+ "?kategorie=" + kategorie,  new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
