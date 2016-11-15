@@ -71,7 +71,6 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         final Database db = new Database(getContext());
-        final FragmentManager fragmentManager = ((AppCompatActivity)getContext()).getSupportFragmentManager();
         final View result;
 
         if (convertView == null) {
