@@ -13,7 +13,6 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import de.schulzgette.thes_o_naise.ThesenModel;
 
@@ -256,4 +255,9 @@ public class Database {
         return thesenModels;
     }
 
+    public ThesenModel getTheseWithTID(String TID){
+
+        //ThesenModel result = new ThesenModel();
+        return result;
+    }
 }

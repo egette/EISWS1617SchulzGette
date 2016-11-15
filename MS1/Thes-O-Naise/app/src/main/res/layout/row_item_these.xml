@@ -4,14 +4,25 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp">
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/thesentext22">
 
-<TextView
+    <TextView
         android:id="@+id/thesentext_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:textColor="@android:color/black"
         android:padding="15dp"/>
+    <Button
+        android:text="Mehr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thesentext_item"
+        android:id="@+id/einethesebutton" />
+</RelativeLayout>
 
 <!--<LinearLayout-->
     <!--android:layout_width="match_parent"-->
@@ -97,7 +108,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/thesentext_item">
+    android:layout_below="@+id/thesentext22">
 
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -124,4 +135,6 @@
         android:onClick="onRadioButtonClicked"/>
 </RadioGroup>
 </LinearLayout>
+
+
 </RelativeLayout>

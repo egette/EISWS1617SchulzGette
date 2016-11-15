@@ -1,11 +1,15 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +36,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         RadioButton proButton;
         RadioButton neutralButton;
         RadioButton contraButton;
-
+        Button mehrButton;
     }
 
     public ThesenItemAdapter(ArrayList<ThesenModel> data, Context context) {
@@ -67,7 +71,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         final Database db = new Database(getContext());
-
+        final FragmentManager fragmentManager = ((AppCompatActivity)getContext()).getSupportFragmentManager();
         final View result;
 
         if (convertView == null) {
@@ -79,6 +83,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             viewHolder.proButton = (RadioButton) convertView.findViewById(R.id.pro_button);
             viewHolder.neutralButton = (RadioButton) convertView.findViewById(R.id.neutral_button);
             viewHolder.contraButton = (RadioButton) convertView.findViewById(R.id.contra_button);
+            viewHolder.mehrButton = (Button) convertView.findViewById(R.id.einethesebutton);
 //            viewHolder.txtPro = (TextView) convertView.findViewById(R.id.pro_id);
 //            viewHolder.txtNeutral = (TextView) convertView.findViewById(R.id.neutral_id);
 //            viewHolder.txtContra = (TextView) convertView.findViewById(R.id.contra_id);
@@ -121,6 +126,15 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             }
         });
 
+        viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public  void onClick(View v) {
+                Intent intent = new Intent(getContext(), ThesenAnsichtActivity.class);
+                intent.putExtra("TID", thesenModel.getTID());
+                getContext().startActivity(intent);
+
+            }
+        });
 
         // Return the completed view to render on screen
         return convertView;
