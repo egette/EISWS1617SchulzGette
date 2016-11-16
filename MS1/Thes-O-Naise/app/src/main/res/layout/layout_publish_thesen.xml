@@ -12,7 +12,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         android:ems="10"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -22,7 +22,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_height="150dp"
-        android:singleLine="false"
         android:selectAllOnFocus="false" />
 
     <Spinner

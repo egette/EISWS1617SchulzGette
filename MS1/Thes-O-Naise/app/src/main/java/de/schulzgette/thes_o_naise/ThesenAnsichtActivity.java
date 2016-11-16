@@ -3,24 +3,39 @@ package de.schulzgette.thes_o_naise;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class ThesenAnsichtActivity extends AppCompatActivity {
+import de.schulzgette.thes_o_naise.database.Database;
+
+public class ThesenAnsichtActivity extends FragmentActivity {
     static final String ARG_TID = "TID";
     String tid;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+    ThesenModel these;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thesen_ansicht);
+        Intent intent = getIntent();
+        Bundle bd = intent.getExtras();
 
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        if(bd != null)
+        {
+            tid = (String) bd.get("TID");
+            updateThesenView(tid);
+        }
+
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), tid);
         viewPager.setAdapter(adapter);
 
         final TabLayout.Tab pro = tabLayout.newTab();
@@ -35,29 +50,27 @@ public class ThesenAnsichtActivity extends AppCompatActivity {
         tabLayout.addTab(neutral, 1);
         tabLayout.addTab(contra, 2);
 
-        Intent intent = getIntent();
-        Bundle bd = intent.getExtras();
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        if(bd != null)
-        {
-            tid = (String) bd.get("TID");
-            updateThesenView(tid);
-        }
-
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
-
 
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     public void updateThesenView(String TID) {
-        TextView tidtext = (TextView) findViewById(R.id.einetid);
-        tidtext.setText(TID);
-        Log.d("TID_:", TID);
+        Database db = new Database(getBaseContext());
+        these = db.getTheseWithTID(TID);
+        final TextView tidtext = (TextView) findViewById(R.id.einetid);
+        tidtext.setText(these.getThesentext());
+
+        ImageButton hide = (ImageButton) findViewById(R.id.hidethesentext);
+        hide.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+             tidtext.setVisibility((tidtext.getVisibility() == View.VISIBLE)
+                     ? View.GONE : View.VISIBLE);
+            }
+        });
     }
 
     @Override

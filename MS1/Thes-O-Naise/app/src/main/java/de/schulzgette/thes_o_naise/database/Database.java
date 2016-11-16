@@ -266,22 +266,58 @@ public class Database {
                 if (c.getCount() < 1){
                     return null;
                 }else {
-                    String tid = c.getString(0);
-                    Log.d("TID DATA get", tid);
-                    String thesentext = c.getString(1);
-                    String kategorie2 = c.getString(2);
-                    String wahlkreis = c.getString(3);
-                    Integer likes = c.getInt(4);
-                    Integer anzahl_pro = c.getInt(5);
-                    Integer anzahl_neutral = c.getInt(6);
-                    Integer anzahl_contra = c.getInt(7);
-                    String postionen_pro = c.getString(8);
-                    String postionen_neutral = c.getString(9);
-                    String postionen_contra = c.getString(10);
-                    JSONArray postionen_pro_Array = new JSONArray(postionen_pro);
-                    JSONArray postionen_neutral_Array = new JSONArray(postionen_neutral);
-                    JSONArray postionen_contra_Array = new JSONArray(postionen_contra);
-                    result = new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, postionen_pro_Array, postionen_neutral_Array, postionen_contra_Array);
+                    while (c.moveToNext()) {
+                        String tid = c.getString(0);
+                        Log.d("TID DATA get", tid);
+                        String thesentext = c.getString(1);
+                        String kategorie2 = c.getString(2);
+                        String wahlkreis = c.getString(3);
+                        Integer likes = c.getInt(4);
+                        Integer anzahl_pro = c.getInt(5);
+                        Integer anzahl_neutral = c.getInt(6);
+                        Integer anzahl_contra = c.getInt(7);
+                        String postionen_pro = c.getString(8);
+                        String postionen_neutral = c.getString(9);
+                        String postionen_contra = c.getString(10);
+                        JSONArray postionen_pro_Array = new JSONArray(postionen_pro);
+                        JSONArray postionen_neutral_Array = new JSONArray(postionen_neutral);
+                        JSONArray postionen_contra_Array = new JSONArray(postionen_contra);
+                        result = new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, postionen_pro_Array, postionen_neutral_Array, postionen_contra_Array);
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            c.close();
+            db.close();
+        }
+        return result;
+    }
+
+    public JSONArray getBegruendungWithTIDandPosition(String TID, String position){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
+        Cursor  c = null;
+        JSONArray result = null;
+        try{
+            if(TID != null && position != null){
+                c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA}, "tid = ?", new String[]{TID}, null, null, null);
+                if (c.getCount() < 1){
+                    return null;
+                }else {
+                    while (c.moveToNext()) {
+                        String tid = c.getString(0);
+                        String postionen_pro = c.getString(8);
+                        String postionen_neutral = c.getString(9);
+                        String postionen_contra = c.getString(10);
+                        JSONArray postionen_pro_Array = new JSONArray(postionen_pro);
+                        JSONArray postionen_neutral_Array = new JSONArray(postionen_neutral);
+                        JSONArray postionen_contra_Array = new JSONArray(postionen_contra);
+                        if(position == "Pro") result = postionen_pro_Array;
+                        if(position == "Neutral") result = postionen_neutral_Array;
+                        if(position == "Contra") result = postionen_contra_Array;
+                    }
                 }
             }
         } catch (JSONException e) {
