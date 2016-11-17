@@ -62,7 +62,7 @@ public class ThesenAnsichtActivity extends FragmentActivity {
         Database db = new Database(getBaseContext());
         these = db.getTheseWithTID(TID);
         final TextView tidtext = (TextView) findViewById(R.id.einetid);
-        tidtext.setText(these.getThesentext());
+        if(these != null)  tidtext.setText(these.getThesentext());
 
         ImageButton hide = (ImageButton) findViewById(R.id.hidethesentext);
         hide.setOnClickListener(new View.OnClickListener() {
