@@ -47,7 +47,8 @@ function makeToken(userID, db, reqPassword, app, res, jwt){
 			var token = jwt.sign(userID, app.get('superSecret'));
 			
 			res.json({
-			userID : userID,
+			wahlkreis: userDataJSON.wahlkreis,
+			userID: userID,
 			sucess: true,
 			token: token
 			}).status(200).end();

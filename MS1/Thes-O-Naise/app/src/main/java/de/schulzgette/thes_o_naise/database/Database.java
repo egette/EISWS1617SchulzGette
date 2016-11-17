@@ -22,7 +22,7 @@ import de.schulzgette.thes_o_naise.ThesenModel;
 
 public class Database {
 
-    public static abstract  class UserdataTable implements BaseColumns{
+    public static abstract  class UserpositiondataTable implements BaseColumns{
         public static final String TABLE_NAME = "userdata";
         public static final String COLUMN_NAME_TID = "tid";
         public static final String COLUMN_NAME_POSITION = "position";
@@ -45,10 +45,10 @@ public class Database {
     }
 
 
-    public static final String SQL_CREATE_USERDATATABLE =
-            "CREATE TABLE " + UserdataTable.TABLE_NAME + " (" +
-                    UserdataTable.COLUMN_NAME_TID + " STRING PRIMARY KEY," +
-                    UserdataTable.COLUMN_NAME_POSITION + " TEXT" +
+    public static final String SQL_CREATE_USERPOSITIONDATATABLE =
+            "CREATE TABLE " + UserpositiondataTable.TABLE_NAME + " (" +
+                    UserpositiondataTable.COLUMN_NAME_TID + " STRING PRIMARY KEY," +
+                    UserpositiondataTable.COLUMN_NAME_POSITION + " TEXT" +
 
             " )";
 
@@ -67,8 +67,8 @@ public class Database {
                     ThesenTable.COLUMN_NAME_K_CONTRA + " TEXT" +
                     " )";
 
-    public static final String SQL_DELETE_USERDATATABLE =
-            "DROP TABLE IF EXISTS " + UserdataTable.TABLE_NAME;
+    public static final String SQL_DELETE_USERPOSTIONDATATABLE =
+            "DROP TABLE IF EXISTS " + UserpositiondataTable.TABLE_NAME;
 
 
 
@@ -81,7 +81,7 @@ public class Database {
         }
 
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(SQL_CREATE_USERDATATABLE);
+            db.execSQL(SQL_CREATE_USERPOSITIONDATATABLE);
             db.execSQL(SQL_CREATE_THESENTABLE);
         }
 
@@ -102,17 +102,17 @@ public class Database {
         SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
         Cursor cursor;
         if (tid != null && position != null) {
-            cursor = dbread.query(UserdataTable.TABLE_NAME, new String[]{UserdataTable.COLUMN_NAME_TID}, "tid = ?", new String[]{tid}, null, null, null);
+            cursor = dbread.query(UserpositiondataTable.TABLE_NAME, new String[]{UserpositiondataTable.COLUMN_NAME_TID}, "tid = ?", new String[]{tid}, null, null, null);
 
             SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
 
             if (cursor.getCount() < 1) {
                 try {
                     ContentValues values = new ContentValues();
-                    values.put(UserdataTable.COLUMN_NAME_POSITION, position);
-                    values.put(UserdataTable.COLUMN_NAME_TID, tid);
+                    values.put(UserpositiondataTable.COLUMN_NAME_POSITION, position);
+                    values.put(UserpositiondataTable.COLUMN_NAME_TID, tid);
                     long newRowId;
-                    newRowId = dbwrite.insert(UserdataTable.TABLE_NAME, null, values);
+                    newRowId = dbwrite.insert(UserpositiondataTable.TABLE_NAME, null, values);
                 } finally {
                     dbread.close();
                     dbwrite.close();
@@ -120,9 +120,9 @@ public class Database {
             } else {
                 try {
                     ContentValues values = new ContentValues();
-                    values.put(UserdataTable.COLUMN_NAME_POSITION, position);
-                    values.put(UserdataTable.COLUMN_NAME_TID, tid);
-                    dbwrite.update(UserdataTable.TABLE_NAME, values, "tid=?", new String[]{tid});
+                    values.put(UserpositiondataTable.COLUMN_NAME_POSITION, position);
+                    values.put(UserpositiondataTable.COLUMN_NAME_TID, tid);
+                    dbwrite.update(UserpositiondataTable.TABLE_NAME, values, "tid=?", new String[]{tid});
                 } finally {
                     dbread.close();
                     dbwrite.close();
@@ -136,7 +136,7 @@ public class Database {
         SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
         try {
             HashMap<String, String> result = new HashMap<>();
-            Cursor c = db.query(UserdataTable.TABLE_NAME, new String[] {UserdataTable.COLUMN_NAME_TID, UserdataTable.COLUMN_NAME_POSITION }, null, null, null, null, null);
+            Cursor c = db.query(UserpositiondataTable.TABLE_NAME, new String[] {UserpositiondataTable.COLUMN_NAME_TID, UserpositiondataTable.COLUMN_NAME_POSITION }, null, null, null, null, null);
             try{
                 while (c.moveToNext()) {
                     result.put(c.getString(0), c.getString(1));

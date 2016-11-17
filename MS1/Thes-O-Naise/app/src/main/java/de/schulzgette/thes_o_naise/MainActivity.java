@@ -29,5 +29,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        Button authbutton = (Button) findViewById(R.id.authentifizierenbutton);
+        authbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent (MainActivity.this, AuthActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }

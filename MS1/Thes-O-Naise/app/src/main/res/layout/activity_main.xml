@@ -14,9 +14,16 @@
         android:text="Registierung"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
         android:id="@+id/registeractivity"
-        android:layout_below="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -25,11 +32,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/navbutton"
-        android:layout_marginTop="80dp"
-        android:layout_below="@+id/registeractivity"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/registeractivity"
-        android:layout_alignEnd="@+id/registeractivity" />
+        android:layout_above="@+id/registeractivity"
+        android:layout_toRightOf="@+id/registeractivity"
+        android:layout_toEndOf="@+id/registeractivity"
+        android:layout_marginBottom="22dp" />
+
+    <Button
+        android:text="Authentifizieren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/registeractivity"
+        android:id="@+id/authentifizierenbutton" />
 
 </RelativeLayout>

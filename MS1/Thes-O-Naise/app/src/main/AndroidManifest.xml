@@ -33,7 +33,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".ThesenAnsichtActivity"></activity>
+        <activity android:name=".ThesenAnsichtActivity" />
+        <activity android:name=".AuthActivity"></activity>
     </application>
 
 </manifest>

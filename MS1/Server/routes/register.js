@@ -88,8 +88,9 @@
 									password: req.body.password,
 									wahlkreis: req.body.wahlkreis,
 									email: req.body.email,
-									KID: ""
-									
+									KID: "",
+									Partei: req.body.partei,
+									Thesen_beantwortet: []
 								};							
 								var Client_JSON = {
 									Client_ID: ""

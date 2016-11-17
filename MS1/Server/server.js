@@ -84,7 +84,7 @@ apiRoutes.use(function(req, res, next) {
 });
 
 //Routen mit Login
-//app.use('/', apiRoutes); //beim Client ist noch keine login function implementiert
+app.use('/', apiRoutes); 
 app.post('/thesen', thesen.publish(db));
 app.put('/thesen', thesen.putBegruendung(db));
 app.put('/user', userroute.updateUserdata(db));

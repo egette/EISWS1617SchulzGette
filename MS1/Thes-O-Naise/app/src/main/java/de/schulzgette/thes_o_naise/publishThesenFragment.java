@@ -1,5 +1,6 @@
 package de.schulzgette.thes_o_naise;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static android.content.Context.MODE_PRIVATE;
 import static de.schulzgette.thes_o_naise.R.id.publishthesebutton;
 import static de.schulzgette.thes_o_naise.R.id.spinner2;
 import static de.schulzgette.thes_o_naise.R.id.thesentext;
@@ -71,27 +73,22 @@ public class publishThesenFragment extends Fragment{
 
                 EditText thesentextid =  (EditText) myView.findViewById(thesentext);
                 thesentext2 = thesentextid.getText().toString();
-
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
+                String token = sharedPreferences.getString("token", "");
+                String wahlkreis = sharedPreferences.getString("wahlkreis", "");
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.accumulate("thesentext", thesentext2);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
                     jsonObject.accumulate("kategorie", kategorie);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    jsonObject.accumulate("wahlkreis", "Gummersbach");
+                    jsonObject.accumulate("wahlkreis", wahlkreis);
+                    jsonObject.accumulate("token", token);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 String jsondata =  jsonObject.toString();
                 publishThese(jsondata);
-               // Toast.makeText(getContext(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
 
             }
         });
