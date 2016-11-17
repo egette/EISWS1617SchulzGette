@@ -86,7 +86,7 @@ apiRoutes.use(function(req, res, next) {
 //Routen mit Login
 app.use('/', apiRoutes); 
 app.post('/thesen', thesen.publish(db));
-app.put('/thesen', thesen.putBegruendung(db));
+app.put('/thesen', thesen.putPosition(db));
 app.put('/user', userroute.updateUserdata(db));
 app.delete('/user', userroute.deleteUserdata(db));
 

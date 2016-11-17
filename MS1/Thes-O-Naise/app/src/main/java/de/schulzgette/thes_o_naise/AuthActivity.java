@@ -2,8 +2,8 @@ package de.schulzgette.thes_o_naise;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,14 +13,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
 import okhttp3.Response;
 
 public class AuthActivity extends AppCompatActivity {
@@ -69,10 +65,8 @@ public class AuthActivity extends AppCompatActivity {
                 public void onResponse(Call call, Response response) throws IOException {
 
                     if (response.isSuccessful()) {
-
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
-
                         try {
                             JSONObject Jobject = new JSONObject(jsonData);
                             String token = (String) Jobject.get("token");
@@ -83,9 +77,8 @@ public class AuthActivity extends AppCompatActivity {
                             sharedPreferences.edit().putString("token", token).apply();
                             sharedPreferences.edit().putString("UID", uid).apply();
                             sharedPreferences.edit().putString("wahlkreis", wahlkreis).apply();
-                            if(typ=="W")sharedPreferences.edit().putString("typ", "waehler").apply();
-                            if(typ=="K")sharedPreferences.edit().putString("typ", "kandidat").apply();
-
+                            if(typ.equals("W"))sharedPreferences.edit().putString("typ", "waehler").apply();
+                            if(typ.equals("K"))sharedPreferences.edit().putString("typ", "kandidat").apply();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

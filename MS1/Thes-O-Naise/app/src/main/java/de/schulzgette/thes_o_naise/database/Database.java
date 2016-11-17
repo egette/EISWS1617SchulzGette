@@ -69,11 +69,13 @@ public class Database {
 
     public static final String SQL_DELETE_USERPOSTIONDATATABLE =
             "DROP TABLE IF EXISTS " + UserpositiondataTable.TABLE_NAME;
+    public static final String SQL_DELETE_THESENTABLE =
+            "DROP TABLE IF EXISTS " + ThesenTable.TABLE_NAME;
 
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 1;
+        public static final int DATABASE_VERSION = 2;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -86,7 +88,9 @@ public class Database {
         }
 
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            onUpgrade(db, oldVersion, newVersion);
+            //onUpgrade(db, oldVersion, newVersion);
+            db.execSQL(SQL_DELETE_USERPOSTIONDATATABLE);
+            db.execSQL(SQL_DELETE_THESENTABLE);
             onCreate(db);
         }
     }

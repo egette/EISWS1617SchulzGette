@@ -16,7 +16,8 @@ exports.publish = function(db){
 			K_CONTRA: [],
 			W_PRO: [], 
 			W_NEUTRAL: [],
-			W_CONTRA: []
+			W_CONTRA: [],
+			K_POSITION: []
 		};
 		
 		var wahlkreis = req.body.wahlkreis;
@@ -76,84 +77,124 @@ if(anzahl_thesen > Thesen_IDS.length) anzahl_thesen = Thesen_IDS.length;
       return Thesen_JSONOBJECT;
     });
 }
-
-function begruendung_hinzufuegen(tid, typ, uid, textdata, richtung){
-	db.get(tid, function(err, reply){
-		if(err) throw err;
-		if (!reply ) {
-			return 0;
-		} else {
-			
-			var These = JSON.parse(reply);
-			var typ2;
-			if( typ == 'waehler') typ2 = "W";
-			if( typ == 'kandidat') typ2 = "K";
-			var richtungsarrayname = typ2 + "_" + richtung;
-			console.log("richtungsarrayname:  ", richtungsarrayname);
-			
-			var begruendung_json = {
-				UID: uid,
-				Text: textdata,
-				likes: "0",
-				Kommentare: []
-			};
-			if(richtungsarrayname == "K_PRO"){
-				var arraylength = These.K_PRO.length;
-				if(arraylength > 0 ) arraylength + 1; 
-				These.K_PRO[arraylength] = begruendung_json;
-			}
-			if(richtungsarrayname == "W_PRO"){
-				var arraylength = These.W_PRO.length;
-				if(arraylength > 0 ) arraylength + 1; 
-				These.W_PRO[arraylength] = begruendung_json;
-			}
-			if(richtungsarrayname == "K_NEUTRAL"){
-				var arraylength = These.K_NEUTRAL.length;
-				if(arraylength > 0 ) arraylength + 1; 
-				These.K_NEUTRAL[arraylength] = begruendung_json;
-			}
-			if(richtungsarrayname == "W_NEUTRAL"){
-				var arraylength = These.W_NEUTRAL.length;
-				if(arraylength > 0 ) arraylength + 1; 
-				These.W_NEUTRAL[arraylength] = begruendung_json;
-			}
-			if(richtungsarrayname == "K_CONTRA"){
-				var arraylength = These.K_CONTRA.length;
-				if(arraylength > 0 ) arraylength + 1; 
-				These.K_CONTRA[arraylength] = begruendung_json;
-			}
-			if(richtungsarrayname == "W_CONTRA"){
-				var arraylength = These.W_CONTRA.length;
-				if(arraylength > 0 ) arraylength + 1; 
-				These.W_CONTRA[arraylength] = begruendung_json;
-			}
-			
-			
-			
-			
-			db.set(tid, JSON.stringify(These));
-			return 1;
-		}
-					
-	});
-};
 		
-exports.putBegruendung = function(db){
+exports.putPosition = function(db){
 	return function (req, res){
-		var tid = req.query.tid;
+		var tid = req.body.tid;
 		var typ = req.body.typ;
 		var uid = req.body.uid;
 		var richtung = req.body.richtung;
 		var textdata = req.body.textdata;
 		if(!tid || !typ || !uid || !richtung) res.status(409).end();
-		if(!textdata) textdata = "";
+
 		if (tid.substring(0, 4) == "TID_"){
-			if(begruendung_hinzufuegen(tid, typ, uid, textdata, richtung) == 1){
-				res.status(201).end();
+			if(!textdata){
+				db.get(tid, function(err, reply){
+					if(err) throw err;
+					if (!reply ) {
+						res.status(500).end();
+					} else {
+						var These = JSON.parse(reply);
+						var Position = {
+							UID: uid,
+							POS: richtung
+						}
+						var neu = 1;
+						var laenge = These.K_POSITION.length;
+						for(i = 0; i < laenge; i++){
+							if(These.K_POSITION[i].UID == uid){
+								These.K_POSITION[i].POS = richtung;
+								neu = 0;
+							}
+						}
+						console.log("Position hinzufuegen ohne Text");
+						if(neu == 1) These.K_POSITION.push(Position);
+						db.set(tid, JSON.stringify(These));
+						res.status(201).send(These).end();
+					}
+					
+				});
 			}else {
-				//res.status(409).end();
+				db.get(tid, function(err, reply){
+					if(err) throw err;
+					if (!reply ) {
+						return 0;
+					} else {
+						
+						var These = JSON.parse(reply);
+						var typ2;
+						if( typ == 'waehler') typ2 = "W";
+						if( typ == 'kandidat') typ2 = "K";
+						var richtungsarrayname = typ2 + "_" + richtung;
+						console.log("richtungsarrayname:  ", richtungsarrayname);
+						
+						var position_json = {
+							UID: uid,
+							Text: textdata,
+							likes: "0",
+							Kommentare: []
+						};
+						var neu = 1;
+						
+						if(richtungsarrayname == "K_PRO"){
+							for(i = 0; i < These.K_PRO.lenght; i++){
+								if(These.K_PRO[i].UID == uid){
+									These.K_PRO[i] = position_json;
+									neu = 0;
+								}
+							}
+							if (neu == 1) These.K_PRO.push(position_json);
+						}
+						if(richtungsarrayname == "W_PRO"){
+							for(i = 0; i < These.W_PRO.lenght; i++){
+								if(These.W_PRO[i].UID == uid){
+									These.W_PRO[i] = position_json;
+									neu = 0;
+								}
+							}
+							if (neu == 1) These.W_PRO.push(position_json);
+						}
+						if(richtungsarrayname == "K_NEUTRAL"){
+							for(i = 0; i < These.K_NEUTRAL.lenght; i++){
+								if(These.K_NEUTRAL[i].UID == uid){
+									These.K_NEUTRAL[i] = position_json;
+									neu = 0;
+								}
+							}
+							if (neu == 1) These.K_NEUTRAL.push(position_json);
+						}
+						if(richtungsarrayname == "W_NEUTRAL"){
+							for(i = 0; i < These.W_PRO.lenght; i++){
+								if(These.W_NEUTRAL[i].UID == uid){
+									These.W_NEUTRAL[i] = position_json;
+									neu = 0;
+								}
+							}
+							if (neu == 1) These.W_NEUTRAL.push(position_json);
+						}
+						if(richtungsarrayname == "K_CONTRA"){
+							for(i = 0; i < These.K_CONTRA.lenght; i++){
+								if(These.K_CONTRA[i].UID == uid){
+									These.K_CONTRA[i] = position_json;
+									neu = 0;
+								}
+							}
+							if (neu == 1) These.K_CONTRA.push(position_json);
+						}
+						if(richtungsarrayname == "W_CONTRA"){
+							for(i = 0; i < These.W_CONTRA.lenght; i++){
+								if(These.W_CONTRA[i].UID == uid){
+									These.W_CONTRA[i] = position_json;
+									neu = 0;
+								}
+							}
+							if (neu == 1) These.W_CONTRA.push(position_json);
+						}
+						db.set(tid, JSON.stringify(These));
+						res.status(201).send(These).end();
+					}			
+				});
 			}
-			
 		}
 }};
 

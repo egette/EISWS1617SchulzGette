@@ -2,8 +2,7 @@ package de.schulzgette.thes_o_naise;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,19 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.schulzgette.thes_o_naise.database.Database;
+import de.schulzgette.thes_o_naise.utils.HttpClient;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Jessica on 02.11.2016.
@@ -26,6 +35,13 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
 
     private ArrayList<ThesenModel> dataSet;
     Context mContext;
+    SharedPreferences sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
+    String typ = "";
+
+    @Override
+    public void onClick(View v) {
+
+    }
 
     // View lookup cache
     private static class ViewHolder {
@@ -43,23 +59,6 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         super(context, R.layout.row_item_these, data);
         this.dataSet = data;
         this.mContext=context;
-
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        int position=(Integer) v.getTag();
-        Object object= getItem(position);
-        ThesenModel thesenModel =(ThesenModel)object;
-        Log.d("Thesen Item clicked", thesenModel.getTID());
-//        switch (v.getId())
-//        {
-//           case R.id.thesentext_item:
-//                Snackbar.make(v, "TID " +thesenModel.getTID(), Snackbar.LENGTH_LONG)
-//                        .setAction("No action", null).show();
-//               break;
-//        }
 
     }
 
@@ -100,27 +99,32 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
 //        viewHolder.txtNeutral.setText(thesenModel.getNeutral().toString());
 //        viewHolder.txtContra.setText(thesenModel.getContra().toString());
 
+        typ =  sharedPreferences.getString("typ", "");
+
         viewHolder.proButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Pro Button clicked von These " +thesenModel.getTID(), Toast.LENGTH_SHORT).show();
+                if (typ.equals("kandidat")) kandidatPosToServer("PRO", thesenModel.getTID());
                 db.insertposition("Pro", thesenModel.getTID());
+                Toast.makeText(getContext(), "Pro Button von These " +thesenModel.getTID(), Toast.LENGTH_SHORT).show();
             }
         });
 
         viewHolder.neutralButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Neutral Butten clicked", Toast.LENGTH_SHORT).show();
+                if (typ.equals("kandidat")) kandidatPosToServer("NEUTRAL", thesenModel.getTID());
                 db.insertposition("Neutral", thesenModel.getTID());
+                Toast.makeText(getContext(), "Neutral", Toast.LENGTH_SHORT).show();
             }
         });
 
         viewHolder.contraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Contra Butten clicked", Toast.LENGTH_SHORT).show();
+                if (typ.equals("kandidat")) kandidatPosToServer("CONTRA", thesenModel.getTID());
                 db.insertposition("Contra", thesenModel.getTID());
+                Toast.makeText(getContext(), "Contra", Toast.LENGTH_SHORT).show();
                 db.getallPositions();
             }
         });
@@ -137,6 +141,47 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
 
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    public void kandidatPosToServer (String position, String tid){
+
+        String positionData = "";
+        String uid = sharedPreferences.getString("UID", "");
+        String token = sharedPreferences.getString("token", "");
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate("uid", uid);
+            jsonObject.accumulate("tid", tid);
+            jsonObject.accumulate("typ", "kandidat");
+            jsonObject.accumulate("richtung", position);
+            jsonObject.accumulate("token", token);
+            positionData =  jsonObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            HttpClient.PUT("thesen", positionData, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+
+                    if (response.isSuccessful()) {
+
+                        Log.d("Response", response.toString());
+                        response.body().close();
+                    } else {
+                        Log.d("Statuscode", String.valueOf(response.code()));
+                        response.body().close();
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
