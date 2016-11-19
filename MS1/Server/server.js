@@ -55,6 +55,7 @@ var thesen  	= require('./routes/thesen');
 var login       = require('./routes/login');
 var userroute   = require('./routes/user');
 var kandidatenroute = require('./routes/kandidaten');
+var matching	= require('./routes/matching');
 var apiRoutes   =  express.Router();
 
 //Routen ohne Login
@@ -84,7 +85,8 @@ apiRoutes.use(function(req, res, next) {
 });
 
 //Routen mit Login
-app.use('/', apiRoutes); 
+//app.use('/', apiRoutes);
+app.post('/matching', matching.match(db)); 
 app.post('/thesen', thesen.publish(db));
 app.put('/thesen', thesen.putPosition(db));
 app.put('/user', userroute.updateUserdata(db));

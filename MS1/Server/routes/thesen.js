@@ -65,7 +65,7 @@ if(anzahl_thesen > Thesen_IDS.length) anzahl_thesen = Thesen_IDS.length;
 
 
   for (var i = 0; i < anzahl_thesen; i++) {
-    promises.push(db.getAsync(Thesen_IDS[i]))
+    promises.push(db.getAsync(Thesen_IDS[i]));
   }
 
    return Promise.all(promises).then(function(arrayOfResults) {

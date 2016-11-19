@@ -86,7 +86,9 @@ public class NavigationActivity extends AppCompatActivity
                     .replace(R.id.content_frame_nav, new getThesenFragment())
                     .commit();
         } else if (id == R.id.nav_matching) {
-
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame_nav, new MatchingFragment())
+                    .commit();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

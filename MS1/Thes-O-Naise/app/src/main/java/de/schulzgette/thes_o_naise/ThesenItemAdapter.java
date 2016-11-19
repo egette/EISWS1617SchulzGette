@@ -105,7 +105,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             @Override
             public void onClick(View v) {
                 if (typ.equals("kandidat")) kandidatPosToServer("PRO", thesenModel.getTID());
-                db.insertposition("Pro", thesenModel.getTID());
+                db.insertposition("PRO", thesenModel.getTID());
                 Toast.makeText(getContext(), "Pro Button von These " +thesenModel.getTID(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -114,7 +114,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             @Override
             public void onClick(View v) {
                 if (typ.equals("kandidat")) kandidatPosToServer("NEUTRAL", thesenModel.getTID());
-                db.insertposition("Neutral", thesenModel.getTID());
+                db.insertposition("NEUTRAL", thesenModel.getTID());
                 Toast.makeText(getContext(), "Neutral", Toast.LENGTH_SHORT).show();
             }
         });
@@ -123,7 +123,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             @Override
             public void onClick(View v) {
                 if (typ.equals("kandidat")) kandidatPosToServer("CONTRA", thesenModel.getTID());
-                db.insertposition("Contra", thesenModel.getTID());
+                db.insertposition("CONTRA", thesenModel.getTID());
                 Toast.makeText(getContext(), "Contra", Toast.LENGTH_SHORT).show();
                 db.getallPositions();
             }
