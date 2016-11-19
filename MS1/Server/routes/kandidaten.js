@@ -51,8 +51,18 @@ function makeKandidatenJSON(Kandidaten_IDS, db){
 
    return Promise.all(promises).then(function(arrayOfResults) {
       for (i = 0; i < arrayOfResults.length; i++) {
-        var kandidatenjsondata = arrayOfResults[i];
-        Kandidaten_JSONOBJECT.Kandidaten.push(kandidatenjsondata);
+        var Kandidat = JSON.parse(arrayOfResults[i]);
+		var result = {
+						username: Kandidat.username,
+						vorname: Kandidat.vorname,
+						nachname: Kandidat.nachname,
+						wahlkreis: Kandidat.wahlkreis,
+						email: Kandidat.email,
+						KID: Kandidat.KID,
+						Partei: Kandidat.Partei,
+						Thesen_beantwortet: Kandidat.Thesen_beantwortet
+		};
+        Kandidaten_JSONOBJECT.Kandidaten.push(result);
       }
       return Kandidaten_JSONOBJECT;
     });

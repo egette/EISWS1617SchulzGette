@@ -1,4 +1,4 @@
-exports.match = function(db){
+exports.match = function(db, Promise){
 	return function(req, res){
 		console.log('REQ BODY:  ', req.body);
 		var ThesenIDS = [];
@@ -12,67 +12,70 @@ exports.match = function(db){
 			USERPOS.push(userposition);
 		}
 		vergleichKandidaten(ThesenIDS, USERPOS).then(function(result){
-			var resultstring = result.toString();
-			console.log("RESULT", resultstring);
+			console.log("RESULT2", result);
 			res.status(200).send(result).end();
 		});	
 	}
 	
 	function vergleichKandidaten(ThesenIDS, USERPOS){
 		var _ = require('lodash');
-		var KandidatenIDS = [];
-		var KandidatenZaehler = [];
+		
 		var result = {
-			"Kandidaten": [],
+			Kandidaten: [],
 			Anzahl: 0
 		};
-		var promises = [];
-		for (var i = 0; i < ThesenIDS.length; i++) {
-			promises.push(db.getAsync(ThesenIDS[i]));
-	    }
-		return Promise.all(promises).then(function(arrayOfResults) {
-			
-			for (i = 0; i < arrayOfResults.length; i++) {
-				//var thesenJSONOBJECT = JSON.parse(arrayOfResults[i]);
-				var thesenJSONOBJECT = arrayOfResults[i];
-				//console.log("THESE", thesenJSONOBJECT);
+	
+		return Promise.map(ThesenIDS, function(ID){
+			return Promise.resolve()
+				.then(function(){
+					return db.getAsync(ID);
+				})
+				.then(function(JSONSTRING) {
+					var JSONOBJECT = JSON.parse(JSONSTRING);
+					return JSONOBJECT;
+				})
+		})
+		.then(function(ThesenJSONArray){
+			var KandidatenIDS = [];
+		    var KandidatenZaehler = [];
+			for (i = 0; i < ThesenJSONArray.length; i++) {
+				var thesenJSONOBJECT = ThesenJSONArray[i];
 				var UPOS = USERPOS[i];
-				for(i = 0; i < thesenJSONOBJECT.K_POSITION.length; i++){
-					var KID = thesenJSONOBJECT.K_POSITION.UID;
-					console.log("KID", KID);
-					var KPOS = thesenJSONOBJECT.K_POSITION.POS;
-					if (_.findIndex(KandidatenIDS, KID) == -1) KandidatenIDS.push(KID);
+				for(j = 0; j < thesenJSONOBJECT.K_POSITION.length; j++){
+					var KID = thesenJSONOBJECT.K_POSITION[j].UID;
+					var KPOS = thesenJSONOBJECT.K_POSITION[j].POS;
+					
+					if (_.indexOf(KandidatenIDS, KID) == -1){
+						KandidatenIDS.push(KID);
+						var index = _.indexOf(KandidatenIDS, KID);
+						if(KandidatenZaehler[index] == null) KandidatenZaehler[index] = 0;
+					} 
+					var index = _.indexOf(KandidatenIDS, KID);
 					if( UPOS == "PRO" && KPOS == "NEUTRAL"){
-						var index = _.findIndex(KandidatenIDS, KID);
 						KandidatenZaehler[index] += 1;
 					}
 					if( UPOS == "PRO" && KPOS == "CONTRA"){
-						var index = _.findIndex(KandidatenIDS, KID);
 						KandidatenZaehler[index] += 2;
 					}
 					if( UPOS == "NEUTRAL" && KPOS == "PRO"){
-						var index = _.findIndex(KandidatenIDS, KID);
 						KandidatenZaehler[index] += 1;
 					}
 					if( UPOS == "NEUTRAL" && KPOS == "CONTRA"){
-						var index = _.findIndex(KandidatenIDS, KID);
 						KandidatenZaehler[index] += 1;
 					}
 					if( UPOS == "CONTRA" && KPOS == "NEUTRAL"){
-						var index = _.findIndex(KandidatenIDS, KID);
 						KandidatenZaehler[index] += 1;
 					}
 					if( UPOS == "CONTRA" && KPOS == "PRO"){
-						var index = _.findIndex(KandidatenIDS, KID);
 						KandidatenZaehler[index] += 2;
 					}
 				}
 			}
 			
-			for (i = 0; i < KandidatenIDS.length; i++){
+			for (k = 0; k < KandidatenIDS.length; k++){
 				var KandidatenErgebnis = {
-					KID: KandidatenIDS[i],
-					Zaehler: KandidatenZaehler[i]
+					KID: KandidatenIDS[k],
+					Zaehler: KandidatenZaehler[k]
 				};
 				result.Kandidaten.push(KandidatenErgebnis);
 			}

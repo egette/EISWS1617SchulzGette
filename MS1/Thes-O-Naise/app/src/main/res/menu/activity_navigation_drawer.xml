@@ -15,6 +15,10 @@
             android:id="@+id/nav_matching"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Matching" />
+        <item
+            android:id="@+id/nav_kandidaten"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Kandidaten" />
     </group>
 
     <item android:title="Communicate">

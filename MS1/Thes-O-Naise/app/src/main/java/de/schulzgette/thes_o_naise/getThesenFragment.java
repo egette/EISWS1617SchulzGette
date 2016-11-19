@@ -3,7 +3,6 @@ package de.schulzgette.thes_o_naise;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,20 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.services.EventBus;
 import de.schulzgette.thes_o_naise.services.GetThesenFromAPI;
-import de.schulzgette.thes_o_naise.utils.HttpClient;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 import static de.schulzgette.thes_o_naise.R.id.spinner_kategorie;
 
@@ -101,16 +91,6 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
             listadapter = new ThesenItemAdapter(thesenModels, this.getActivity());
             lv.setAdapter(listadapter);
 
-//           lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                    ThesenModel thesenmodel = thesenModels.get(position);
-//                    Log.d("ThesenItemclicked", thesenmodel.getTID());
-//                    Snackbar.make(view, "TID :" + thesenmodel.getTID(), Snackbar.LENGTH_LONG)
-//                            .setAction("No action", null).show();
-//                }
-//            });
 
             Log.d("Thesenmodels aus Db", "nicht null");
             listadapter.notifyDataSetChanged();
