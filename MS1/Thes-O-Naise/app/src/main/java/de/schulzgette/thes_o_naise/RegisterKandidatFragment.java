@@ -34,6 +34,8 @@ public class RegisterKandidatFragment extends Fragment {
     String password;
     String wahlkreis;
     String partei;
+    String vorname;
+    String nachname;
 
     public RegisterKandidatFragment() {
     }
@@ -51,6 +53,10 @@ public class RegisterKandidatFragment extends Fragment {
 
                 EditText user =  (EditText) myView.findViewById(R.id.username);
                 username =  user.getText().toString();
+                EditText vornameedit =  (EditText) myView.findViewById(R.id.vornameid);
+                vorname =  vornameedit.getText().toString();
+                EditText nachnameedit =  (EditText) myView.findViewById(R.id.nachnameid);
+                nachname =  nachnameedit.getText().toString();
                 EditText usermail =  (EditText) myView.findViewById(R.id.usermail);
                 mail =  usermail.getText().toString();
                 EditText pw =  (EditText) myView.findViewById(R.id.userpw);
@@ -65,6 +71,8 @@ public class RegisterKandidatFragment extends Fragment {
                 try {
                     jsonObject.accumulate("username", username);
                     jsonObject.accumulate("password", password);
+                    jsonObject.accumulate("vorname", vorname);
+                    jsonObject.accumulate("nachname", nachname);
                     jsonObject.accumulate("email", mail);
                     jsonObject.accumulate("wahlkreis", wahlkreis);
                     jsonObject.accumulate("typ", typ);
