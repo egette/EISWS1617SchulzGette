@@ -29,7 +29,7 @@ exports.publish = function(db){
 			if(err) throw err;
 			var last_Thesen_ID;
 			if (!reply || reply == "TID_NaN") {
- 				last_Thesen_ID = "TID_1";
+ 				last_Thesen_ID = "TID_0";
 			} else {
  				last_Thesen_ID = reply.toString();
  			}
@@ -110,6 +110,7 @@ exports.putPosition = function(db){
 						console.log("Position hinzufuegen ohne Text");
 						if(neu == 1) These.K_POSITION.push(Position);
 						db.set(tid, JSON.stringify(These));
+						updateBeantworteteThesen(tid, uid, richtung, db);
 						res.status(201).send(These).end();
 					}
 					
@@ -137,7 +138,7 @@ exports.putPosition = function(db){
 						var neu = 1;
 						
 						if(richtungsarrayname == "K_PRO"){
-							for(i = 0; i < These.K_PRO.lenght; i++){
+							for(i = 0; i < These.K_PRO.length; i++){
 								if(These.K_PRO[i].UID == uid){
 									These.K_PRO[i] = position_json;
 									neu = 0;
@@ -146,7 +147,7 @@ exports.putPosition = function(db){
 							if (neu == 1) These.K_PRO.push(position_json);
 						}
 						if(richtungsarrayname == "W_PRO"){
-							for(i = 0; i < These.W_PRO.lenght; i++){
+							for(i = 0; i < These.W_PRO.length; i++){
 								if(These.W_PRO[i].UID == uid){
 									These.W_PRO[i] = position_json;
 									neu = 0;
@@ -155,7 +156,7 @@ exports.putPosition = function(db){
 							if (neu == 1) These.W_PRO.push(position_json);
 						}
 						if(richtungsarrayname == "K_NEUTRAL"){
-							for(i = 0; i < These.K_NEUTRAL.lenght; i++){
+							for(i = 0; i < These.K_NEUTRAL.length; i++){
 								if(These.K_NEUTRAL[i].UID == uid){
 									These.K_NEUTRAL[i] = position_json;
 									neu = 0;
@@ -164,7 +165,7 @@ exports.putPosition = function(db){
 							if (neu == 1) These.K_NEUTRAL.push(position_json);
 						}
 						if(richtungsarrayname == "W_NEUTRAL"){
-							for(i = 0; i < These.W_PRO.lenght; i++){
+							for(i = 0; i < These.W_PRO.length; i++){
 								if(These.W_NEUTRAL[i].UID == uid){
 									These.W_NEUTRAL[i] = position_json;
 									neu = 0;
@@ -173,7 +174,7 @@ exports.putPosition = function(db){
 							if (neu == 1) These.W_NEUTRAL.push(position_json);
 						}
 						if(richtungsarrayname == "K_CONTRA"){
-							for(i = 0; i < These.K_CONTRA.lenght; i++){
+							for(i = 0; i < These.K_CONTRA.length; i++){
 								if(These.K_CONTRA[i].UID == uid){
 									These.K_CONTRA[i] = position_json;
 									neu = 0;
@@ -182,7 +183,7 @@ exports.putPosition = function(db){
 							if (neu == 1) These.K_CONTRA.push(position_json);
 						}
 						if(richtungsarrayname == "W_CONTRA"){
-							for(i = 0; i < These.W_CONTRA.lenght; i++){
+							for(i = 0; i < These.W_CONTRA.length; i++){
 								if(These.W_CONTRA[i].UID == uid){
 									These.W_CONTRA[i] = position_json;
 									neu = 0;
@@ -196,7 +197,31 @@ exports.putPosition = function(db){
 				});
 			}
 		}
-}};
+	}
+	
+};
+
+function updateBeantworteteThesen(tid, kid, position, db){
+	var _ = require('lodash');
+	db.get(kid, function (err, reply) {
+		if (err) throw err;
+		var kandidat = JSON.parse(reply);
+		var thesebeantwortet = {
+			TID: tid,
+			POS: position
+		};
+		var neu = 1;
+		for(p = 0; p < kandidat.Thesen_beantwortet.length; p++){
+			if(kandidat.Thesen_beantwortet[p].TID == tid){
+			kandidat.Thesen_beantwortet[p] = thesebeantwortet;
+			neu = 0;
+			}
+		}
+		if(neu == 1) kandidat.Thesen_beantwortet.push(thesebeantwortet);
+		db.set(kid, JSON.stringify(kandidat));
+	});
+}
+
 
 exports.getThesen = function(db){
 	return function (req, res){
@@ -260,6 +285,3 @@ exports.getThesen = function(db){
 		}
 	}
 }	
-
-
-

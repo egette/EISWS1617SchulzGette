@@ -52,6 +52,7 @@ function makeKandidatenJSON(Kandidaten_IDS, db){
    return Promise.all(promises).then(function(arrayOfResults) {
       for (i = 0; i < arrayOfResults.length; i++) {
         var Kandidat = JSON.parse(arrayOfResults[i]);
+		console.log("KANDIDATJSON: ", Kandidat);
 		var result = {
 						username: Kandidat.username,
 						vorname: Kandidat.vorname,
