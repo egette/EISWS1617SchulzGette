@@ -35,6 +35,8 @@ public class KandidatenFragment extends Fragment {
     View myView;
     ListView lv;
     KandidatenListAdapter listadapter;
+    SharedPreferences sharedPreferences;
+    String wahlkreis ;
 
     ArrayList<KandidatenModel> kandidatenModels;
 
@@ -56,36 +58,30 @@ public class KandidatenFragment extends Fragment {
         if (getArguments() != null) {
             modus = getArguments().getString(MODE);
         }
+        sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
+        wahlkreis = sharedPreferences.getString("wahlkreis", "");
+        getKandidaten(wahlkreis);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_kandidaten, container, false);
 
-        //TODO: LISTVIEW, KandidatenModel kandidatnmodels
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
-        String wahlkreis = sharedPreferences.getString("wahlkreis", "Gummersbach");
 
-        getKandidaten(wahlkreis);
-        Database db = new Database(getContext());
-        kandidatenModels = db.getAllKandidaten(wahlkreis);
         if(kandidatenModels != null) {
             lv = (ListView) myView.findViewById(R.id.listviewkandidaten);
             listadapter = new KandidatenListAdapter(kandidatenModels, this.getActivity());
             lv.setAdapter(listadapter);
-
-
-            Log.d("Thesenmodels aus Db", "nicht null");
             listadapter.notifyDataSetChanged();
         }
-
 
         return myView;
     }
 
     private  void getKandidaten(String wahlkreis) {
-
+        Database db = new Database(getContext());
         try {
             HttpClient.GET("kandidaten"+ "?wahlkreis=" + wahlkreis,  new Callback() {
 
@@ -137,5 +133,6 @@ public class KandidatenFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        kandidatenModels = db.getAllKandidaten(wahlkreis);
     }
 }

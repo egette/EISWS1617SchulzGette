@@ -99,7 +99,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 4;
+        public static final int DATABASE_VERSION = 5;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -420,7 +420,7 @@ public class Database {
                 try {
                     while (c.moveToNext()) {
                         String kid = c.getString(0);
-                        Log.d("TID DATA get", kid);
+                        Log.d("KID DATA get", kid);
                         String vorname = c.getString(1);
                         String nachname = c.getString(2);
                         String partei = c.getString(3);
@@ -440,6 +440,42 @@ public class Database {
             db.close();
         }
         return kandidatenModels;
+    }
+
+    public KandidatenModel getKandidat(String kid){
+        KandidatenModel kandidatenModel = null;
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
+
+
+        try{
+            if(kid != null) {
+                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN}, "kid = ?", new String[]{kid}, null, null, null);
+
+                try {
+                    while (c.moveToNext()) {
+
+                        Log.d("KID DATA get", kid);
+                        String vorname = c.getString(1);
+                        String nachname = c.getString(2);
+                        String partei = c.getString(3);
+                        String email = c.getString(4);
+                        String wahlkreis = c.getString(5);
+                        String beantwortete_Thesen = c.getString(6);
+                        JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
+                        kandidatenModel = new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    c.close();
+                }
+            }
+        } finally {
+            db.close();
+        }
+        return kandidatenModel;
     }
 
 }
