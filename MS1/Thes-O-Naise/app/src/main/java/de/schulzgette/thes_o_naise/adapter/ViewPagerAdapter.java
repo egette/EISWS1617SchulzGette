@@ -1,8 +1,10 @@
-package de.schulzgette.thes_o_naise;
+package de.schulzgette.thes_o_naise.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import de.schulzgette.thes_o_naise.ThesenTabFragment;
 
 /**
  * Created by Jessica on 15.11.2016.

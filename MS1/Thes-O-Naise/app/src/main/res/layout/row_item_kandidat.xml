@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingLeft="10dp">
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -14,22 +14,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:textColor="@android:color/black"
-        android:padding="15dp"/>
+        android:layout_alignBaseline="@+id/nachnamekandidat"
+        android:textColor="@android:color/black" />
     <TextView
         android:id="@+id/nachnamekandidat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/vornamekandidat"
+        android:layout_toRightOf="@+id/vornamekandidat"
         android:textColor="@android:color/black"
         android:padding="15dp"/>
+    <TextView
+        android:id="@+id/partei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Partei: "
+        android:layout_alignBaseline="@+id/parteikandidat"
+        android:layout_below="@+id/nachnamekandidat"
+        android:textColor="@android:color/holo_blue_dark"/>
     <TextView
         android:id="@+id/parteikandidat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nachnamekandidat"
+        android:layout_toRightOf="@+id/partei"
         android:textColor="@android:color/black"
-        android:padding="15dp"/>
+        android:padding="5dp"/>
 
 </RelativeLayout>
     <Button

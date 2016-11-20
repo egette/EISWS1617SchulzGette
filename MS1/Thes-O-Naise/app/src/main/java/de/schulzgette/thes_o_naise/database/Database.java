@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
-import de.schulzgette.thes_o_naise.ThesenModel;
+import de.schulzgette.thes_o_naise.Models.ThesenModel;
 
 /**
  * Created by Jessica on 05.11.2016.
@@ -182,6 +182,30 @@ public class Database {
         }
     }
 
+    public String getUserPositionWithTID(String tid) {
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
+        String result=null;
+        try {
+            if(tid != null) {
+                Cursor c = db.query(UserpositiondataTable.TABLE_NAME, new String[]{UserpositiondataTable.COLUMN_NAME_TID, UserpositiondataTable.COLUMN_NAME_POSITION}, "tid = ?", new String[]{tid}, null, null, null);
+                try {
+                    while (c.moveToNext()) {
+                        result = c.getString(1);
+                        Log.d("TID:", c.getString(0));
+                        Log.d("position:", c.getString(1));
+                    }
+
+                } finally {
+                    c.close();
+                }
+            }
+        }finally {
+            db.close();
+        }
+        return result;
+    }
+
     public void insertThese (String TID, String thesentext, String kategorie, String wahlkreis, Integer likesINT, Integer proINT, Integer neutralINT, Integer contraINT, JSONArray K_PRO, JSONArray  K_NEUTRAL, JSONArray K_CONTRA ){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
@@ -325,6 +349,30 @@ public class Database {
         }
         return result;
     }
+    public String getThesentextWithTID(String TID){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
+        Cursor  c = null;
+        String result = null;
+        try{
+            if(TID != null){
+                c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT}, "tid = ?", new String[]{TID}, null, null, null);
+                if (c.getCount() < 1){
+                    return null;
+                }else {
+                    while (c.moveToNext()) {
+                        String tid = c.getString(0);
+                        Log.d("TID DATA get", tid);
+                        result = c.getString(1);
+                    }
+                }
+            }
+        } finally {
+            c.close();
+            db.close();
+        }
+        return result;
+    }
 
     public JSONArray getBegruendungWithTIDandPosition(String TID, String position){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
@@ -389,12 +437,14 @@ public class Database {
                 }else {
                     try {
                         ContentValues values = new ContentValues();
+                        String beantwortete_Thesen = beantworteteThesen.toString();
                         values.put(KandidatenTable.COLUMN_NAME_KID, KID);
                         values.put(KandidatenTable.COLUMN_NAME_VORNAME, vorname);
                         values.put(KandidatenTable.COLUMN_NAME_NACHNAME, nachname);
                         values.put(KandidatenTable.COLUMN_NAME_PARTEI, partei);
                         values.put(KandidatenTable.COLUMN_NAME_EMAIL, email);
                         values.put(KandidatenTable.COLUMN_NAME_WAHLKREIS, wahlkreis);
+                        values.put(KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, beantwortete_Thesen);
                         dbwrite.update(KandidatenTable.TABLE_NAME, values, "kid=?", new String[]{KID});
                     }finally {
                         cursor.close();

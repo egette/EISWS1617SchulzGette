@@ -60,28 +60,24 @@ public class KandidatenFragment extends Fragment {
         }
         sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
         wahlkreis = sharedPreferences.getString("wahlkreis", "");
-        getKandidaten(wahlkreis);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_kandidaten, container, false);
-
-
-
+        getKandidaten(wahlkreis);
+        Database db = new Database(getContext());
+        kandidatenModels = db.getAllKandidaten(wahlkreis);
         if(kandidatenModels != null) {
             lv = (ListView) myView.findViewById(R.id.listviewkandidaten);
             listadapter = new KandidatenListAdapter(kandidatenModels, this.getActivity());
             lv.setAdapter(listadapter);
             listadapter.notifyDataSetChanged();
         }
-
         return myView;
     }
 
     private  void getKandidaten(String wahlkreis) {
-        Database db = new Database(getContext());
         try {
             HttpClient.GET("kandidaten"+ "?wahlkreis=" + wahlkreis,  new Callback() {
 
@@ -97,7 +93,7 @@ public class KandidatenFragment extends Fragment {
 
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
-                        Log.d("BODd", jsonData);
+                        //Log.d("BODY", jsonData);
                         try {
                             JSONObject Jobject = new JSONObject(jsonData);
                             JSONArray jArray = Jobject.getJSONArray("Kandidaten");
@@ -107,7 +103,7 @@ public class KandidatenFragment extends Fragment {
 
                                 for (int i = 0; i < jArray.length(); i++) {
                                     kandidaten_data = (JSONObject) jArray.get(i);
-                                    Log.d("KANDIDAT", kandidaten_data.toString());
+                                    //Log.d("KANDIDAT", kandidaten_data.toString());
                                     String KID = (String)  kandidaten_data.get("KID");
                                     String vorname = (String) kandidaten_data.get("vorname");
                                     String nachname = (String) kandidaten_data.get("nachname");
@@ -119,6 +115,7 @@ public class KandidatenFragment extends Fragment {
                                 }
                             }
                             Log.d("Kandidaten", "In der Datenbank");
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -133,6 +130,5 @@ public class KandidatenFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        kandidatenModels = db.getAllKandidaten(wahlkreis);
     }
 }

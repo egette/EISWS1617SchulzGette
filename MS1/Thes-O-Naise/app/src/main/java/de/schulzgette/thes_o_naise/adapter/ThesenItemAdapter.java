@@ -1,4 +1,4 @@
-package de.schulzgette.thes_o_naise;
+package de.schulzgette.thes_o_naise.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import de.schulzgette.thes_o_naise.R;
+import de.schulzgette.thes_o_naise.ThesenAnsichtActivity;
+import de.schulzgette.thes_o_naise.Models.ThesenModel;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
@@ -81,6 +84,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             viewHolder.proButton = (RadioButton) convertView.findViewById(R.id.pro_button);
             viewHolder.neutralButton = (RadioButton) convertView.findViewById(R.id.neutral_button);
             viewHolder.contraButton = (RadioButton) convertView.findViewById(R.id.contra_button);
+
             viewHolder.mehrButton = (Button) convertView.findViewById(R.id.einethesebutton);
 //            viewHolder.txtPro = (TextView) convertView.findViewById(R.id.pro_id);
 //            viewHolder.txtNeutral = (TextView) convertView.findViewById(R.id.neutral_id);
@@ -98,6 +102,24 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
 //        viewHolder.txtPro.setText(thesenModel.getPro().toString()); //TODO
 //        viewHolder.txtNeutral.setText(thesenModel.getNeutral().toString());
 //        viewHolder.txtContra.setText(thesenModel.getContra().toString());
+
+        //User Position aus der Datenbank holen und den richtigen Radiobutton checken
+        String userposition = db.getUserPositionWithTID(thesenModel.getTID());
+        if(userposition.equals("PRO")){
+            viewHolder.proButton.setChecked(true);
+            viewHolder.neutralButton.setChecked(false);
+            viewHolder.contraButton.setChecked(false);
+        }
+        if(userposition.equals("NEUTRAL")){
+            viewHolder.proButton.setChecked(false);
+            viewHolder.neutralButton.setChecked(true);
+            viewHolder.contraButton.setChecked(false);
+        }
+        if(userposition.equals("CONTRA")){
+            viewHolder.proButton.setChecked(false);
+            viewHolder.neutralButton.setChecked(false);
+            viewHolder.contraButton.setChecked(true);
+        }
 
         typ =  sharedPreferences.getString("typ", "");
 

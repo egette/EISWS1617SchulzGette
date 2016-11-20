@@ -10,9 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import de.schulzgette.thes_o_naise.ThesenModel;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;

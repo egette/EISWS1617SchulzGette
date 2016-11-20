@@ -15,6 +15,8 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import de.schulzgette.thes_o_naise.Models.ThesenModel;
+import de.schulzgette.thes_o_naise.adapter.ThesenItemAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.services.EventBus;
 import de.schulzgette.thes_o_naise.services.GetThesenFromAPI;

@@ -1,4 +1,4 @@
-package de.schulzgette.thes_o_naise;
+package de.schulzgette.thes_o_naise.Models;
 
 import org.json.JSONArray;
 

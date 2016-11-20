@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import de.schulzgette.thes_o_naise.Models.ThesenModel;
+import de.schulzgette.thes_o_naise.adapter.ViewPagerAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
 
 public class ThesenAnsichtActivity extends FragmentActivity {

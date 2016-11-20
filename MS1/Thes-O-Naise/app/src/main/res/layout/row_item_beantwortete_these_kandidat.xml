@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/thesentext33">
+    <TextView
+        android:id="@+id/positiontext"
+        android:text="Position des Kandidaten: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+<TextView
+    android:id="@+id/positionkandidat"
+    android:layout_alignBaseline="@+id/positiontext"
+    android:layout_toRightOf="@+id/positiontext"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/beantworteter_thesentext_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/positionkandidat"
+        android:textColor="@android:color/black"
+        android:padding="15dp"/>
+    <Button
+        android:text="Zur These"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beantworteter_thesentext_item"
+        android:id="@+id/zurthesebutton" />
+</RelativeLayout>
+
+
+
+
+
+</RelativeLayout>
