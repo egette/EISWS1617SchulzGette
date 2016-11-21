@@ -60,24 +60,14 @@ public class MatchingFragment extends Fragment {
     
     public void positionWaehlerToServer() throws JSONException {
         Database db = new Database(getContext());
-        HashMap<String, String> positiontid = db.getallPositions();
-        JSONArray ja = new JSONArray();
-
-        for(Map.Entry<String, String> entry : positiontid.entrySet()) {
-            String tid = entry.getKey();
-            if (tid == null)
-            {
-                throw new NullPointerException("key == null");
-            }
-                JSONObject jot = new JSONObject();
-                jot.put("TID", tid);
-                jot.put("POSITION", wrap(entry.getValue()));
-                ja.put(jot);
+        JSONObject mainObj = db.getallPositions();
+        JSONArray Jarray = mainObj.getJSONArray("Positionen");
+        for(int i = 0; i<Jarray.length(); i++){
+            JSONObject object= Jarray.getJSONObject(i);
+            String tid = object.getString("TID");
+            String position = object.getString("POSITION");
+            db.updatepositionwithServerdata(position, tid);
         }
-
-        JSONObject mainObj = new JSONObject();
-        mainObj.put("Positionen", ja);
-
         String positiondata = mainObj.toString();
         Log.d("Jobject:", positiondata);
         try {
@@ -108,4 +98,5 @@ public class MatchingFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 }

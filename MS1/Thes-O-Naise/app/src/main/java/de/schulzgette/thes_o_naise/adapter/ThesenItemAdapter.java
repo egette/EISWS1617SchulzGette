@@ -105,22 +105,27 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
 
         //User Position aus der Datenbank holen und den richtigen Radiobutton checken
         String userposition = db.getUserPositionWithTID(thesenModel.getTID());
-        if(userposition.equals("PRO")){
-            viewHolder.proButton.setChecked(true);
+        if(!userposition.isEmpty()) {
+            if (userposition.equals("PRO")) {
+                viewHolder.proButton.setChecked(true);
+                viewHolder.neutralButton.setChecked(false);
+                viewHolder.contraButton.setChecked(false);
+            }
+            if (userposition.equals("NEUTRAL")) {
+                viewHolder.proButton.setChecked(false);
+                viewHolder.neutralButton.setChecked(true);
+                viewHolder.contraButton.setChecked(false);
+            }
+            if (userposition.equals("CONTRA")) {
+                viewHolder.proButton.setChecked(false);
+                viewHolder.neutralButton.setChecked(false);
+                viewHolder.contraButton.setChecked(true);
+            }
+        }else{
+            viewHolder.proButton.setChecked(false);
             viewHolder.neutralButton.setChecked(false);
             viewHolder.contraButton.setChecked(false);
         }
-        if(userposition.equals("NEUTRAL")){
-            viewHolder.proButton.setChecked(false);
-            viewHolder.neutralButton.setChecked(true);
-            viewHolder.contraButton.setChecked(false);
-        }
-        if(userposition.equals("CONTRA")){
-            viewHolder.proButton.setChecked(false);
-            viewHolder.neutralButton.setChecked(false);
-            viewHolder.contraButton.setChecked(true);
-        }
-
         typ =  sharedPreferences.getString("typ", "");
 
         viewHolder.proButton.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +165,6 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
 
             }
         });
-
         // Return the completed view to render on screen
         return convertView;
     }

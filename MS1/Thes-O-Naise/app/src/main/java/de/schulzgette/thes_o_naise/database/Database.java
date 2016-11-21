@@ -10,12 +10,15 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.Models.ThesenModel;
+
+import static org.json.JSONObject.wrap;
 
 /**
  * Created by Jessica on 05.11.2016.
@@ -27,6 +30,8 @@ public class Database {
         public static final String TABLE_NAME = "userdata";
         public static final String COLUMN_NAME_TID = "tid";
         public static final String COLUMN_NAME_POSITION = "position";
+        public static final String COLUMN_NAME_SERVER = "server";
+        public static final String COLUMN_NAME_LAST_POSITION = "lastposition";
     }
 
     public static abstract  class KandidatenTable implements BaseColumns{
@@ -60,7 +65,9 @@ public class Database {
     public static final String SQL_CREATE_USERPOSITIONDATATABLE =
             "CREATE TABLE " + UserpositiondataTable.TABLE_NAME + " (" +
                     UserpositiondataTable.COLUMN_NAME_TID + " STRING PRIMARY KEY," +
-                    UserpositiondataTable.COLUMN_NAME_POSITION + " TEXT" +
+                    UserpositiondataTable.COLUMN_NAME_POSITION + " TEXT," +
+                    UserpositiondataTable.COLUMN_NAME_SERVER + " TEXT," +
+                    UserpositiondataTable.COLUMN_NAME_LAST_POSITION + " TEXT" +
 
             " )";
 
@@ -99,7 +106,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 5;
+        public static final int DATABASE_VERSION = 7;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -161,31 +168,67 @@ public class Database {
         }
     }
 
-    public HashMap<String, String> getallPositions() {
+    public void updatepositionwithServerdata(String position, String tid) {
+
+        if (tid != null && position != null) {
+            ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+            SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(UserpositiondataTable.COLUMN_NAME_LAST_POSITION, position);
+                values.put(UserpositiondataTable.COLUMN_NAME_TID, tid);
+                values.put(UserpositiondataTable.COLUMN_NAME_SERVER, "true");
+                dbwrite.update(UserpositiondataTable.TABLE_NAME, values, "tid=?", new String[]{tid});
+            } finally {
+                dbwrite.close();
+            }
+        }
+    }
+
+    public JSONObject getallPositions() {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
+        JSONObject mainObj = new JSONObject();
+        JSONArray ja = new JSONArray();
         try {
-            HashMap<String, String> result = new HashMap<>();
-            Cursor c = db.query(UserpositiondataTable.TABLE_NAME, new String[] {UserpositiondataTable.COLUMN_NAME_TID, UserpositiondataTable.COLUMN_NAME_POSITION }, null, null, null, null, null);
+
+            Cursor c = db.query(UserpositiondataTable.TABLE_NAME, new String[] {UserpositiondataTable.COLUMN_NAME_TID, UserpositiondataTable.COLUMN_NAME_POSITION, UserpositiondataTable.COLUMN_NAME_SERVER, UserpositiondataTable.COLUMN_NAME_LAST_POSITION }, null, null, null, null, null);
             try{
                 while (c.moveToNext()) {
-                    result.put(c.getString(0), c.getString(1));
+                    JSONObject jot = new JSONObject();
+                    jot.put("TID", c.getString(0));
+                    jot.put("POSITION",  c.getString(1));
+                    if(c.getString(2) != null){
+                        jot.put("GESENDET", "true");
+                    }else{
+                        jot.put("GESENDET", "false");
+                    }
+                    if(c.getString(3) != null) {
+                        jot.put("LASTPOSITION", c.getString(3));
+                    }else{
+                        jot.put("LASTPOSITION", c.getString(1));
+                    }
+                    ja.put(jot);
                     Log.d("TID:", c.getString(0));
                     Log.d("position:", c.getString(1));
                 }
-                return  result;
-            }finally {
+                mainObj.put("Positionen", ja);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
                 c.close();
             }
         }finally {
             db.close();
         }
+        return mainObj;
     }
 
     public String getUserPositionWithTID(String tid) {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
-        String result=null;
+        String result= "nichts";
         try {
             if(tid != null) {
                 Cursor c = db.query(UserpositiondataTable.TABLE_NAME, new String[]{UserpositiondataTable.COLUMN_NAME_TID, UserpositiondataTable.COLUMN_NAME_POSITION}, "tid = ?", new String[]{tid}, null, null, null);

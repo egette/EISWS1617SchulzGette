@@ -6,10 +6,10 @@ exports.publish = function(db){
 			thesentext: req.body.thesentext,
 			kategorie: req.body.kategorie,
 			wahlkreis: req.body.wahlkreis,
-			Anzahl_Zustimmung: "0",
-			Anzahl_Ablehnung: "0",
-			Anzahl_Neutral: "0",
-			Likes: "0",
+			Anzahl_Zustimmung: 0,
+			Anzahl_Ablehnung: 0,
+			Anzahl_Neutral: 0,
+			Likes: 0,
 			TID: "",
 			K_PRO: [], 
 			K_NEUTRAL: [],
@@ -226,25 +226,24 @@ function updateBeantworteteThesen(tid, kid, position, db){
 exports.getThesen = function(db){
 	return function (req, res){
 		var kategorie = req.query.kategorie;
+		console.log("kategorie", kategorie);
 		var wahlkreis = req.query.wahlkreis;
+		console.log("wahlkreis", wahlkreis);
 		var wahlkreis_kategorie = wahlkreis + "_" + kategorie;
 		
-		if(!wahlkreis && !kategorie){
-		 res.status(401).end();
-		}
-		
 		var anzahl_thesen = req.query.anzahl;
-		if (!anzahl_thesen) anzahl_thesen = 20;
+		if (!anzahl_thesen) anzahl_thesen = 100;
 		console.log('anzahl gefragt:', anzahl_thesen);
 		
 		var thesenjsondata;
 		var Thesen_IDS =[];
 		
 		//Thesen einer Kategorie eines Wahlkreies geben
-		if(kategorie != undefined && wahlkreis !=undefined){
+		if(kategorie != undefined && wahlkreis != undefined){
 			db.smembers(wahlkreis_kategorie, function(err, replies){
 				if( !replies || replies.length==0){
 					//KEINE Thesen in der Kategorie des Wahlkreises
+					console.log("KEINE Thesen in der Kategorie des Wahlkreises");
 				   res.status(401).end();
 				}else{
 					Thesen_IDS = replies;
@@ -255,10 +254,11 @@ exports.getThesen = function(db){
 				}	
 			});	
 		//Thesen aus einem Wahlkreis ohne Kategorie
-		}else if (wahlkreis != undefined && kategorie == undefined){
+		}else if (!katgorie){
 			db.smembers(wahlkreis, function(err, replies){
 				if( !replies || replies.length==0){
 					//KEINE Thesen in dem Wahlkreis
+					console.log("KEINE Thesen in dem Wahlkreis");
 				   res.status(401).end();
 				}else{
 					Thesen_IDS = replies;
@@ -269,10 +269,11 @@ exports.getThesen = function(db){
 				}	
 			});	
 		//Thesen aus einer Kategorie ohne Wahlkreis
-		}else if (wahlkreis == undefined && kategorie != undefined){
+		}else if (!wahkreis){
 			db.smembers(kategorie, function(err, replies){
 				if( !replies || replies.length==0){
 					//KEINE Thesen in der Kategorie
+					console.log("KEINE Thesen in der Kategorie");
 				   res.status(401).end();
 				}else{
 					Thesen_IDS = replies;
@@ -282,6 +283,10 @@ exports.getThesen = function(db){
 					});	
 				}	
 			});	
+		}else{
+		//KEINE KATEGORIE ODER WAHLKREIS
+		 console.log("KEINE KATEGORIE ODER WAHLKREIS");
+		 res.status(401).end();
 		}
 	}
 }	

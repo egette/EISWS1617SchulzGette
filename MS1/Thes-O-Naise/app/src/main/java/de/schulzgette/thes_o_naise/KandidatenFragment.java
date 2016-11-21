@@ -77,7 +77,7 @@ public class KandidatenFragment extends Fragment {
         return myView;
     }
 
-    private  void getKandidaten(String wahlkreis) {
+    public  void getKandidaten(String wahlkreis) {
         try {
             HttpClient.GET("kandidaten"+ "?wahlkreis=" + wahlkreis,  new Callback() {
 

@@ -8,13 +8,13 @@
 		var username = req.body.username;
 		var password = req.body.password;
 		var wahlkreis = req.body.wahlkreis;
-		
-		if(!typ || !emaildata || !username || !password || !wahlkreis){
+	
+		if(!typ || !emaildata || !username || !password || !wahlkreis ){
 			res.status(409).end();
 		}
 			
  		//EMAIL CHECK
- 		if (emaildata != null || emaildata != undefined) {
+ 		if (emaildata) {
  			//Überprüfung ob im SET "email" die geschickte EMAIL dabei ist
  			checkSET("email", emaildata).then(function (check) {
  				if (check == 1) {

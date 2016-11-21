@@ -80,19 +80,15 @@ public class GetThesenFromAPI extends Service {
                                     these_data = new JSONObject((String) jArray.get(i));
                                     String TID = (String) these_data.get("TID");
                                     String thesentext = (String) these_data.get("thesentext");
-                                    String pro = (String) these_data.get("Anzahl_Zustimmung");
-                                    Integer proINT = Integer.parseInt(pro);
-                                    String neutral = (String) these_data.get("Anzahl_Neutral");
-                                    Integer neutralINT = Integer.parseInt(neutral);
-                                    String contra = (String) these_data.get("Anzahl_Ablehnung");
-                                    Integer contraINT = Integer.parseInt(contra);
+                                    Integer proINT= (Integer) these_data.get("Anzahl_Zustimmung");
+                                    Integer neutralINT = (Integer) these_data.get("Anzahl_Neutral");
+                                    Integer contraINT = (Integer) these_data.get("Anzahl_Ablehnung");
                                     JSONArray K_PRO = (JSONArray) these_data.get("K_PRO");
                                     JSONArray K_NEUTRAL = (JSONArray) these_data.get("K_NEUTRAL");
                                     JSONArray K_CONTRA = (JSONArray) these_data.get("K_CONTRA");
                                     String kategorie = (String) these_data.get("kategorie");
                                     String wahlkreis = (String) these_data.get("wahlkreis");
-                                    String likes = (String) these_data.get("Likes");
-                                    Integer likesINT = Integer.parseInt(likes);
+                                    Integer likesINT = (Integer) these_data.get("Likes");
                                     db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA);
                                 }
                             }
