@@ -254,7 +254,7 @@ exports.getThesen = function(db){
 				}	
 			});	
 		//Thesen aus einem Wahlkreis ohne Kategorie
-		}else if (!katgorie){
+		}else if (wahlkreis){
 			db.smembers(wahlkreis, function(err, replies){
 				if( !replies || replies.length==0){
 					//KEINE Thesen in dem Wahlkreis
@@ -269,7 +269,7 @@ exports.getThesen = function(db){
 				}	
 			});	
 		//Thesen aus einer Kategorie ohne Wahlkreis
-		}else if (!wahkreis){
+		}else if (kategorie){
 			db.smembers(kategorie, function(err, replies){
 				if( !replies || replies.length==0){
 					//KEINE Thesen in der Kategorie
