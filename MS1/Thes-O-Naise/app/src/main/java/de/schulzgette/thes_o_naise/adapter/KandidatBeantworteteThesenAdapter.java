@@ -3,6 +3,7 @@ package de.schulzgette.thes_o_naise.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,10 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
 
         viewHolder.txtThesentext.setText(BeantworteteThesenKandidatenModel.getThesentext());
         viewHolder.txtPositionKandidat.setText(BeantworteteThesenKandidatenModel.getPositionkandidat());
+        String position2 = BeantworteteThesenKandidatenModel.getPositionkandidat();
+        if(position2.equals("PRO")) viewHolder.txtPositionKandidat.setTextColor(Color.GREEN);
+        if(position2.equals("NEUTRAL")) viewHolder.txtPositionKandidat.setTextColor(Color.DKGRAY);
+        if(position2.equals("CONTRA")) viewHolder.txtPositionKandidat.setTextColor(Color.RED);
 
         viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
             @Override

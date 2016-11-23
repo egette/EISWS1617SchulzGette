@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,25 +57,27 @@ public class RegisterWeahlerFragment extends Fragment {
                 password =  pw.getText().toString();
                 EditText userwahlkreis =  (EditText) myView.findViewById(R.id.userwahlkreis);
                 wahlkreis =  userwahlkreis.getText().toString();
+                if(username.isEmpty() ||  mail.isEmpty() || password.isEmpty() || wahlkreis.isEmpty()){
+                    Toast.makeText(getContext(), "Bitte füllen Sie alle Felder aus ", Toast.LENGTH_SHORT).show();
+                }else {
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.accumulate("username", username);
 
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("username", username);
+                        jsonObject.accumulate("password", password);
 
-                    jsonObject.accumulate("password", password);
+                        jsonObject.accumulate("email", mail);
 
-                    jsonObject.accumulate("email", mail);
+                        jsonObject.accumulate("wahlkreis", wahlkreis);
 
-                    jsonObject.accumulate("wahlkreis", wahlkreis);
-
-                    jsonObject.accumulate("typ", typ);
-                    String jsondata =  jsonObject.toString();
-                    Log.d("DATA", jsondata);
-                    registerUser(jsondata);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        jsonObject.accumulate("typ", typ);
+                        String jsondata = jsonObject.toString();
+                        Log.d("DATA", jsondata);
+                        registerUser(jsondata);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-
 
             }
         });

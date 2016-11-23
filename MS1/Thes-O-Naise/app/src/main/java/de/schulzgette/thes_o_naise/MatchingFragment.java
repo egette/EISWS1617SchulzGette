@@ -14,16 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-
-import static org.json.JSONObject.wrap;
 
 
 public class MatchingFragment extends Fragment {
@@ -84,7 +80,13 @@ public class MatchingFragment extends Fragment {
                     if (response.isSuccessful()) {
 
                         Log.d("Response", response.toString());
-                        Log.d("body:", response.body().toString());
+                        String jsonData = response.body().string();
+                        try {
+                            JSONObject result = new JSONObject(jsonData);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("body:", jsonData);
                         response.body().close();
                     } else {
 

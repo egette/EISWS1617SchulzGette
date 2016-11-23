@@ -76,20 +76,24 @@ public class publishThesenFragment extends Fragment{
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
                 String token = sharedPreferences.getString("token", "");
                 String wahlkreis = sharedPreferences.getString("wahlkreis", "");
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("thesentext", thesentext2);
-                    jsonObject.accumulate("kategorie", kategorie);
-                    jsonObject.accumulate("wahlkreis", wahlkreis);
-                    jsonObject.accumulate("token", token);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+                if(thesentext2.isEmpty()) {
+                    Toast.makeText(getContext(), "Geben Sie eine These ein", Toast.LENGTH_SHORT).show();
+                }else {
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.accumulate("thesentext", thesentext2);
+                        jsonObject.accumulate("kategorie", kategorie);
+                        jsonObject.accumulate("wahlkreis", wahlkreis);
+                        jsonObject.accumulate("token", token);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    String jsondata = jsonObject.toString();
+                    publishThese(jsondata);
+                    Toast.makeText(getContext(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
                 }
-
-                String jsondata =  jsonObject.toString();
-                publishThese(jsondata);
-                Toast.makeText(getContext(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
-
             }
         });
 

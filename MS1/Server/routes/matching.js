@@ -208,7 +208,7 @@ exports.match = function(db, Promise){
 					these.Anzahl_Ablehnung = contra;
 					}
 				}
-				console.log("THESE   ", these);
+				//console.log("THESE   ", these);
 				db.set(tid, JSON.stringify(these));
 		});
 	}

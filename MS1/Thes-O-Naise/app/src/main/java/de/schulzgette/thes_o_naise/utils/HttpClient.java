@@ -3,13 +3,9 @@ package de.schulzgette.thes_o_naise.utils;
 import android.app.Application;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,7 +19,8 @@ import okhttp3.RequestBody;
 public class HttpClient extends Application {
 
     //SERVER URL für GENYMOTION
-    private static final String BASE_URL ="http://10.0.3.2:3000/";
+    private static final String BASE_URL ="http://192.168.188.35:3000/";
+   //private static final String BASE_URL ="http://10.0.3.2:3000/";
     //SERVER URL für Android Studio VD
     //private static final String BASE_URL ="http://10.0.2.2:3000/";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

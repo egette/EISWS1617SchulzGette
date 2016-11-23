@@ -1,7 +1,6 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,24 +65,27 @@ public class RegisterKandidatFragment extends Fragment {
                 wahlkreis =  userwahlkreis.getText().toString();
                 EditText partei2 =  (EditText) myView.findViewById(R.id.parteitext);
                 partei =  partei2.getText().toString();
+                if(username.isEmpty() || vorname.isEmpty() || nachname.isEmpty() || mail.isEmpty() || password.isEmpty() || wahlkreis.isEmpty() || partei.isEmpty()){
+                    Toast.makeText(getContext(), "Bitte füllen Sie alle Felder aus ", Toast.LENGTH_SHORT).show();
+                }else {
 
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.accumulate("username", username);
+                        jsonObject.accumulate("password", password);
+                        jsonObject.accumulate("vorname", vorname);
+                        jsonObject.accumulate("nachname", nachname);
+                        jsonObject.accumulate("email", mail);
+                        jsonObject.accumulate("wahlkreis", wahlkreis);
+                        jsonObject.accumulate("typ", typ);
+                        jsonObject.accumulate("partei", partei);
 
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("username", username);
-                    jsonObject.accumulate("password", password);
-                    jsonObject.accumulate("vorname", vorname);
-                    jsonObject.accumulate("nachname", nachname);
-                    jsonObject.accumulate("email", mail);
-                    jsonObject.accumulate("wahlkreis", wahlkreis);
-                    jsonObject.accumulate("typ", typ);
-                    jsonObject.accumulate("partei", partei);
+                        String jsondata = jsonObject.toString();
 
-                    String jsondata =  jsonObject.toString();
-
-                    registerUser(jsondata);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        registerUser(jsondata);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

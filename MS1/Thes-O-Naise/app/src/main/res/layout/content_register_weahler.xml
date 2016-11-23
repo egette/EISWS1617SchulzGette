@@ -9,29 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@android:color/holo_blue_light">
+    android:background="#84ffff">
 
-    <Button
-        android:text="Registieren"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:id="@+id/registerbutton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/userpw"
-        android:hint="Password"
-        android:layout_above="@+id/userwahlkreis"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="13dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -40,7 +19,7 @@
         android:ems="10"
         android:id="@+id/username"
         android:hint="Benutzername"
-        android:layout_above="@+id/usermail"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -51,7 +30,18 @@
         android:ems="10"
         android:id="@+id/usermail"
         android:hint="Email Adresse"
-        android:layout_above="@+id/userpw"
+        android:layout_below="@+id/username"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/userpw"
+        android:hint="Password"
+        android:layout_below="@+id/usermail"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -62,9 +52,21 @@
         android:ems="10"
         android:id="@+id/userwahlkreis"
         android:hint="Wahlkreis"
-        android:layout_marginBottom="50dp"
-        android:layout_above="@+id/registerbutton"
+        android:layout_below="@+id/usermail"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="42dp" />
+
+    <Button
+        android:text="Registieren"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/registerbutton"
+        android:layout_below="@+id/userpw"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="60dp"
+        android:background="@color/colorPrimary"
+        style="@style/Widget.AppCompat.Button.Colored"/>
 
 </RelativeLayout>
