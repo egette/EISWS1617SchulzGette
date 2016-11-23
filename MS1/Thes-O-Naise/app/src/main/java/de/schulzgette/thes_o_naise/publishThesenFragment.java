@@ -15,11 +15,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
+import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -111,12 +113,28 @@ public class publishThesenFragment extends Fragment{
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-
-
                     if (response.isSuccessful()) {
-
                         Log.d("Response", response.toString());
+                        String jsonData = response.body().string();
 
+                        try {
+                            Database db = new Database(getContext());
+                            JSONObject these_data = new JSONObject(jsonData);
+                            String TID = (String) these_data.get("TID");
+                            String thesentext = (String) these_data.get("thesentext");
+                            Integer proINT= (Integer) these_data.get("Anzahl_Zustimmung");
+                            Integer neutralINT = (Integer) these_data.get("Anzahl_Neutral");
+                            Integer contraINT = (Integer) these_data.get("Anzahl_Ablehnung");
+                            JSONArray K_PRO = (JSONArray) these_data.get("K_PRO");
+                            JSONArray K_NEUTRAL = (JSONArray) these_data.get("K_NEUTRAL");
+                            JSONArray K_CONTRA = (JSONArray) these_data.get("K_CONTRA");
+                            String kategorie = (String) these_data.get("kategorie");
+                            String wahlkreis = (String) these_data.get("wahlkreis");
+                            Integer likesINT = (Integer) these_data.get("Likes");
+                            db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         response.body().close();
                     } else {
 

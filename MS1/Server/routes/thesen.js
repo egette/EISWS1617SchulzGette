@@ -51,7 +51,7 @@ exports.publish = function(db){
 			
 			//last_Thesen_ID wird aktuallierst
 			db.set('last_Thesen_ID', new_Thesen_ID);        
-			res.json({'TID': new_Thesen_ID}).status(201).end();	
+			res.send(These).status(201).end();	
 		});
 		
 	}
