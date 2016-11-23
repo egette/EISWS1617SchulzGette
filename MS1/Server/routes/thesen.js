@@ -98,7 +98,7 @@ exports.putPosition = function(db){
 						var Position = {
 							UID: uid,
 							POS: richtung
-						}
+						};
 						var neu = 1;
 						var laenge = These.K_POSITION.length;
 						for(i = 0; i < laenge; i++){
@@ -132,7 +132,7 @@ exports.putPosition = function(db){
 						var position_json = {
 							UID: uid,
 							Text: textdata,
-							likes: "0",
+							likes: 0,
 							Kommentare: []
 						};
 						var neu = 1;
