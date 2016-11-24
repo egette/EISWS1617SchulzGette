@@ -14,16 +14,29 @@ public class KandidatenModel {
     String email;
     String wahlkreis;
     JSONArray beantworteteThesen;
+    Integer Punkte_Insgesamt;
+    Integer Punkte_Lokal;
+    Integer Punkte_Umwelt;
+    Integer Punkte_AP;
+    Integer Punkte_Satire;
 
-    public KandidatenModel(String kid, String vorname, String nachname, String partei,  String email, String wahlkreis, JSONArray beantworteteThesen) {
+
+    public KandidatenModel(String vorname, String nachname, String kid, String email, String partei, String wahlkreis,  JSONArray beantworteteThesen, Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire) {
         this.vorname = vorname;
         this.nachname = nachname;
-        this.partei = partei;
         this.kid = kid;
         this.email = email;
+        this.partei = partei;
         this.wahlkreis = wahlkreis;
+        this.Punkte_Insgesamt = punkte_Insgesamt;
         this.beantworteteThesen = beantworteteThesen;
+        this.Punkte_Lokal = punkte_Lokal;
+        this.Punkte_Umwelt = punkte_Umwelt;
+        this.Punkte_AP = punkte_AP;
+        this.Punkte_Satire = punkte_Satire;
     }
+
+
 
     public String getNachname() {
         return nachname;
@@ -52,4 +65,25 @@ public class KandidatenModel {
     public JSONArray getBeantworteteThesen() {
         return beantworteteThesen;
     }
+
+    public Integer getPunkte_Insgesamt() {
+        return Punkte_Insgesamt;
+    }
+
+    public Integer getPunkte_Lokal() {
+        return Punkte_Lokal;
+    }
+
+    public Integer getPunkte_Umwelt() {
+        return Punkte_Umwelt;
+    }
+
+    public Integer getPunkte_AP() {
+        return Punkte_AP;
+    }
+
+    public Integer getPunkte_Satire() {
+        return Punkte_Satire;
+    }
 }
+

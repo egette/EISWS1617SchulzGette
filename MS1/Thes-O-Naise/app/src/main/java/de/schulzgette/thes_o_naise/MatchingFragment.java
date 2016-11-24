@@ -55,7 +55,7 @@ public class MatchingFragment extends Fragment {
     }
     
     public void positionWaehlerToServer() throws JSONException {
-        Database db = new Database(getContext());
+        final Database db = new Database(getContext());
         JSONObject mainObj = db.getallPositions();
         JSONArray Jarray = mainObj.getJSONArray("Positionen");
         for(int i = 0; i<Jarray.length(); i++){
@@ -81,12 +81,26 @@ public class MatchingFragment extends Fragment {
 
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
+                        Log.d("body:", jsonData);
                         try {
                             JSONObject result = new JSONObject(jsonData);
+                            JSONArray jArray = result.getJSONArray("Kandidaten");
+                            JSONObject kandidat_result;
+                            if (jArray != null) {
+                                for (int i = 0; i < jArray.length(); i++) {
+                                    kandidat_result = (JSONObject) jArray.get(i);
+                                    String KID = (String) kandidat_result.get("KID");
+                                    Integer Punkte_Ingesamt = (Integer) kandidat_result.get("Zaehler");
+                                    Integer Punkte_Lokal = (Integer) kandidat_result.get("Lokal");
+                                    Integer Punkte_Umwelt = (Integer) kandidat_result.get("Umwelt");
+                                    Integer Punkte_AP = (Integer) kandidat_result.get("Aussenpolitik");
+                                    Integer Punkte_Satire = (Integer) kandidat_result.get("Satire");
+                                    db.updateKandidatScore(KID,Punkte_Ingesamt,Punkte_Lokal,Punkte_Umwelt,Punkte_AP,Punkte_Satire);
+                                }
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("body:", jsonData);
                         response.body().close();
                     } else {
 

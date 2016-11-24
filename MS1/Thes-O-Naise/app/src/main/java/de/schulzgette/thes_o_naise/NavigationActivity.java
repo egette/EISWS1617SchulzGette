@@ -1,5 +1,7 @@
 package de.schulzgette.thes_o_naise;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -96,7 +98,10 @@ public class NavigationActivity extends AppCompatActivity
         } else if (id == R.id.nav_profil) {
 
         } else if (id == R.id.nav_ausloggen) {
-
+            SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
+            sharedPreferences.edit().putString("token", "").apply();
+            Intent i = new Intent (this, MainActivity.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
