@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.schulzgette.thes_o_naise.KandidatenFragment">
+    tools:context="de.schulzgette.thes_o_naise.KandidatenFragment"
+    android:background="@color/colorBackground">
 
     <ListView
         android:layout_width="match_parent"
@@ -11,7 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@android:color/white"
-        android:divider="@android:color/darker_gray"
+        android:divider="@color/colorPrimary"
         android:dividerHeight="5.0sp">
     </ListView>
 

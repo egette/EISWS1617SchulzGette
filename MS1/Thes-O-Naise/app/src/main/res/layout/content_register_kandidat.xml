@@ -97,7 +97,7 @@
         android:layout_below="@+id/userwahlkreis"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryDark"
         style="@style/Widget.AppCompat.Button.Colored"/>
 
 </RelativeLayout>

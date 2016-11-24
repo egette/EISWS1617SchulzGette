@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.schulzgette.thes_o_naise.MatchingFragment">
+    tools:context="de.schulzgette.thes_o_naise.MatchingFragment"
+    android:background="@color/colorBackground">
 
     <Button
         android:text="Matching"
@@ -11,7 +12,9 @@
         android:id="@+id/matching_button"
         android:layout_marginBottom="33dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/Widget.AppCompat.Button.Colored"/>
 
     <TextView
         android:text='Mit dem drücken des "Matching"  akzeptieren Sie, dass ihre Positionen zu den Thesen an den Server zur Auswertung übermiittelt werden'

@@ -45,8 +45,12 @@
         android:text="Mehr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/kandidateninfo"
-        android:id="@+id/einkandidatbutton" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/einkandidatbutton"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/Widget.AppCompat.Button.Colored"/>
 
 
 </RelativeLayout>

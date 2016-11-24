@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.schulzgette.thes_o_naise.publishThesenFragment">
+    tools:context="de.schulzgette.thes_o_naise.publishThesenFragment"
+    android:background="@color/colorBackground">
 
     <EditText
         android:layout_width="wrap_content"
@@ -53,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/publishthesebutton"
-        android:background="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryDark"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_below="@+id/kategorielayout2"
         android:layout_alignParentRight="true"

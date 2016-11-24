@@ -93,7 +93,9 @@ public class NavigationActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame_nav, new KandidatenFragment())
                     .commit();
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_profil) {
+
+        } else if (id == R.id.nav_ausloggen) {
 
         }
 

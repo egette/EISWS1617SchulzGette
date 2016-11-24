@@ -8,30 +8,28 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.schulzgette.thes_o_naise.Auth">
+    android:background="@color/colorBackground">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="116dp"
         android:id="@+id/usernameid"
-        android:hint="Username" />
+        android:hint="Username"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:layout_below="@+id/usernameid"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/emailid"
-        android:hint="Email-Adresse" />
+        android:hint="Email-Adresse"
+        android:layout_below="@+id/usernameid"
+        android:layout_alignLeft="@+id/usernameid"
+        android:layout_alignStart="@+id/usernameid" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -39,19 +37,20 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/passwortid"
+        android:hint="Passwort"
         android:layout_below="@+id/emailid"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="Passwort" />
+        android:layout_alignLeft="@+id/emailid"
+        android:layout_alignStart="@+id/emailid" />
 
     <Button
         android:text="Authentifizieren"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="83dp"
-        android:id="@+id/auth_button" />
+        android:id="@+id/auth_button"
+        android:layout_below="@+id/passwortid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/Widget.AppCompat.Button.Colored"/>
 
 </RelativeLayout>

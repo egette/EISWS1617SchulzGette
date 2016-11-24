@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -8,7 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.schulzgette.thes_o_naise.MainActivity">
+    tools:context="de.schulzgette.thes_o_naise.MainActivity"
+    android:background="@color/colorBackground">
 
     <Button
         android:text="Registierung"
@@ -17,25 +19,18 @@
         android:id="@+id/registeractivity"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/Widget.AppCompat.Button.Colored"/>/>
+
 
     <TextView
-        android:text="TextView"
+        android:text="Willkommen bei"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:text="Eingeloggt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/navbutton"
-        android:layout_above="@+id/registeractivity"
-        android:layout_toRightOf="@+id/registeractivity"
-        android:layout_toEndOf="@+id/registeractivity"
-        android:layout_marginBottom="22dp" />
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="Authentifizieren"
@@ -43,6 +38,30 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/registeractivity"
-        android:id="@+id/authentifizierenbutton" />
+        android:id="@+id/authentifizierenbutton"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/Widget.AppCompat.Button.Colored"/>
+
+    <Button
+        android:text="Eingeloggt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/navbutton"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_above="@+id/authentifizierenbutton"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/logo"
+        android:id="@+id/imageView"
+        android:layout_marginTop="65dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
