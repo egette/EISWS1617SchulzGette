@@ -95,6 +95,7 @@ exports.putPosition = function(db){
 						res.status(500).end();
 					} else {
 						var These = JSON.parse(reply);
+						var kategorie = These.kategorie;
 						var Position = {
 							UID: uid,
 							POS: richtung
@@ -110,7 +111,7 @@ exports.putPosition = function(db){
 						console.log("Position hinzufuegen ohne Text");
 						if(neu == 1) These.K_POSITION.push(Position);
 						db.set(tid, JSON.stringify(These));
-						updateBeantworteteThesen(tid, uid, richtung, db);
+						updateBeantworteteThesen(tid, uid, richtung, db, kategorie);
 						res.status(201).send(These).end();
 					}
 					
@@ -201,14 +202,14 @@ exports.putPosition = function(db){
 	
 };
 
-function updateBeantworteteThesen(tid, kid, position, db){
-	var _ = require('lodash');
+function updateBeantworteteThesen(tid, kid, position, db, kategorie){
 	db.get(kid, function (err, reply) {
 		if (err) throw err;
 		var kandidat = JSON.parse(reply);
 		var thesebeantwortet = {
 			TID: tid,
-			POS: position
+			POS: position,
+			KATEGORIE: kategorie
 		};
 		var neu = 1;
 		for(p = 0; p < kandidat.Thesen_beantwortet.length; p++){

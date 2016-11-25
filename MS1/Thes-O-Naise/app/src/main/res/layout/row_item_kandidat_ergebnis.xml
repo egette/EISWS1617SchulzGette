@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ergebnisobererteil">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/kandidateninfo">
+
+            <TextView
+                android:id="@+id/vornamekandidatergebnis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignBaseline="@+id/nachnamekandidatergebnis"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/nachnamekandidatergebnis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/vornamekandidatergebnis"
+                android:layout_toRightOf="@+id/vornamekandidatergebnis"
+                android:textColor="@android:color/black"
+                android:padding="15dp"/>
+            <TextView
+                android:id="@+id/parteiergebnis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Partei: "
+                android:layout_alignBaseline="@+id/parteikandidatergebnis"
+                android:layout_below="@+id/nachnamekandidatergebnis"
+                android:textColor="@android:color/holo_blue_dark"/>
+            <TextView
+                android:id="@+id/parteikandidatergebnis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nachnamekandidatergebnis"
+                android:layout_toRightOf="@+id/parteiergebnis"
+                android:layout_toEndOf="@+id/parteiergebnis"
+                android:textColor="@android:color/black"
+                android:padding="5dp"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:text="Mehr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/einkandidatbutton"
+            android:textColor="@color/colorPrimaryDark"
+            style="@style/Widget.AppCompat.Button.Colored"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ergebnisobererteil"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nahetext"
+            android:text="Nähe zu ihren Positionen:"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100 PUNKTE"
+            android:id="@+id/score"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/nahetext"
+            android:layout_toEndOf="@+id/nahetext"
+            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/nahetext"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/anzahlpostiontxt"
+                android:text="Anzahl der Positionen zu Thesen:"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:id="@+id/anzahlpositionen"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+    </RelativeLayout>

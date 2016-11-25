@@ -1,5 +1,6 @@
 package de.schulzgette.thes_o_naise;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,7 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,26 +21,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
+import de.schulzgette.thes_o_naise.adapter.KandidatenErgebnisListAdapter;
 import de.schulzgette.thes_o_naise.adapter.KandidatenListAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
+import de.schulzgette.thes_o_naise.services.GetThesenFromAPI;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
+import static de.schulzgette.thes_o_naise.R.id.spinner_kategorie;
+import static de.schulzgette.thes_o_naise.R.id.spinner_kategorie_ergebnis;
 
 
 public class KandidatenFragment extends Fragment {
 
     private static final String MODE = "NORMAL";
     //private static final String MODE = "MATCHING";
-    private String modus;
+    private String modus = "NORMAL";
     View myView;
     ListView lv;
     KandidatenListAdapter listadapter;
-    SharedPreferences sharedPreferences;
+    KandidatenErgebnisListAdapter listAdapterErgebnis;
+    SharedPreferences sharedPreferences ;
     String wahlkreis ;
+    Spinner spinner;
+    ArrayAdapter<CharSequence> adapter;
+    String kategorie;
 
     ArrayList<KandidatenModel> kandidatenModels;
 
@@ -64,16 +76,56 @@ public class KandidatenFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.fragment_kandidaten, container, false);
-        getKandidaten(wahlkreis);
-        Database db = new Database(getContext());
-        kandidatenModels = db.getAllKandidaten(wahlkreis);
-        if(kandidatenModels != null) {
-            lv = (ListView) myView.findViewById(R.id.listviewkandidaten);
-            listadapter = new KandidatenListAdapter(kandidatenModels, this.getActivity());
-            lv.setAdapter(listadapter);
-            listadapter.notifyDataSetChanged();
-        }
+       if(modus.equals("NORMAL")) {
+           myView = inflater.inflate(R.layout.fragment_kandidaten, container, false);
+           getKandidaten(wahlkreis);
+           Database db = new Database(getContext());
+           kandidatenModels = db.getAllKandidaten(wahlkreis);
+           if (kandidatenModels != null) {
+               lv = (ListView) myView.findViewById(R.id.listviewkandidaten);
+               listadapter = new KandidatenListAdapter(kandidatenModels, this.getActivity());
+               lv.setAdapter(listadapter);
+               listadapter.notifyDataSetChanged();
+           }
+       }else{
+           myView = inflater.inflate(R.layout.fragment_kandidaten_ergebnis, container, false);
+
+           lv = (ListView) myView.findViewById(R.id.listviewkandidatenergebnis);
+
+           spinner = (Spinner) myView.findViewById(spinner_kategorie_ergebnis);
+           adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.kategorien_ergebnis, android.R.layout.simple_spinner_item);
+           adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+           spinner.setAdapter(adapter);
+           spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+               @Override
+               public void onNothingSelected(AdapterView<?> parent) {
+               }
+
+               @Override
+               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                   kategorie = (String) parent.getItemAtPosition(position);
+                   Log.d("ausgewählte Kategorie:", kategorie);
+                   if(kategorie.equals("Insgesamt")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT;
+                   if(kategorie.equals("Lokal")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL;
+                   if(kategorie.equals("Aussenpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_AP;
+                   if(kategorie.equals("Umwelt")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT;
+                   if(kategorie.equals("Satire")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE;
+                   sharedPreferences =  getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
+                   sharedPreferences.edit().putString("ergebniskategorie", kategorie).apply();
+                   Database db = new Database(getContext());
+                   kandidatenModels = db.sortKandidatenScore(kategorie, wahlkreis);
+                   if (kandidatenModels != null) {
+
+                       listAdapterErgebnis = new KandidatenErgebnisListAdapter(kandidatenModels, getActivity());
+                       lv.setAdapter(listAdapterErgebnis);
+                       listAdapterErgebnis.notifyDataSetChanged();
+                   }
+               }
+
+           });
+
+
+       }
         return myView;
     }
 

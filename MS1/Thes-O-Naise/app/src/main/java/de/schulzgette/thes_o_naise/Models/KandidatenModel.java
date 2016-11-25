@@ -1,11 +1,14 @@
 package de.schulzgette.thes_o_naise.Models;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Jessica on 19.11.2016.
  */
 
+//TODO MEHR KATEGORIEN ?
 public class KandidatenModel {
     String vorname;
     String nachname;
@@ -21,7 +24,7 @@ public class KandidatenModel {
     Integer Punkte_Satire;
 
 
-    public KandidatenModel(String vorname, String nachname, String kid, String email, String partei, String wahlkreis,  JSONArray beantworteteThesen, Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire) {
+    public KandidatenModel(String kid, String vorname, String nachname,  String partei, String email,  String wahlkreis,  JSONArray beantworteteThesen, Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire) {
         this.vorname = vorname;
         this.nachname = nachname;
         this.kid = kid;
@@ -85,5 +88,27 @@ public class KandidatenModel {
     public Integer getPunkte_Satire() {
         return Punkte_Satire;
     }
+
+    public Integer getAnzahlThesenPositionen() {
+        return beantworteteThesen.length();
+    }
+
+    public Integer getAnzahlPositionenZuThesenMitKategorie(String kategorie) {
+        Integer result= 0;
+        for (int i = 0; i<beantworteteThesen.length(); i++) {
+            JSONObject object = null;
+            String objectKategorie = null;
+            try {
+                object = (JSONObject) beantworteteThesen.get(i);
+                objectKategorie = object.getString("KATEGORIE");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if(objectKategorie.equals(kategorie)) result += 1;
+        }
+        return result;
+    }
+
 }
 

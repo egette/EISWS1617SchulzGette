@@ -34,6 +34,7 @@ public class Database {
         public static final String COLUMN_NAME_LAST_POSITION = "lastposition";
     }
 
+    //TODO MEHR KATEGORIEN ?
     public static abstract  class KandidatenTable implements BaseColumns{
         public static final String TABLE_NAME = "kandidaten";
         public static final String COLUMN_NAME_KID = "kid";
@@ -76,6 +77,7 @@ public class Database {
 
             " )";
 
+    //TODO MEHR KATEGORIEN ?
     public static final String SQL_CREATE_KANDIDATENTABLE =
             "CREATE TABLE " + KandidatenTable.TABLE_NAME + " (" +
                     KandidatenTable.COLUMN_NAME_KID + " STRING PRIMARY KEY," +
@@ -518,6 +520,7 @@ public class Database {
                 Log.d("Update KandidatenScore:", KID);
                     ContentValues values = new ContentValues();
                     values.put(KandidatenTable.COLUMN_NAME_KID, KID);
+                    //TODO MEHR KATEGORIEN ?
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, Insgesamt);
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, Lokal);
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, Umwelt);
@@ -549,6 +552,7 @@ public class Database {
                         String partei = c.getString(3);
                         String email = c.getString(4);
                         String beantwortete_Thesen = c.getString(6);
+                        //TODO MEHR KATEGORIEN ?
                         Integer Punkte_Insgesamt = c.getInt(7);
                         Integer Punkte_Lokal = c.getInt(8);
                         Integer Punkte_Umwelt = c.getInt(9);
@@ -556,6 +560,60 @@ public class Database {
                         Integer Punkte_Satire = c.getInt(11);
                         JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
                         kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    c.close();
+                }
+            }
+        } finally {
+            db.close();
+        }
+        return kandidatenModels;
+    }
+
+    public ArrayList<KandidatenModel> sortKandidatenScore (String kategorie, String wahlkreis){
+        ArrayList<KandidatenModel> kandidatenModels = new ArrayList<>();
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
+
+
+        try{
+            if(kategorie != null && wahlkreis != null) {
+                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, kategorie + " ASC");
+
+                try {
+                    while (c.moveToNext()) {
+                        String kid = c.getString(0);
+                        Log.d("KID SORT get", kid);
+                        String vorname = c.getString(1);
+                        String nachname = c.getString(2);
+                        String partei = c.getString(3);
+                        String email = c.getString(4);
+                        String beantwortete_Thesen = c.getString(6);
+                        //TODO MEHR KATEGORIEN ?
+                        Integer Punkte_Insgesamt = c.getInt(7);
+                        Integer Punkte_Lokal = c.getInt(8);
+                        Integer Punkte_Umwelt = c.getInt(9);
+                        Integer Punkte_AP = c.getInt(10);
+                        Integer Punkte_Satire = c.getInt(11);
+                        JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
+                        Integer check = 0;
+                        String kategorie2 = "";
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT)) check = 1;
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL)) kategorie2 = "Lokal";
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT)) kategorie2 = "Umwelt";
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_AP)) kategorie2 = "Aussenpolitik";
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE)) kategorie2 = "Satire";
+                        for (int i =0; i<beantworteteThesen.length(); i++){
+                            JSONObject object = (JSONObject) beantworteteThesen.get(i);
+                            String objectKategorie = object.getString("KATEGORIE");
+                            if(objectKategorie.equals(kategorie2))check = 1;
+                        }
+
+                        if (check == 1) kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire));
                     }
 
                 } catch (JSONException e) {
@@ -591,6 +649,7 @@ public class Database {
                         String wahlkreis = c.getString(5);
                         String beantwortete_Thesen = c.getString(6);
                         JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
+                        //TODO MEHR KATEGORIEN ?
                         Integer Punkte_Insgesamt = c.getInt(7);
                         Integer Punkte_Lokal = c.getInt(8);
                         Integer Punkte_Umwelt = c.getInt(9);

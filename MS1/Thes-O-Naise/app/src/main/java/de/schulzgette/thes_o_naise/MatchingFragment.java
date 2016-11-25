@@ -3,6 +3,7 @@ package de.schulzgette.thes_o_naise;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +91,7 @@ public class MatchingFragment extends Fragment {
                                 for (int i = 0; i < jArray.length(); i++) {
                                     kandidat_result = (JSONObject) jArray.get(i);
                                     String KID = (String) kandidat_result.get("KID");
+                                    //TODO MEHR KATEGORIEN ?
                                     Integer Punkte_Ingesamt = (Integer) kandidat_result.get("Zaehler");
                                     Integer Punkte_Lokal = (Integer) kandidat_result.get("Lokal");
                                     Integer Punkte_Umwelt = (Integer) kandidat_result.get("Umwelt");
@@ -98,6 +100,7 @@ public class MatchingFragment extends Fragment {
                                     db.updateKandidatScore(KID,Punkte_Ingesamt,Punkte_Lokal,Punkte_Umwelt,Punkte_AP,Punkte_Satire);
                                 }
                             }
+                            toErgebnisFragment();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -113,6 +116,15 @@ public class MatchingFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
+    }
+    public void toErgebnisFragment(){
+        FragmentManager fm = getFragmentManager();
+        KandidatenFragment kandidatenFragment = new KandidatenFragment().newInstance("MATCHING");
+
+        fm.beginTransaction()
+                .replace(R.id.content_frame_nav, kandidatenFragment )
+                .commit();
+
+    }
 }

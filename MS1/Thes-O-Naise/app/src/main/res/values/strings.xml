@@ -21,6 +21,14 @@
         <item>Aussenpolitik</item>
         <item>Satire</item>
     </string-array>
+    <!--//TODO MEHR KATEGORIEN ?-->
+    <string-array name="kategorien_ergebnis">
+        <item>Insgesamt</item>
+        <item>Lokal</item>
+        <item>Umwelt</item>
+        <item>Aussenpolitik</item>
+        <item>Satire</item>
+    </string-array>
     <string name="title_activity_thesen">ThesenActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
