@@ -8,11 +8,13 @@ public class BeantworteteThesenKandidatenModel {
     String thesentext;
     String tid;
     String positionkandidat;
+    String userposition;
 
-    public BeantworteteThesenKandidatenModel(String thesentext, String tid, String positionkandidat) {
+    public BeantworteteThesenKandidatenModel(String thesentext, String tid, String positionkandidat, String Userposition) {
         this.thesentext = thesentext;
         this.tid = tid;
         this.positionkandidat = positionkandidat;
+        this.userposition = Userposition;
     }
 
     public String getThesentext() {
@@ -25,5 +27,9 @@ public class BeantworteteThesenKandidatenModel {
 
     public String getPositionkandidat() {
         return positionkandidat;
+    }
+
+    public String getUserposition() {
+        return userposition;
     }
 }

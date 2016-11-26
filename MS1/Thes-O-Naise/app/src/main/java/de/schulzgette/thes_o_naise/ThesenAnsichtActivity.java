@@ -6,7 +6,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.schulzgette.thes_o_naise.Models.ThesenModel;
@@ -53,6 +55,25 @@ public class ThesenAnsichtActivity extends FragmentActivity {
         tabLayout.addTab(contra, 2);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.setSelectedTabIndicatorHeight(15);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
     }
 
     @Override
@@ -63,14 +84,29 @@ public class ThesenAnsichtActivity extends FragmentActivity {
     public void updateThesenView(String TID) {
         Database db = new Database(getBaseContext());
         these = db.getTheseWithTID(TID);
-        final TextView tidtext = (TextView) findViewById(R.id.einetid);
-        if(these != null)  tidtext.setText(these.getThesentext());
+        TextView tidtext = (TextView) findViewById(R.id.einthesentext);
+        TextView waehlerPro = (TextView) findViewById(R.id.wahlerprothese);
+        TextView waehlerNeutral = (TextView) findViewById(R.id.wahlerneutralthese);
+        TextView waehlerContra = (TextView) findViewById(R.id.wahlercontrathese);
+        final RelativeLayout theseninfo = (RelativeLayout) findViewById(R.id.layoutthesentext);
+        if(these != null){
+            tidtext.setText(these.getThesentext());
+            String pro = these.getPro().toString();
+            String neutral = these.getNeutral().toString();
+            String contra = these.getContra().toString();
+            waehlerPro.setText(pro);
+            waehlerNeutral.setText(neutral);
+            waehlerContra.setText(contra);
+        }
 
-        ImageButton hide = (ImageButton) findViewById(R.id.hidethesentext);
+        final ImageButton hide = (ImageButton) findViewById(R.id.hidethesentext);
         hide.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-             tidtext.setVisibility((tidtext.getVisibility() == View.VISIBLE)
+                theseninfo.setVisibility((theseninfo.getVisibility() == View.VISIBLE)
                      ? View.GONE : View.VISIBLE);
+
+                float deg = hide.getRotation() + 180F;
+                hide.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
             }
         });
     }

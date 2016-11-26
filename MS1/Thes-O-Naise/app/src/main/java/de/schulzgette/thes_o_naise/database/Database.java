@@ -429,7 +429,7 @@ public class Database {
         return result;
     }
 
-    public JSONArray getBegruendungWithTIDandPosition(String TID, String position){
+    public JSONArray getBegruendungenWithTIDandPosition(String TID, String position){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
         Cursor  c = null;

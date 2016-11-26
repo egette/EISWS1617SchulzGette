@@ -67,7 +67,8 @@ public class KandidatAnsichtActivity extends AppCompatActivity {
                     String tid = jsonObject.getString("TID");
                     String position = jsonObject.getString("POS");
                     String thesentext = db.getThesentextWithTID(tid);
-                    beantworteteThesenKandidatenModels.add(new BeantworteteThesenKandidatenModel(thesentext, tid, position));
+                    String userposition = db.getUserPositionWithTID(tid);
+                    beantworteteThesenKandidatenModels.add(new BeantworteteThesenKandidatenModel(thesentext, tid, position, userposition));
                     lv.setAdapter(listadapter);
                 } catch (JSONException e) {
                     e.printStackTrace();

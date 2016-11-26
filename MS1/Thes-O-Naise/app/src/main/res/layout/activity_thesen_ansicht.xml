@@ -8,7 +8,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutthesentext">
+        android:id="@+id/layoutthesentext"
+        android:visibility="visible">
         <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
@@ -16,21 +17,73 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/einetid"
+            android:id="@+id/einthesentext"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:visibility="visible"/>
-
-        <ImageButton
-            android:layout_height="25dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:id="@+id/hidethesentext"
-            android:src="@drawable/ic_expand_less_black_24dp"
-            android:layout_below="@+id/einetid"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:background="@color/colorPrimary" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/einthesentext"
+            android:layout_marginTop="10dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wähler Pro: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/wahlerprothese"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Neutral: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/wahlerneutralthese"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contra: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/wahlercontrathese"/>
+            </LinearLayout>
+        </LinearLayout>
+
     </RelativeLayout>
+    <ImageButton
+        android:layout_height="25dp"
+        android:layout_width="match_parent"
+        android:id="@+id/hidethesentext"
+        android:src="@drawable/ic_expand_less_black_24dp"
+        android:layout_below="@+id/layoutthesentext"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorPrimary" />
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
@@ -38,7 +91,7 @@
         android:background="@color/colorPrimary"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/layoutthesentext">
+        android:layout_below="@+id/hidethesentext">
 
     </android.support.design.widget.TabLayout>
 

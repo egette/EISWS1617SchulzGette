@@ -94,7 +94,7 @@ public class publishThesenFragment extends Fragment{
 
                     String jsondata = jsonObject.toString();
                     publishThese(jsondata);
-                    Toast.makeText(getContext(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -113,16 +113,17 @@ public class publishThesenFragment extends Fragment{
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    Integer statusCode = response.code();
                     if (response.isSuccessful()) {
+
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
-
                         try {
                             Database db = new Database(getContext());
                             JSONObject these_data = new JSONObject(jsonData);
                             String TID = (String) these_data.get("TID");
                             String thesentext = (String) these_data.get("thesentext");
-                            Integer proINT= (Integer) these_data.get("Anzahl_Zustimmung");
+                            Integer proINT = (Integer) these_data.get("Anzahl_Zustimmung");
                             Integer neutralINT = (Integer) these_data.get("Anzahl_Neutral");
                             Integer contraINT = (Integer) these_data.get("Anzahl_Ablehnung");
                             JSONArray K_PRO = (JSONArray) these_data.get("K_PRO");
@@ -132,14 +133,26 @@ public class publishThesenFragment extends Fragment{
                             String wahlkreis = (String) these_data.get("wahlkreis");
                             Integer likesINT = (Integer) these_data.get("Likes");
                             db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA);
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(getActivity(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         response.body().close();
                     } else {
-
                         Log.d("Statuscode", String.valueOf(response.code()));
-
+                        if(statusCode==400){
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(getActivity(), "Diese These wurde schon in ihrem Wahlkreis veröffentlicht", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                         response.body().close();
                     }
                 }

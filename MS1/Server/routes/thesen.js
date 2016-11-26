@@ -1,7 +1,7 @@
 exports.publish = function(db){
 	return function(req, res){
 		console.log('Thesen JSON BODY:  ', req.body);
-		
+		var md5 = require('md5');
 		var These = {
 			thesentext: req.body.thesentext,
 			kategorie: req.body.kategorie,
@@ -23,38 +23,56 @@ exports.publish = function(db){
 		var wahlkreis = req.body.wahlkreis;
 		var kategorie = req.body.kategorie; 
 		var wahlkreis_kategorie = wahlkreis + "_" + kategorie;
-			
-		//Überprüfung welche Thesen-ID die letzte war
-		db.get('last_Thesen_ID', function (err, reply) { 
-			if(err) throw err;
-			var last_Thesen_ID;
-			if (!reply || reply == "TID_NaN") {
- 				last_Thesen_ID = "TID_0";
-			} else {
- 				last_Thesen_ID = reply.toString();
- 			}
+		var thesentexthash = md5(req.body.thesentext);	
+		console.log("HASH", thesentexthash);
+		checkSET(wahlkreis+"-hashlist", thesentexthash).then(function (check) {
+			if (check == 1) {
+				console.log("Diese These ist schon im Wahlkreis vorhanden", req.body.thesentext);
+				res.status(400).end();
+			}else {
+				db.SADD(wahlkreis+"-hashlist", thesentexthash);
+				//Überprüfung welche Thesen-ID die letzte war
+				db.get('last_Thesen_ID', function (err, reply) { 
+					if(err) throw err;
+					var last_Thesen_ID;
+					if (!reply || reply == "TID_NaN") {
+						last_Thesen_ID = "TID_0";
+					} else {
+						last_Thesen_ID = reply.toString();
+					}
+							
+					var old_TID = last_Thesen_ID.substring(4);
+					var old_TID_INT = parseInt(old_TID);
+					var new_TID = old_TID_INT + 1;
+					var new_Thesen_ID = "TID_" + new_TID.toString();
+					These.TID = new_Thesen_ID;
+					console.log("neue Thesenid :  ", new_Thesen_ID);
+					//These wird in Redis gespeichert
+					db.set(new_Thesen_ID, JSON.stringify(These));
+					//Dem Set des Wahlkreises die Thesen_ID hinzufügen
+					db.SADD(wahlkreis, new_Thesen_ID);
+					//Dem Set der Kategorie die Thesen_ID hinzufügen
+					db.SADD(kategorie, new_Thesen_ID);
+					//Dem Set der Kategorie des Wahlkreises die Thesen_ID hinzufügen
+					db.SADD(wahlkreis_kategorie, new_Thesen_ID);
 					
-			var old_TID = last_Thesen_ID.substring(4);
-			var old_TID_INT = parseInt(old_TID);
-			var new_TID = old_TID_INT + 1;
-		    var new_Thesen_ID = "TID_" + new_TID.toString();
-			These.TID = new_Thesen_ID;
-			console.log("neue Thesenid :  ", new_Thesen_ID);
-			//These wird in Redis gespeichert
-			db.set(new_Thesen_ID, JSON.stringify(These));
-			//Dem Set des Wahlkreises die Thesen_ID hinzufügen
-			db.SADD(wahlkreis, new_Thesen_ID);
-			//Dem Set der Kategorie die Thesen_ID hinzufügen
-			db.SADD(kategorie, new_Thesen_ID);
-			//Dem Set der Kategorie des Wahlkreises die Thesen_ID hinzufügen
-			db.SADD(wahlkreis_kategorie, new_Thesen_ID);
-			
-			//last_Thesen_ID wird aktuallierst
-			db.set('last_Thesen_ID', new_Thesen_ID);        
-			res.send(These).status(201).end();	
+					//last_Thesen_ID wird aktuallierst
+					db.set('last_Thesen_ID', new_Thesen_ID);        
+					res.send(These).status(201).end();	
+				});
+			}
 		});
-		
 	}
+	
+	function checkSET(set, data) {
+		var promises = [];
+		promises.push(db.SISMEMBERAsync(set, data));
+
+		return Promise.all(promises).then(function (arrayOfResults) {
+
+			return arrayOfResults[0];
+		});
+	}	
 }
 
 function makeThesenJSON(anzahl_thesen, Thesen_IDS, db){

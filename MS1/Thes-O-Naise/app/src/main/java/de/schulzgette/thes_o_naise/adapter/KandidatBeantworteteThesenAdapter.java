@@ -40,6 +40,7 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
     private static class ViewHolder {
         TextView txtThesentext;
         TextView txtPositionKandidat;
+        TextView txtPositionUser;
         Button mehrButton;
     }
 
@@ -67,6 +68,7 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
             convertView = inflater.inflate(R.layout.row_item_beantwortete_these_kandidat, parent, false);
             viewHolder.txtThesentext = (TextView) convertView.findViewById(R.id.beantworteter_thesentext_item);
             viewHolder.txtPositionKandidat = (TextView) convertView.findViewById(R.id.positionkandidat);
+            viewHolder.txtPositionUser = (TextView)  convertView.findViewById(R.id.positionuser);
             viewHolder.mehrButton = (Button) convertView.findViewById(R.id.zurthesebutton);
 
 
@@ -80,10 +82,16 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
 
         viewHolder.txtThesentext.setText(BeantworteteThesenKandidatenModel.getThesentext());
         viewHolder.txtPositionKandidat.setText(BeantworteteThesenKandidatenModel.getPositionkandidat());
-        String position2 = BeantworteteThesenKandidatenModel.getPositionkandidat();
-        if(position2.equals("PRO")) viewHolder.txtPositionKandidat.setTextColor(Color.GREEN);
-        if(position2.equals("NEUTRAL")) viewHolder.txtPositionKandidat.setTextColor(Color.DKGRAY);
-        if(position2.equals("CONTRA")) viewHolder.txtPositionKandidat.setTextColor(Color.RED);
+        viewHolder.txtPositionUser.setText(BeantworteteThesenKandidatenModel.getUserposition());
+        String positionkandidat = BeantworteteThesenKandidatenModel.getPositionkandidat();
+        String positionuser = BeantworteteThesenKandidatenModel.getUserposition();
+        if(positionkandidat.equals("PRO")) viewHolder.txtPositionKandidat.setTextColor(Color.GREEN);
+        if(positionkandidat.equals("NEUTRAL")) viewHolder.txtPositionKandidat.setTextColor(Color.DKGRAY);
+        if(positionkandidat.equals("CONTRA")) viewHolder.txtPositionKandidat.setTextColor(Color.RED);
+
+        if(positionuser.equals("PRO")) viewHolder.txtPositionUser.setTextColor(Color.GREEN);
+        if(positionuser.equals("NEUTRAL")) viewHolder.txtPositionUser.setTextColor(Color.DKGRAY);
+        if(positionuser.equals("CONTRA")) viewHolder.txtPositionUser.setTextColor(Color.RED);
 
         viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
             @Override

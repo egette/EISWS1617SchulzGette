@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.schulzgette.thes_o_naise.database.Database;
+
 /**
  * Created by Jessica on 19.11.2016.
  */
@@ -106,6 +108,27 @@ public class KandidatenModel {
             }
 
             if(objectKategorie.equals(kategorie)) result += 1;
+        }
+        return result;
+    }
+
+    public Double durchschnittlichePunkteProThesen(String kategorie){
+        Double result = 0.0;
+        if(kategorie.equals("punkte_insgesamt")){
+            result = (double) getPunkte_Insgesamt()/getAnzahlThesenPositionen();
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Lokal")){
+            result = (double) getPunkte_Lokal()/getAnzahlPositionenZuThesenMitKategorie("Lokal");
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Umwelt")){
+            result = (double) getPunkte_Umwelt()/getAnzahlPositionenZuThesenMitKategorie("Umwelt");
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Aussenpolitik")){
+            result = (double) getPunkte_AP()/getAnzahlPositionenZuThesenMitKategorie("Aussenpolitik");
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Satire")){
+            result = (double) getPunkte_Satire()/getAnzahlPositionenZuThesenMitKategorie("Satire");
+            result = Math.round(1000.0 * result) / 1000.0;
         }
         return result;
     }

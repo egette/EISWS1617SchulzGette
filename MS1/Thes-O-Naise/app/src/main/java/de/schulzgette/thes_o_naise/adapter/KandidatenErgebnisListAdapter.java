@@ -43,6 +43,7 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
         TextView txtscore;
         TextView txtanzahlthesenpositionen;
         Button mehrButton;
+        TextView txtdurchschnitt;
     }
 
     public KandidatenErgebnisListAdapter(ArrayList<KandidatenModel> data, Context context) {
@@ -73,6 +74,7 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
             viewHolder.mehrButton = (Button) convertView.findViewById(R.id.einkandidatbutton);
             viewHolder.txtscore = (TextView) convertView.findViewById(R.id.score);
             viewHolder.txtanzahlthesenpositionen = (TextView) convertView.findViewById(R.id.anzahlpositionen);
+            viewHolder.txtdurchschnitt = (TextView) convertView.findViewById(R.id.durchschnittpunte);
             result=convertView;
             convertView.setTag(viewHolder);
 
@@ -87,26 +89,33 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
         String ergebnisKategorie = sharedPreferences.getString("ergebniskategorie", "punkte_insgesamt");
         String Score = "000";
         String anzahlpositionen = "000";
+        String durchschnittpunkte = "000";
         //TODO MEHR KATEGORIEN ?
         if(ergebnisKategorie.equals("punkte_insgesamt")){
-            Score = kandidatenModel.getPunkte_Insgesamt().toString();
+            Score = kandidatenModel.getPunkte_Insgesamt().toString() + " Punkte";
             anzahlpositionen = kandidatenModel.getAnzahlThesenPositionen().toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen(ergebnisKategorie).toString();
         }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL)){
-            Score = kandidatenModel.getPunkte_Lokal().toString();
+            Score = kandidatenModel.getPunkte_Lokal().toString() + " Punkte";
             anzahlpositionen = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Lokal").toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Lokal").toString();
         }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT)){
-            Score = kandidatenModel.getPunkte_Umwelt().toString();
+            Score = kandidatenModel.getPunkte_Umwelt().toString() + " Punkte";
             anzahlpositionen = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Umwelt").toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Umwelt").toString();
         }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_AP)){
-            Score = kandidatenModel.getPunkte_AP().toString();
+            Score = kandidatenModel.getPunkte_AP().toString() + " Punkte";
             anzahlpositionen = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Aussenpolitik").toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Aussenpolitik").toString();
         }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE)){
-            Score = kandidatenModel.getPunkte_Satire().toString();
+            Score = kandidatenModel.getPunkte_Satire().toString() + " Punkte";
             anzahlpositionen = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Satire").toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Satire").toString();
         }
 
         viewHolder.txtscore.setText(Score);
         viewHolder.txtanzahlthesenpositionen.setText(anzahlpositionen);
+        viewHolder.txtdurchschnitt.setText(durchschnittpunkte);
 
         viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
             @Override
