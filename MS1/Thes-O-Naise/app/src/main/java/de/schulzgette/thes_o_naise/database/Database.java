@@ -64,6 +64,10 @@ public class Database {
         public static final String COLUMN_NAME_K_PRO = "K_pro";
         public static final String COLUMN_NAME_K_NEUTRAL = "K_NEUTRAL";
         public static final String COLUMN_NAME_K_CONTRA = "K_contra";
+        public static final String COLUMN_NAME_W_PRO = "w_pro";
+        public static final String COLUMN_NAME_W_NEUTRAL = "w_neutral";
+        public static final String COLUMN_NAME_W_CONTRA = "w_contra";
+        public static final String COLUMN_NAME_K_POSITION = "k_position";
 
     }
 
@@ -78,6 +82,7 @@ public class Database {
             " )";
 
     //TODO MEHR KATEGORIEN ?
+
     public static final String SQL_CREATE_KANDIDATENTABLE =
             "CREATE TABLE " + KandidatenTable.TABLE_NAME + " (" +
                     KandidatenTable.COLUMN_NAME_KID + " STRING PRIMARY KEY," +
@@ -106,7 +111,11 @@ public class Database {
                     ThesenTable.COLUMN_NAME_ANZAHL_CONTRA + " TEXT," +
                     ThesenTable.COLUMN_NAME_K_PRO + " TEXT," +
                     ThesenTable.COLUMN_NAME_K_NEUTRAL + " TEXT," +
-                    ThesenTable.COLUMN_NAME_K_CONTRA + " TEXT" +
+                    ThesenTable.COLUMN_NAME_K_CONTRA + " TEXT," +
+                    ThesenTable.COLUMN_NAME_W_PRO + " TEXT," +
+                    ThesenTable.COLUMN_NAME_W_NEUTRAL + " TEXT," +
+                    ThesenTable.COLUMN_NAME_W_CONTRA + " TEXT," +
+                    ThesenTable.COLUMN_NAME_K_POSITION + " TEXT" +
                     " )";
 
     public static final String SQL_DELETE_USERPOSTIONDATATABLE =
@@ -118,7 +127,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 8;
+        public static final int DATABASE_VERSION = 9;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -261,7 +270,7 @@ public class Database {
         return result;
     }
 
-    public void insertThese (String TID, String thesentext, String kategorie, String wahlkreis, Integer likesINT, Integer proINT, Integer neutralINT, Integer contraINT, JSONArray K_PRO, JSONArray  K_NEUTRAL, JSONArray K_CONTRA ){
+    public void insertThese (String TID, String thesentext, String kategorie, String wahlkreis, Integer likesINT, Integer proINT, Integer neutralINT, Integer contraINT, JSONArray K_PRO, JSONArray  K_NEUTRAL, JSONArray K_CONTRA, JSONArray W_PRO, JSONArray W_NEUTRAL, JSONArray W_CONTRA, JSONArray K_POSITION ){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
         SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
@@ -272,9 +281,13 @@ public class Database {
                 Integer anzahl_pro = proINT;
                 Integer anzahl_neutral = neutralINT;
                 Integer anzahl_contra = contraINT;
-                String postionen_pro = K_PRO.toString();
-                String postionen_neutral = K_NEUTRAL.toString();
-                String postionen_contra = K_CONTRA.toString();
+                String k_pro = K_PRO.toString();
+                String k_neutral = K_NEUTRAL.toString();
+                String k_contra = K_CONTRA.toString();
+                String w_pro = W_PRO.toString();
+                String w_neutral = W_NEUTRAL.toString();
+                String w_contra = W_CONTRA.toString();
+                String k_positionen = K_POSITION.toString();
 
                 if (TID != null){
                     Cursor cursor = dbread.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID}, "tid = ?", new String[]{TID}, null, null, null);
@@ -289,9 +302,13 @@ public class Database {
                             values.put(ThesenTable.COLUMN_NAME_ANZAHL_PRO, anzahl_pro);
                             values.put(ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, anzahl_neutral);
                             values.put(ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, anzahl_contra);
-                            values.put(ThesenTable.COLUMN_NAME_K_PRO, postionen_pro);
-                            values.put(ThesenTable.COLUMN_NAME_K_NEUTRAL, postionen_neutral);
-                            values.put(ThesenTable.COLUMN_NAME_K_CONTRA, postionen_contra);
+                            values.put(ThesenTable.COLUMN_NAME_K_PRO, k_pro);
+                            values.put(ThesenTable.COLUMN_NAME_K_NEUTRAL, k_neutral);
+                            values.put(ThesenTable.COLUMN_NAME_K_CONTRA, k_contra);
+                            values.put(ThesenTable.COLUMN_NAME_W_PRO, w_pro);
+                            values.put(ThesenTable.COLUMN_NAME_W_NEUTRAL, w_neutral);
+                            values.put(ThesenTable.COLUMN_NAME_W_CONTRA, w_contra);
+                            values.put(ThesenTable.COLUMN_NAME_K_POSITION, k_positionen);
                             dbwrite.insert(ThesenTable.TABLE_NAME, null, values);
                         } finally {
                             cursor.close();
@@ -307,9 +324,13 @@ public class Database {
                             values.put(ThesenTable.COLUMN_NAME_ANZAHL_PRO, anzahl_pro);
                             values.put(ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, anzahl_neutral);
                             values.put(ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, anzahl_contra);
-                            values.put(ThesenTable.COLUMN_NAME_K_PRO, postionen_pro);
-                            values.put(ThesenTable.COLUMN_NAME_K_NEUTRAL, postionen_neutral);
-                            values.put(ThesenTable.COLUMN_NAME_K_CONTRA, postionen_contra);
+                            values.put(ThesenTable.COLUMN_NAME_K_PRO, k_pro);
+                            values.put(ThesenTable.COLUMN_NAME_K_NEUTRAL, k_neutral);
+                            values.put(ThesenTable.COLUMN_NAME_K_CONTRA, k_contra);
+                            values.put(ThesenTable.COLUMN_NAME_W_PRO, w_pro);
+                            values.put(ThesenTable.COLUMN_NAME_W_NEUTRAL, w_neutral);
+                            values.put(ThesenTable.COLUMN_NAME_W_CONTRA, w_contra);
+                            values.put(ThesenTable.COLUMN_NAME_K_POSITION, k_positionen);
                             dbwrite.update(ThesenTable.TABLE_NAME, values, "tid=?", new String[]{TID});
                         }finally {
                             cursor.close();
@@ -344,13 +365,21 @@ public class Database {
                         Integer anzahl_pro = c.getInt(5);
                         Integer anzahl_neutral = c.getInt(6);
                         Integer anzahl_contra = c.getInt(7);
-                        String postionen_pro = c.getString(8);
-                        String postionen_neutral = c.getString(9);
-                        String postionen_contra = c.getString(10);
-                        JSONArray postionen_pro_Array = new JSONArray(postionen_pro);
-                        JSONArray postionen_neutral_Array = new JSONArray(postionen_neutral);
-                        JSONArray postionen_contra_Array = new JSONArray(postionen_contra);
-                        thesenModels.add(new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, postionen_pro_Array, postionen_neutral_Array, postionen_contra_Array));
+                        String k_pro = c.getString(8);
+                        String k_neutral = c.getString(9);
+                        String k_contra = c.getString(10);
+                        String w_pro = c.getString(11);
+                        String w_neutral = c.getString(12);
+                        String w_contra = c.getString(13);
+                        String k_positionen = c.getString(14);
+                        JSONArray k_pro_Array = new JSONArray(k_pro);
+                        JSONArray k_neutral_Array = new JSONArray(k_neutral);
+                        JSONArray k_contra_Array = new JSONArray(k_contra);
+                        JSONArray w_pro_Array = new JSONArray(w_pro);
+                        JSONArray w_neutral_Array = new JSONArray(w_neutral);
+                        JSONArray w_contra_Array = new JSONArray(w_contra);
+                        JSONArray k_positionen_Array = new JSONArray(k_positionen);
+                        thesenModels.add(new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array));
                     }
 
                 } catch (JSONException e) {
@@ -386,13 +415,21 @@ public class Database {
                         Integer anzahl_pro = c.getInt(5);
                         Integer anzahl_neutral = c.getInt(6);
                         Integer anzahl_contra = c.getInt(7);
-                        String postionen_pro = c.getString(8);
-                        String postionen_neutral = c.getString(9);
-                        String postionen_contra = c.getString(10);
-                        JSONArray postionen_pro_Array = new JSONArray(postionen_pro);
-                        JSONArray postionen_neutral_Array = new JSONArray(postionen_neutral);
-                        JSONArray postionen_contra_Array = new JSONArray(postionen_contra);
-                        result = new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, postionen_pro_Array, postionen_neutral_Array, postionen_contra_Array);
+                        String k_pro = c.getString(8);
+                        String k_neutral = c.getString(9);
+                        String k_contra = c.getString(10);
+                        String w_pro = c.getString(11);
+                        String w_neutral = c.getString(12);
+                        String w_contra = c.getString(13);
+                        String k_positionen = c.getString(14);
+                        JSONArray k_pro_Array = new JSONArray(k_pro);
+                        JSONArray k_neutral_Array = new JSONArray(k_neutral);
+                        JSONArray k_contra_Array = new JSONArray(k_contra);
+                        JSONArray w_pro_Array = new JSONArray(w_pro);
+                        JSONArray w_neutral_Array = new JSONArray(w_neutral);
+                        JSONArray w_contra_Array = new JSONArray(w_contra);
+                        JSONArray k_positionen_Array = new JSONArray(k_positionen);
+                        result = new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array);
                     }
                 }
             }

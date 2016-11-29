@@ -14,15 +14,19 @@ public class ThesenModel {
     Integer Pro;
     Integer Neutral;
     Integer Contra;
-    JSONArray PositionPro;
-    JSONArray PositionNeutral;
-    JSONArray PositionContra;
+    JSONArray KPro;
+    JSONArray KNeutral;
+    JSONArray KContra;
+    JSONArray WPro;
+    JSONArray WNeutral;
+    JSONArray WContra;
+    JSONArray KPosition;
     String TID;
     String Kategorie;
     String Wahlkreis;
 
 
-    public ThesenModel(String TID, String thesentext, String Kategorie, String Wahlkreis, Integer likes, Integer Pro, Integer Neutral, Integer Contra, JSONArray PositionPro, JSONArray PositionNeutral, JSONArray PositionContra) {
+    public ThesenModel(String TID, String thesentext, String Kategorie, String Wahlkreis, Integer likes, Integer Pro, Integer Neutral, Integer Contra, JSONArray KPro, JSONArray KNeutral, JSONArray KContra, JSONArray WPro, JSONArray WNeutral, JSONArray WContra, JSONArray KPosition) {
         this.TID = TID;
         this.thesentext = thesentext;
         this.likes = likes;
@@ -31,9 +35,13 @@ public class ThesenModel {
         this.Pro = Pro;
         this.Neutral = Neutral;
         this.Contra = Contra;
-        this.PositionPro = PositionPro;
-        this.PositionNeutral = PositionNeutral;
-        this.PositionContra = PositionContra;
+        this.KPro = KPro;
+        this.KNeutral = KNeutral;
+        this.KContra = KContra;
+        this.WPro = WPro;
+        this.WNeutral = WNeutral;
+        this.WContra = WContra;
+        this.KPosition = KPosition;
     }
 
     public String getThesentext() {
@@ -57,14 +65,33 @@ public class ThesenModel {
     public Integer getContra() {
         return Neutral;
     }
-    public JSONArray getPositionPro(){
-        return PositionPro;
+
+    public JSONArray getKPro() {
+        return KPro;
     }
-    public JSONArray getPositionNeutral(){
-        return PositionNeutral;
+
+    public JSONArray getKNeutral() {
+        return KNeutral;
     }
-    public JSONArray getPositionContra(){
-        return PositionContra;
+
+    public JSONArray getKContra() {
+        return KContra;
+    }
+
+    public JSONArray getWPro() {
+        return WPro;
+    }
+
+    public JSONArray getWNeutral() {
+        return WNeutral;
+    }
+
+    public JSONArray getWContra() {
+        return WContra;
+    }
+
+    public JSONArray getKPosition() {
+        return KPosition;
     }
 
     public String getWahlkreis(){

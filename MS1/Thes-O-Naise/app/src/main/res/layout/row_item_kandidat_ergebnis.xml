@@ -65,26 +65,29 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ergebnisobererteil"
         android:layout_marginTop="10dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/nahetext"
-            android:text="Abstand zu ihren Positionen:"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="100 PUNKTE"
-            android:id="@+id/score"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/nahetext"
-            android:layout_toEndOf="@+id/nahetext"
-            android:layout_marginLeft="22dp"
-            android:layout_marginStart="22dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/nahetext"
+            android:id="@+id/abstandlayout">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/nahetext"
+                android:text="Abstand zu ihren Positionen:"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="100 PUNKTE"
+                android:id="@+id/score" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/abstandlayout"
             android:layout_marginTop="5dp"
             android:id="@+id/anzahlpositionlayout">
             <TextView
@@ -105,7 +108,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/anzahlpositionlayout"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp">
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"

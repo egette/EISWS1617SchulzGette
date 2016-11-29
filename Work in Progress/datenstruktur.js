@@ -14,17 +14,39 @@
 		password: "12345",
 		wahlkreis: "Oberbergischer Kreis",
 		email: "peter.müller@email.de",
+		webseite: "peter.müller-kandidat.de"
 		KID: "KID_34",
 		Partei: "Unabhängig",
-		Thesen_beantwortet: [ 
+		Thesen_positioniert: [ 
 			{
 				TID: "TID_2",
-				POS: "PRO"
+				POS: "PRO",
+				KATEGORIE: "Umwelt"
 			},
 			{
 				TID: "TID_543",
 				POS: "CONTRA"
+				KATEGORIE: "Lokal"
 			}
+		],
+		Begruendungen: [
+			{ 
+				TID: "TID_3",
+				POS: "PRO",
+				TEXT: "Diese These ist toll."
+			}
+		],
+		Biographie: [
+			{
+			 Geburtsdatum: "23.1.1975",
+			 Bildungsweg: "Abitur, Studium",
+			 Berufe: "Lehrer",
+			 Mitgliedschaften: "",
+			}
+		],
+		Wahlprogramm: [
+			Text: "Deswegen sollte ich gewählt werden.",
+			Link: "link.zum.wahlprogramm.de"
 		]
 	};	
 
@@ -41,10 +63,12 @@
 		K_PRO: [
 			{
 				UID: "KID_2",
-				Text: "Geld ist genung da!",
+				Text: "Geld ist genug da!",
 				likes: 5,
 				Kommentare: [
 					{
+						UID: "WID_2",
+						USERNAME: "Wähler123"
 						Kommentar: "Endlich sagt es jemand"
 					}
 				]
