@@ -70,7 +70,8 @@ zwischen Wähler und Kandidaten</panel_attributes>
       <h>110</h>
     </coordinates>
     <panel_attributes>_Präsentationslogik _
-</panel_attributes>
+
+Activitys/Fragments</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -81,7 +82,9 @@ zwischen Wähler und Kandidaten</panel_attributes>
       <w>190</w>
       <h>110</h>
     </coordinates>
-    <panel_attributes>_Persistente Datenhaltung_</panel_attributes>
+    <panel_attributes>_Persistente Datenhaltung_
+
+SQLite</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

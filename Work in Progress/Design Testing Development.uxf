@@ -105,9 +105,7 @@ der Navigation und Präsentation</panel_attributes>
       <h>70</h>
     </coordinates>
     <panel_attributes>*Detailed User Interface Design*
-Detaillierte Regeln für das Design
-und die Darstellung von Informationen
-und Navigation</panel_attributes>
+Paper-Based Prototyping</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -125,26 +123,12 @@ und Navigation</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>1040</x>
-      <y>220</y>
-      <w>250</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>*Prototyping*
-Aus den Erkenntnissen der vorherigen 
-Ergebnisse werden Prototypen
-entwickelt</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1040</x>
       <y>330</y>
       <w>250</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>*Evaluation*
-Evaluation des Prototyps anhand 
+Evaluation der Prototypen anhand 
 ausgewählter Methoden</panel_attributes>
     <additional_attributes/>
   </element>
@@ -270,24 +254,13 @@ valign=center</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1050</x>
+      <x>1040</x>
       <y>160</y>
-      <w>130</w>
-      <h>80</h>
+      <w>140</w>
+      <h>190</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;30.0;110.0;30.0;110.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1150</x>
-      <y>280</y>
-      <w>30</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0;120.0;110.0;120.0;170.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
