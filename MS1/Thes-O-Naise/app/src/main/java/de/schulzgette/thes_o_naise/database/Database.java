@@ -49,6 +49,8 @@ public class Database {
         public static final String COLUMN_NAME_PUNKTE_UMWELT = "punkte_umwelt";
         public static final String COLUMN_NAME_PUNKTE_AP = "punkte_ap";
         public static final String COLUMN_NAME_PUNKTE_SATIRE = "punkte_satire";
+        public static final String COLUMN_NAME_BIOGRAPHIE = "biographie";
+        public static final String COLUMN_NAME_WAHLPROGRAMM = "wahlprogramm";
     }
 
     public static abstract  class ThesenTable implements BaseColumns{
@@ -96,7 +98,9 @@ public class Database {
                     KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_AP + " INTEGER," +
-                    KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE + " INTEGER" +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_BIOGRAPHIE + " TEXT," +
+                    KandidatenTable.COLUMN_NAME_WAHLPROGRAMM + " TEXT" +
                     " )";
 
     public static final String SQL_CREATE_THESENTABLE =

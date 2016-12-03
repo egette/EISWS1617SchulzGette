@@ -36,18 +36,18 @@
 				TEXT: "Diese These ist toll."
 			}
 		],
-		Biographie: [
+		Biographie: 
 			{
 			 Geburtsdatum: "23.1.1975",
 			 Bildungsweg: "Abitur, Studium",
 			 Berufe: "Lehrer",
 			 Mitgliedschaften: "",
 			}
-		],
-		Wahlprogramm: [
+		,
+		Wahlprogramm: {
 			Text: "Deswegen sollte ich gewählt werden.",
 			Link: "link.zum.wahlprogramm.de"
-		]
+		}
 	};	
 
 

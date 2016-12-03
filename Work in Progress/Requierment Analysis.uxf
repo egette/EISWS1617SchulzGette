@@ -26,25 +26,12 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>580</x>
+      <x>460</x>
       <y>20</y>
       <w>190</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>General Design Principles</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>210</x>
-      <y>90</y>
-      <w>150</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>präskriptive Use cases
-um die zukünftige 
-Arbeit zu modellieren</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -64,7 +51,7 @@ ermitteln</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>380</x>
+      <x>210</x>
       <y>90</y>
       <w>170</w>
       <h>90</h>
@@ -78,7 +65,7 @@ Kommunikationsmodell</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>580</x>
+      <x>460</x>
       <y>90</y>
       <w>190</w>
       <h>90</h>
@@ -91,7 +78,7 @@ und Design Guidelines</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>580</x>
+      <x>460</x>
       <y>230</y>
       <w>190</w>
       <h>90</h>
@@ -119,7 +106,7 @@ Anforderungen ableiten
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>660</x>
+      <x>540</x>
       <y>40</y>
       <w>30</w>
       <h>70</h>
@@ -152,18 +139,7 @@ Anforderungen ableiten
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>20</y>
-      <w>140</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>120.0;70.0;120.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>660</x>
+      <x>540</x>
       <y>170</y>
       <w>30</w>
       <h>80</h>
@@ -176,11 +152,11 @@ Anforderungen ableiten
     <coordinates>
       <x>380</x>
       <y>260</y>
-      <w>220</w>
+      <w>100</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>200.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -203,16 +179,5 @@ Anforderungen ableiten
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>90.0;110.0;10.0;110.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>350</x>
-      <y>170</y>
-      <w>140</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;30.0;120.0;30.0;120.0;10.0</additional_attributes>
   </element>
 </diagram>
