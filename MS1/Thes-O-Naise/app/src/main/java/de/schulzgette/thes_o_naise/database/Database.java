@@ -13,12 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.Models.ThesenModel;
-
-import static org.json.JSONObject.wrap;
 
 /**
  * Created by Jessica on 05.11.2016.
@@ -131,7 +128,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 9;
+        public static final int DATABASE_VERSION = 10;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
