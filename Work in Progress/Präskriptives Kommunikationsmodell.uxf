@@ -4,9 +4,9 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>80</x>
+      <x>60</x>
       <y>580</y>
-      <w>220</w>
+      <w>190</w>
       <h>190</h>
     </coordinates>
     <panel_attributes>Wähler</panel_attributes>
@@ -15,10 +15,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>940</x>
-      <y>100</y>
+      <x>890</x>
+      <y>120</y>
       <w>210</w>
-      <h>260</h>
+      <h>250</h>
     </coordinates>
     <panel_attributes>Kandidat</panel_attributes>
     <additional_attributes/>
@@ -26,10 +26,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
-      <y>90</y>
+      <x>510</x>
+      <y>120</y>
       <w>200</w>
-      <h>280</h>
+      <h>250</h>
     </coordinates>
     <panel_attributes>Thes-O-Naise</panel_attributes>
     <additional_attributes/>
@@ -37,10 +37,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>190</x>
-      <y>100</y>
+      <x>140</x>
+      <y>120</y>
       <w>200</w>
-      <h>260</h>
+      <h>250</h>
     </coordinates>
     <panel_attributes>Wähler</panel_attributes>
     <additional_attributes/>
@@ -48,7 +48,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>120</x>
+      <x>70</x>
       <y>450</y>
       <w>150</w>
       <h>70</h>
@@ -61,7 +61,7 @@ von Thesen</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>260</x>
+      <x>210</x>
       <y>170</y>
       <w>60</w>
       <h>120</h>
@@ -73,7 +73,7 @@ von Thesen</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>160</x>
+      <x>120</x>
       <y>640</y>
       <w>60</w>
       <h>110</h>
@@ -84,7 +84,7 @@ von Thesen</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>1010</x>
+      <x>960</x>
       <y>170</y>
       <w>60</w>
       <h>110</h>
@@ -95,18 +95,18 @@ von Thesen</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>200</x>
-      <y>350</y>
+      <x>150</x>
+      <y>360</y>
       <w>30</w>
-      <h>120</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>200</x>
+      <x>150</x>
       <y>510</y>
       <w>30</w>
       <h>90</h>
@@ -117,7 +117,7 @@ von Thesen</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>750</x>
+      <x>700</x>
       <y>160</y>
       <w>210</w>
       <h>40</h>
@@ -129,36 +129,36 @@ veröffentlicht Thesen</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>330</x>
       <y>240</y>
       <w>200</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
-gibt Ergebniss raus</panel_attributes>
+gibt Ergebnis raus</panel_attributes>
     <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>350</y>
+      <x>310</x>
+      <y>360</y>
       <w>230</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 
 
 informiert </panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;80.0;210.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;210.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>330</x>
-      <y>350</y>
+      <x>280</x>
+      <y>360</y>
       <w>260</w>
-      <h>220</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 
@@ -172,29 +172,29 @@ informiert </panel_attributes>
 
 
 informiert </panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;200.0;240.0;200.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0;240.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>740</x>
-      <y>350</y>
+      <x>690</x>
+      <y>360</y>
       <w>330</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 
 
 berichtet über</panel_attributes>
-    <additional_attributes>230.0;10.0;230.0;80.0;10.0;80.0</additional_attributes>
+    <additional_attributes>230.0;10.0;230.0;70.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>740</x>
-      <y>350</y>
+      <x>690</x>
+      <y>360</y>
       <w>410</w>
-      <h>220</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 
@@ -203,12 +203,12 @@ berichtet über</panel_attributes>
 
 
 berichtet über</panel_attributes>
-    <additional_attributes>310.0;10.0;310.0;200.0;10.0;200.0</additional_attributes>
+    <additional_attributes>310.0;10.0;310.0;190.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>1190</x>
+      <x>1110</x>
       <y>450</y>
       <w>160</w>
       <h>90</h>
@@ -219,7 +219,7 @@ berichtet über</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1140</x>
+      <x>1090</x>
       <y>320</y>
       <w>120</w>
       <h>150</h>
@@ -230,19 +230,19 @@ berichtet über</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>310</x>
-      <y>350</y>
+      <x>260</x>
+      <y>360</y>
       <w>280</w>
-      <h>130</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 kommentiert</panel_attributes>
-    <additional_attributes>260.0;110.0;10.0;110.0;10.0;10.0</additional_attributes>
+    <additional_attributes>260.0;100.0;10.0;100.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>750</x>
+      <x>700</x>
       <y>240</y>
       <w>210</w>
       <h>40</h>
@@ -254,8 +254,8 @@ Feedback</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1170</x>
-      <y>600</y>
+      <x>1090</x>
+      <y>610</y>
       <w>170</w>
       <h>40</h>
     </coordinates>
@@ -266,7 +266,7 @@ asynchron</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1170</x>
+      <x>1090</x>
       <y>650</y>
       <w>170</w>
       <h>40</h>
@@ -278,7 +278,7 @@ synchron</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>750</x>
+      <x>700</x>
       <y>200</y>
       <w>210</w>
       <h>40</h>
@@ -290,7 +290,7 @@ bezieht Stellung zu Thesen</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>330</x>
       <y>200</y>
       <w>200</w>
       <h>40</h>
@@ -302,7 +302,7 @@ bezieht Stellung zu Thesen</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>560</x>
+      <x>510</x>
       <y>620</y>
       <w>210</w>
       <h>120</h>
@@ -313,31 +313,31 @@ bezieht Stellung zu Thesen</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>300</x>
-      <y>350</y>
+      <x>250</x>
+      <y>360</y>
       <w>280</w>
-      <h>340</h>
+      <h>330</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 besucht</panel_attributes>
-    <additional_attributes>260.0;320.0;10.0;320.0;10.0;10.0</additional_attributes>
+    <additional_attributes>260.0;310.0;10.0;310.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>760</x>
-      <y>350</y>
+      <x>710</x>
+      <y>360</y>
       <w>340</w>
-      <h>340</h>
+      <h>330</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 veranstaltet</panel_attributes>
-    <additional_attributes>10.0;320.0;320.0;320.0;320.0;10.0</additional_attributes>
+    <additional_attributes>10.0;310.0;320.0;310.0;320.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>570</x>
+      <x>520</x>
       <y>510</y>
       <w>180</w>
       <h>100</h>
@@ -350,7 +350,7 @@ Medien</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>570</x>
+      <x>520</x>
       <y>390</y>
       <w>180</w>
       <h>100</h>
@@ -363,19 +363,19 @@ Internet</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>290</x>
-      <y>30</y>
-      <w>760</w>
-      <h>90</h>
+      <x>230</x>
+      <y>60</y>
+      <w>780</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-&gt;&gt;
 direkte Kommunikation</panel_attributes>
-    <additional_attributes>740.0;70.0;740.0;20.0;10.0;20.0;10.0;70.0</additional_attributes>
+    <additional_attributes>760.0;60.0;760.0;20.0;10.0;20.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>330</x>
       <y>160</y>
       <w>200</w>
       <h>40</h>
@@ -387,40 +387,40 @@ veröffentlicht Thesen</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>740</x>
+      <x>690</x>
       <y>510</y>
-      <w>480</w>
+      <w>450</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;460.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;430.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>740</x>
+      <x>690</x>
       <y>450</y>
-      <w>500</w>
+      <w>470</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;480.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;450.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>210</x>
-      <y>350</y>
+      <x>160</x>
+      <y>360</y>
       <w>30</w>
-      <h>120</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>210</x>
+      <x>160</x>
       <y>510</y>
       <w>30</w>
       <h>90</h>

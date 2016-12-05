@@ -90,7 +90,7 @@ besucht</panel_attributes>
     </coordinates>
     <panel_attributes>
 
-Webseite vom Kandidat/Partei
+Webseite des Kandidaten/Partei
 mit Wahlprogramm</panel_attributes>
     <additional_attributes/>
   </element>
@@ -104,27 +104,14 @@ mit Wahlprogramm</panel_attributes>
     </coordinates>
     <panel_attributes>
 
-TV</panel_attributes>
+Rundfunk</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>710</x>
-      <y>530</y>
-      <w>210</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>
-
-Radio</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>710</x>
-      <y>790</y>
+      <y>660</y>
       <w>210</w>
       <h>100</h>
     </coordinates>
@@ -137,7 +124,7 @@ Internet</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>710</x>
-      <y>660</y>
+      <y>530</y>
       <w>210</w>
       <h>100</h>
     </coordinates>
@@ -227,21 +214,10 @@ gibt Interview</panel_attributes>
       <x>910</x>
       <y>550</y>
       <w>390</w>
-      <h>90</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;370.0;70.0;370.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>910</x>
-      <y>550</y>
-      <w>410</w>
-      <h>210</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;190.0;390.0;190.0;390.0;10.0</additional_attributes>
+    <additional_attributes>10.0;60.0;370.0;60.0;370.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -249,10 +225,10 @@ gibt Interview</panel_attributes>
       <x>910</x>
       <y>550</y>
       <w>430</w>
-      <h>340</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;320.0;410.0;320.0;410.0;10.0</additional_attributes>
+    <additional_attributes>10.0;190.0;410.0;190.0;410.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -260,7 +236,7 @@ gibt Interview</panel_attributes>
       <x>910</x>
       <y>280</y>
       <w>360</w>
-      <h>330</h>
+      <h>320</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 
@@ -280,41 +256,7 @@ gibt Interview</panel_attributes>
 
 
 berichtet über</panel_attributes>
-    <additional_attributes>260.0;10.0;260.0;310.0;10.0;310.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>910</x>
-      <y>280</y>
-      <w>380</w>
-      <h>450</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-berichtet über</panel_attributes>
-    <additional_attributes>280.0;10.0;280.0;430.0;10.0;430.0</additional_attributes>
+    <additional_attributes>260.0;10.0;260.0;300.0;10.0;300.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -322,17 +264,9 @@ berichtet über</panel_attributes>
       <x>910</x>
       <y>280</y>
       <w>400</w>
-      <h>550</h>
+      <h>420</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
-
-
-
-
-
-
-
-
 
 
 
@@ -356,7 +290,7 @@ berichtet über</panel_attributes>
 
 
 berichtet über</panel_attributes>
-    <additional_attributes>300.0;10.0;300.0;530.0;10.0;530.0</additional_attributes>
+    <additional_attributes>300.0;10.0;300.0;400.0;10.0;400.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -364,11 +298,11 @@ berichtet über</panel_attributes>
       <x>360</x>
       <y>280</y>
       <w>370</w>
-      <h>610</h>
+      <h>470</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 kommentiert</panel_attributes>
-    <additional_attributes>350.0;590.0;10.0;590.0;10.0;10.0</additional_attributes>
+    <additional_attributes>350.0;450.0;10.0;450.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -398,7 +332,7 @@ informiert
       <x>460</x>
       <y>280</y>
       <w>270</w>
-      <h>330</h>
+      <h>320</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 
@@ -419,15 +353,15 @@ informiert
 
 
 informiert</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;310.0;250.0;310.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;300.0;250.0;300.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>430</x>
+      <x>410</x>
       <y>280</y>
-      <w>300</w>
-      <h>450</h>
+      <w>320</w>
+      <h>430</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 
@@ -453,51 +387,8 @@ informiert</panel_attributes>
 
 
 
-
-
-informiert</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;430.0;280.0;430.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>400</x>
-      <y>280</y>
-      <w>330</w>
-      <h>550</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-informiert</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;530.0;310.0;530.0</additional_attributes>
+  informiert</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;410.0;300.0;410.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
