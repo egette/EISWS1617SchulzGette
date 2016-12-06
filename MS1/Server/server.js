@@ -89,6 +89,7 @@ apiRoutes.use(function(req, res, next) {
 app.post('/matching', matching.match(db, Promise)); 
 app.post('/thesen', thesen.publish(db));
 app.put('/thesen', thesen.putPosition(db));
+app.post('/thesen/kommentar', thesen.postKommentar(db));
 app.put('/user', userroute.updateUserdata(db));
 app.delete('/user', userroute.deleteUserdata(db));
 

@@ -159,7 +159,7 @@ exports.putPosition = function(db){
 						if(richtungsarrayname == "K_PRO"){
 							for(i = 0; i < These.K_PRO.length; i++){
 								if(These.K_PRO[i].UID == uid){
-									These.K_PRO[i] = position_json;
+									These.K_PRO[i].Text = position_json.Text;
 									neu = 0;
 								}
 							}
@@ -168,7 +168,7 @@ exports.putPosition = function(db){
 						if(richtungsarrayname == "W_PRO"){
 							for(i = 0; i < These.W_PRO.length; i++){
 								if(These.W_PRO[i].UID == uid){
-									These.W_PRO[i] = position_json;
+									These.W_PRO[i].Text = position_json.Text;
 									neu = 0;
 								}
 							}
@@ -177,7 +177,7 @@ exports.putPosition = function(db){
 						if(richtungsarrayname == "K_NEUTRAL"){
 							for(i = 0; i < These.K_NEUTRAL.length; i++){
 								if(These.K_NEUTRAL[i].UID == uid){
-									These.K_NEUTRAL[i] = position_json;
+									These.K_NEUTRAL[i].Text = position_json.Text;
 									neu = 0;
 								}
 							}
@@ -186,7 +186,7 @@ exports.putPosition = function(db){
 						if(richtungsarrayname == "W_NEUTRAL"){
 							for(i = 0; i < These.W_PRO.length; i++){
 								if(These.W_NEUTRAL[i].UID == uid){
-									These.W_NEUTRAL[i] = position_json;
+									These.W_NEUTRAL[i].Text = position_json.Text;
 									neu = 0;
 								}
 							}
@@ -195,7 +195,7 @@ exports.putPosition = function(db){
 						if(richtungsarrayname == "K_CONTRA"){
 							for(i = 0; i < These.K_CONTRA.length; i++){
 								if(These.K_CONTRA[i].UID == uid){
-									These.K_CONTRA[i] = position_json;
+									These.K_CONTRA[i].Text = position_json.Text;
 									neu = 0;
 								}
 							}
@@ -204,7 +204,7 @@ exports.putPosition = function(db){
 						if(richtungsarrayname == "W_CONTRA"){
 							for(i = 0; i < These.W_CONTRA.length; i++){
 								if(These.W_CONTRA[i].UID == uid){
-									These.W_CONTRA[i] = position_json;
+									These.W_CONTRA[i].Text = position_json.Text;
 									neu = 0;
 								}
 							}
