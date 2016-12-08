@@ -35,7 +35,7 @@ public class KandidatAnsichtActivity extends AppCompatActivity {
         Bundle bd = intent.getExtras();
 
         lv = (ListView) findViewById(R.id.kandidatthesenliste);
-        listadapter = new KandidatBeantworteteThesenAdapter(beantworteteThesenKandidatenModels, getBaseContext());
+        listadapter = new KandidatBeantworteteThesenAdapter(beantworteteThesenKandidatenModels, getBaseContext(), "NORMAL");
 
         if(bd != null)
         {

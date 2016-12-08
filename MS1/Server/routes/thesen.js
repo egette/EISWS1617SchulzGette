@@ -98,16 +98,17 @@ if(anzahl_thesen > Thesen_IDS.length) anzahl_thesen = Thesen_IDS.length;
 		
 exports.putPosition = function(db){
 	return function (req, res){
+		console.log("BODY", req.body);
 		var tid = req.body.tid;
 		var typ = req.body.typ;
 		var uid = req.body.uid;
 		var richtung = req.body.richtung;
 		var textdata = req.body.textdata;
 		var username = req.body.username;
-		if(!tid || !typ || !uid || !richtung || !username) res.status(409).end();
+		if(!tid || !typ || !uid || !richtung) res.status(409).end();
 
 		if (tid.substring(0, 4) == "TID_"){
-			if(!textdata){
+			if(!textdata && typ == "kandidat"){
 				db.get(tid, function(err, reply){
 					if(err) throw err;
 					if (!reply ) {

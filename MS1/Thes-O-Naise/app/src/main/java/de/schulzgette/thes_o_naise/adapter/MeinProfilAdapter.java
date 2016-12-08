@@ -31,7 +31,7 @@ public class MeinProfilAdapter extends FragmentStatePagerAdapter {
             case 1: return PositionenTabFragment.newInstance(MODE1, KID2);
             case 2: return BegruendungenTabFragment.newInstance(MODE1, KID2);
             case 3: return WahlprogrammTabFragment.newInstance(MODE1, KID2);
-            default: return BiografieTabFragment.newInstance(MODE1, KID2, kandidat2);
+            default: return BiografieTabFragment.newInstance(MODE1, KID2,kandidat2);
         }
     }
 
