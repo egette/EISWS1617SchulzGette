@@ -1,6 +1,5 @@
 package de.schulzgette.thes_o_naise;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,14 +23,12 @@ import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.adapter.KandidatenErgebnisListAdapter;
 import de.schulzgette.thes_o_naise.adapter.KandidatenListAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
-import de.schulzgette.thes_o_naise.services.GetThesenFromAPI;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
-import static de.schulzgette.thes_o_naise.R.id.spinner_kategorie;
 import static de.schulzgette.thes_o_naise.R.id.spinner_kategorie_ergebnis;
 
 
@@ -163,7 +160,10 @@ public class KandidatenFragment extends Fragment {
                                     String email = (String) kandidaten_data.get("email");
                                     String wahlkreis = (String) kandidaten_data.get("wahlkreis");
                                     JSONArray beantworteteThesen = (JSONArray) kandidaten_data.get("Thesen_beantwortet");
-                                    db.insertKandidat( KID, vorname, nachname, partei, email, wahlkreis, beantworteteThesen);
+                                    JSONArray begruendungen = (JSONArray) kandidaten_data.get("Begruendungen");
+                                    JSONObject biografie = (JSONObject) kandidaten_data.get("Biografie");
+                                    JSONObject wahlprogramm = (JSONObject) kandidaten_data.get("Wahlprogramm");
+                                    db.insertKandidat( KID, vorname, nachname, partei, email, wahlkreis, beantworteteThesen, begruendungen, biografie, wahlprogramm);
                                 }
                             }
                             Log.d("Kandidaten", "In der Datenbank");

@@ -117,7 +117,12 @@ public class NavigationActivity extends AppCompatActivity
                     .replace(R.id.content_frame_nav, new KandidatenFragment())
                     .commit();
         } else if (id == R.id.nav_profil) {
-
+            Intent i = new Intent (this, MeinProfilKandidatActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
+            String kid = sharedPreferences.getString("UID", "");
+            i.putExtra("KID", kid);
+            i.putExtra("MODE", "MEINPROFIL");
+            startActivity(i);
         } else if (id == R.id.nav_ausloggen) {
             SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
             sharedPreferences.edit().putString("token", "").apply();

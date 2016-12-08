@@ -18,7 +18,10 @@ exports.getKandidaten = function(db){
 						email: Kandidat.email,
 						KID: Kandidat.KID,
 						Partei: Kandidat.Partei,
-						Thesen_beantwortet: Kandidat.Thesen_beantwortet
+						Thesen_beantwortet: Kandidat.Thesen_beantwortet,
+						Begruendungen: Kandidat.Begruendungen,
+						Biografie: Kandidat.Biografie,
+						Wahlprogramm: Kandidat.Wahlprogramm
 					};
 					res.status(200).send(result).end();
 				}
@@ -61,7 +64,10 @@ function makeKandidatenJSON(Kandidaten_IDS, db){
 						email: Kandidat.email,
 						KID: Kandidat.KID,
 						Partei: Kandidat.Partei,
-						Thesen_beantwortet: Kandidat.Thesen_beantwortet
+						Thesen_beantwortet: Kandidat.Thesen_beantwortet,
+						Begruendungen: Kandidat.Begruendungen,
+						Biografie: Kandidat.Biografie,
+						Wahlprogramm: Kandidat.Wahlprogramm
 		};
         Kandidaten_JSONOBJECT.Kandidaten.push(result);
       }

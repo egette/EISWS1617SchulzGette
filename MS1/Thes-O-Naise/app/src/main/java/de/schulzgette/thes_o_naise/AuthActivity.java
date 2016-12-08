@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import de.schulzgette.thes_o_naise.database.Database;
-import de.schulzgette.thes_o_naise.services.EventBus;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -201,7 +200,10 @@ public class AuthActivity extends AppCompatActivity {
                                     String email = (String) kandidaten_data.get("email");
                                     String wahlkreis = (String) kandidaten_data.get("wahlkreis");
                                     JSONArray beantworteteThesen = (JSONArray) kandidaten_data.get("Thesen_beantwortet");
-                                    db.insertKandidat( KID, vorname, nachname, partei, email, wahlkreis, beantworteteThesen);
+                                    JSONArray begruendungen = (JSONArray) kandidaten_data.get("Begruendungen");
+                                    JSONObject biografie = (JSONObject) kandidaten_data.get("Biografie");
+                                    JSONObject wahlprogramm = (JSONObject) kandidaten_data.get("Wahlprogramm");
+                                    db.insertKandidat( KID, vorname, nachname, partei, email, wahlkreis, beantworteteThesen, begruendungen, biografie, wahlprogramm);
                                 }
                             }
                             Log.d("Kandidaten", "In der Datenbank");

@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
@@ -51,6 +50,7 @@ public class Database {
         public static final String COLUMN_NAME_PUNKTE_SATIRE = "punkte_satire";
         public static final String COLUMN_NAME_BIOGRAPHIE = "biographie";
         public static final String COLUMN_NAME_WAHLPROGRAMM = "wahlprogramm";
+        public static final String COLUMN_NAME_BEGRUENDUNGEN = "begruendungen";
     }
 
     public static abstract  class ThesenTable implements BaseColumns{
@@ -107,6 +107,7 @@ public class Database {
                     KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_AP + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN + " TEXT," +
                     KandidatenTable.COLUMN_NAME_BIOGRAPHIE + " TEXT," +
                     KandidatenTable.COLUMN_NAME_WAHLPROGRAMM + " TEXT" +
                     " )";
@@ -150,7 +151,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 3;
+        public static final int DATABASE_VERSION = 4;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -592,7 +593,7 @@ public class Database {
         return  result;
     }
 
-    public void insertKandidat(String KID, String vorname, String nachname, String partei, String email, String wahlkreis, JSONArray beantworteteThesen ){
+    public void insertKandidat(String KID, String vorname, String nachname, String partei, String email, String wahlkreis, JSONArray beantworteteThesen, JSONArray begruendungen, JSONObject biografie, JSONObject wahlprogramm){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
         SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
@@ -606,6 +607,9 @@ public class Database {
                     try {
                         ContentValues values = new ContentValues();
                         String beantwortete_Thesen = beantworteteThesen.toString();
+                        String begruendungen2 = begruendungen.toString();
+                        String biografie2 = biografie.toString();
+                        String wahlprogramm2 = wahlprogramm.toString();
                         values.put(KandidatenTable.COLUMN_NAME_KID, KID);
                         values.put(KandidatenTable.COLUMN_NAME_VORNAME, vorname);
                         values.put(KandidatenTable.COLUMN_NAME_NACHNAME, nachname);
@@ -613,6 +617,9 @@ public class Database {
                         values.put(KandidatenTable.COLUMN_NAME_EMAIL, email);
                         values.put(KandidatenTable.COLUMN_NAME_WAHLKREIS, wahlkreis);
                         values.put(KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, beantwortete_Thesen);
+                        values.put(KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, begruendungen2);
+                        values.put(KandidatenTable.COLUMN_NAME_BIOGRAPHIE, biografie2);
+                        values.put(KandidatenTable.COLUMN_NAME_WAHLPROGRAMM, wahlprogramm2);
 
                         dbwrite.insert(KandidatenTable.TABLE_NAME, null, values);
                     } finally {
@@ -622,6 +629,9 @@ public class Database {
                     try {
                         ContentValues values = new ContentValues();
                         String beantwortete_Thesen = beantworteteThesen.toString();
+                        String begruendungen2 = begruendungen.toString();
+                        String biografie2 = biografie.toString();
+                        String wahlprogramm2 = wahlprogramm.toString();
                         values.put(KandidatenTable.COLUMN_NAME_KID, KID);
                         values.put(KandidatenTable.COLUMN_NAME_VORNAME, vorname);
                         values.put(KandidatenTable.COLUMN_NAME_NACHNAME, nachname);
@@ -629,6 +639,9 @@ public class Database {
                         values.put(KandidatenTable.COLUMN_NAME_EMAIL, email);
                         values.put(KandidatenTable.COLUMN_NAME_WAHLKREIS, wahlkreis);
                         values.put(KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, beantwortete_Thesen);
+                        values.put(KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, begruendungen2);
+                        values.put(KandidatenTable.COLUMN_NAME_BIOGRAPHIE, biografie2);
+                        values.put(KandidatenTable.COLUMN_NAME_WAHLPROGRAMM, wahlprogramm2);
                         dbwrite.update(KandidatenTable.TABLE_NAME, values, "kid=?", new String[]{KID});
                     }finally {
                         cursor.close();
@@ -670,7 +683,7 @@ public class Database {
 
         try{
             if(wahlkreis != null) {
-                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, null);
+                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, null);
 
                 try {
                     while (c.moveToNext()) {
@@ -687,8 +700,14 @@ public class Database {
                         Integer Punkte_Umwelt = c.getInt(9);
                         Integer Punkte_AP = c.getInt(10);
                         Integer Punkte_Satire = c.getInt(11);
+                        String begruendungen2 = c.getString(12);
+                        String biografie2 = c.getString(13);
+                        String wahlprogramm2 = c.getString(14);
                         JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
-                        kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire));
+                        JSONArray begruendungen = new JSONArray(begruendungen2);
+                        JSONObject biografie = new JSONObject(biografie2);
+                        JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
+                        kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm));
                     }
 
                 } catch (JSONException e) {
@@ -711,7 +730,7 @@ public class Database {
 
         try{
             if(kategorie != null && wahlkreis != null) {
-                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, kategorie + " ASC");
+                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, kategorie + " ASC");
 
                 try {
                     while (c.moveToNext()) {
@@ -728,7 +747,13 @@ public class Database {
                         Integer Punkte_Umwelt = c.getInt(9);
                         Integer Punkte_AP = c.getInt(10);
                         Integer Punkte_Satire = c.getInt(11);
+                        String begruendungen2 = c.getString(12);
+                        String biografie2 = c.getString(13);
+                        String wahlprogramm2 = c.getString(14);
                         JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
+                        JSONArray begruendungen = new JSONArray(begruendungen2);
+                        JSONObject biografie = new JSONObject(biografie2);
+                        JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
                         Integer check = 0;
                         String kategorie2 = "";
                         if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT)) check = 1;
@@ -742,7 +767,7 @@ public class Database {
                             if(objectKategorie.equals(kategorie2))check = 1;
                         }
 
-                        if (check == 1) kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire));
+                        if (check == 1) kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm));
                     }
 
                 } catch (JSONException e) {
@@ -765,7 +790,7 @@ public class Database {
 
         try{
             if(kid != null) {
-                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE}, "kid = ?", new String[]{kid}, null, null, null);
+                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM}, "kid = ?", new String[]{kid}, null, null, null);
 
                 try {
                     while (c.moveToNext()) {
@@ -777,14 +802,20 @@ public class Database {
                         String email = c.getString(4);
                         String wahlkreis = c.getString(5);
                         String beantwortete_Thesen = c.getString(6);
+                        String begruendungen2 = c.getString(12);
+                        String biografie2 = c.getString(13);
+                        String wahlprogramm2 = c.getString(14);
                         JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
+                        JSONArray begruendungen = new JSONArray(begruendungen2);
+                        JSONObject biografie = new JSONObject(biografie2);
+                        JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
                         //TODO MEHR KATEGORIEN ?
                         Integer Punkte_Insgesamt = c.getInt(7);
                         Integer Punkte_Lokal = c.getInt(8);
                         Integer Punkte_Umwelt = c.getInt(9);
                         Integer Punkte_AP = c.getInt(10);
                         Integer Punkte_Satire = c.getInt(11);
-                        kandidatenModel = new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire);
+                        kandidatenModel = new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm);
                     }
 
                 } catch (JSONException e) {

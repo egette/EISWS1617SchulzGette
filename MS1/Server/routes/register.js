@@ -90,7 +90,19 @@
 									email: req.body.email,
 									KID: "",
 									Partei: req.body.partei,
-									Thesen_beantwortet: []
+									Thesen_beantwortet: [],
+									Begruendungen: [],
+									Biografie: {
+										Geburtsdatum: "",
+										Bildungsweg: "",
+										Berufe: "",
+										Mitgliedschaften: ""
+									},
+									Wahlprogramm: {
+										Webseite: "",
+										Text: "",
+										Link: ""
+									}
 								};							
 								var Client_JSON = {
 									Client_ID: ""

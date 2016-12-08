@@ -36,9 +36,10 @@
         <activity android:name=".ThesenAnsichtActivity"
             android:windowSoftInputMode="stateHidden" />
         <!--android:windowSoftInputMode="adjustPan"-->
-
+        <activity android:name=".MeinProfilKandidatActivity" />
         <activity android:name=".AuthActivity" />
         <activity android:name=".KandidatAnsichtActivity" >
+
         </activity>
     </application>
 

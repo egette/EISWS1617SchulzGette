@@ -4,8 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.schulzgette.thes_o_naise.database.Database;
-
 /**
  * Created by Jessica on 19.11.2016.
  */
@@ -24,9 +22,12 @@ public class KandidatenModel {
     Integer Punkte_Umwelt;
     Integer Punkte_AP;
     Integer Punkte_Satire;
+    JSONArray Begruendungen;
+    JSONObject Biografie;
+    JSONObject Wahlprogramm;
 
 
-    public KandidatenModel(String kid, String vorname, String nachname,  String partei, String email,  String wahlkreis,  JSONArray beantworteteThesen, Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire) {
+    public KandidatenModel(String kid, String vorname, String nachname,  String partei, String email,  String wahlkreis,  JSONArray beantworteteThesen, Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire, JSONArray Begruendungen, JSONObject Biografie, JSONObject Wahlprogramm) {
         this.vorname = vorname;
         this.nachname = nachname;
         this.kid = kid;
@@ -39,9 +40,23 @@ public class KandidatenModel {
         this.Punkte_Umwelt = punkte_Umwelt;
         this.Punkte_AP = punkte_AP;
         this.Punkte_Satire = punkte_Satire;
+        this.Begruendungen = Begruendungen;
+        this.Biografie = Biografie;
+        this.Wahlprogramm = Wahlprogramm;
     }
 
 
+    public JSONArray getBegruendungen() {
+        return Begruendungen;
+    }
+
+    public JSONObject getBiografie() {
+        return Biografie;
+    }
+
+    public JSONObject getWahlprogramm() {
+        return Wahlprogramm;
+    }
 
     public String getNachname() {
         return nachname;
