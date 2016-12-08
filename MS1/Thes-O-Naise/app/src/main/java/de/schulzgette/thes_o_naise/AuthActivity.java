@@ -77,10 +77,12 @@ public class AuthActivity extends AppCompatActivity {
                             String uid = (String) Jobject.get("userID");
                             String typ = uid.substring(0,1);
                             String wahlkreis = (String) Jobject.get("wahlkreis");
+                            String username = (String) Jobject.get("username");
                             SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
                             sharedPreferences.edit().putString("token", token).apply();
                             sharedPreferences.edit().putString("UID", uid).apply();
                             sharedPreferences.edit().putString("wahlkreis", wahlkreis).apply();
+                            sharedPreferences.edit().putString("username", username).apply();
                             if(typ.equals("W"))sharedPreferences.edit().putString("typ", "waehler").apply();
                             if(typ.equals("K"))sharedPreferences.edit().putString("typ", "kandidat").apply();
                             getAllThesenFromWahlkreis(wahlkreis);

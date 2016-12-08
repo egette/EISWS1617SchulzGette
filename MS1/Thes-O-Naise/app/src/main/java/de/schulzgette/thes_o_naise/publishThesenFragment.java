@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
+import de.schulzgette.thes_o_naise.utils.TheseToLokalDatabase;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -115,38 +116,17 @@ public class publishThesenFragment extends Fragment{
                 public void onResponse(Call call, Response response) throws IOException {
                     Integer statusCode = response.code();
                     if (response.isSuccessful()) {
-
+                        Database db = new Database(getContext());
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
-                        try {
-                            Database db = new Database(getContext());
-                            JSONObject these_data = new JSONObject(jsonData);
-                            String TID = (String) these_data.get("TID");
-                            String thesentext = (String) these_data.get("thesentext");
-                            Integer proINT = (Integer) these_data.get("Anzahl_Zustimmung");
-                            Integer neutralINT = (Integer) these_data.get("Anzahl_Neutral");
-                            Integer contraINT = (Integer) these_data.get("Anzahl_Ablehnung");
-                            JSONArray K_PRO = (JSONArray) these_data.get("K_PRO");
-                            JSONArray K_NEUTRAL = (JSONArray) these_data.get("K_NEUTRAL");
-                            JSONArray K_CONTRA = (JSONArray) these_data.get("K_CONTRA");
-                            JSONArray W_PRO = (JSONArray) these_data.get("W_PRO");
-                            JSONArray W_NEUTRAL = (JSONArray) these_data.get("W_NEUTRAL");
-                            JSONArray W_CONTRA = (JSONArray) these_data.get("W_CONTRA");
-                            JSONArray K_POSITION = (JSONArray) these_data.get("K_POSITION");
-                            String kategorie = (String) these_data.get("kategorie");
-                            String wahlkreis = (String) these_data.get("wahlkreis");
-                            Integer likesINT = (Integer) these_data.get("Likes");
-                            db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA, W_PRO, W_NEUTRAL, W_CONTRA, K_POSITION);
+                        TheseToLokalDatabase.saveTheseInLokalDatabase(jsonData, db);
 
-                            getActivity().runOnUiThread(new Runnable() {
-                                public void run() {
-                                    Toast.makeText(getActivity(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getActivity(), "Ihre These wurde veröffentlicht", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         response.body().close();
                     } else {
                         Log.d("Statuscode", String.valueOf(response.code()));

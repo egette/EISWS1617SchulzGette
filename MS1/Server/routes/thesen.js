@@ -103,7 +103,8 @@ exports.putPosition = function(db){
 		var uid = req.body.uid;
 		var richtung = req.body.richtung;
 		var textdata = req.body.textdata;
-		if(!tid || !typ || !uid || !richtung) res.status(409).end();
+		var username = req.body.username;
+		if(!tid || !typ || !uid || !richtung || !username) res.status(409).end();
 
 		if (tid.substring(0, 4) == "TID_"){
 			if(!textdata){
@@ -150,6 +151,7 @@ exports.putPosition = function(db){
 						
 						var position_json = {
 							UID: uid,
+							Username: username,
 							Text: textdata,
 							likes: 0,
 							Kommentare: []
@@ -220,6 +222,79 @@ exports.putPosition = function(db){
 	
 };
 
+exports.postKommentar = function(db){
+	return function (req, res){
+		console.log("BODY", req.body);
+		var tid = req.body.tid;
+		var begruendungsid = req.body.beguid;
+		var uid = req.body.uid ;
+		var kommentartext = req.body.kommentar;
+		var username = req.body.username;
+		var typ = req.body.typ;
+		var position = req.body.richtung;
+		
+		if(!tid || !begruendungsid  || !uid || !kommentartext || !username || !typ || !position) res.status(401).end();
+		//TODO : wenn die Anfrage fehlerhaft war, den code nicht weiter laufen lassen
+		db.get(tid, function (err, reply) { 
+			if(err) throw err;
+			var These = JSON.parse(reply);
+			var Kommentarobject = {
+				UID: uid,
+				USERNAME: username,
+				Kommentar: kommentartext
+			};
+			
+			if(typ == 'waehler'){
+				if(position == "PRO"){
+					for(i = 0; i < These.W_PRO.length; i++){
+						if(These.W_PRO[i].UID == begruendungsid){
+							These.W_PRO[i].Kommentare.push(Kommentarobject);
+						}
+					}	
+				}
+				if(position == "NEUTRAL"){
+					for(i = 0; i < These.W_NEUTRAL.length; i++){
+						if(These.W_NEUTRAL[i].UID == begruendungsid){
+							These.W_NEUTRAL[i].Kommentare.push(Kommentarobject);
+						}
+					}	
+				}
+				if(position == "CONTRA"){
+					for(i = 0; i < These.W_CONTRA.length; i++){
+						if(These.W_CONTRA[i].UID == begruendungsid){
+							These.W_CONTRA[i].Kommentare.push(Kommentarobject);
+						}
+					}	
+				}
+			}else if(typ == 'kandidat'){
+				if(position == "PRO"){
+					for(i = 0; i < These.K_PRO.length; i++){
+						if(These.K_PRO[i].UID == begruendungsid){
+							These.K_PRO[i].Kommentare.push(Kommentarobject);
+						}
+					}	
+				}
+				if(position == "NEUTRAL"){
+					for(i = 0; i < These.K_NEUTRAL.length; i++){
+						if(These.K_NEUTRAL[i].UID == begruendungsid){
+							These.K_NEUTRAL[i].Kommentare.push(Kommentarobject);
+						}
+					}	
+				}
+				if(position == "CONTRA"){
+					for(i = 0; i < These.K_CONTRA.length; i++){
+						if(These.K_CONTRA[i].UID == begruendungsid){
+							These.K_CONTRA[i].Kommentare.push(Kommentarobject);
+						}
+					}	
+				}
+			}
+			db.set(tid, JSON.stringify(These));
+			console.log("THESE :", These);
+			res.status(201).send(These).end();
+		});
+	}
+}
 function updateBeantworteteThesen(tid, kid, position, db, kategorie){
 	db.get(kid, function (err, reply) {
 		if (err) throw err;
@@ -309,3 +384,68 @@ exports.getThesen = function(db){
 		}
 	}
 }	
+
+exports.putLikes = function(db){
+	return function (req, res){
+		console.log("BODY", req.body);
+		var begruendungsid = req.body.beguid;
+		var tid = req.body.tid;
+		var position = req.body.richtung;
+		var typ = req.body.typ;
+		var like = req.body.like;
+		if(!tid || !begruendungsid || !typ || !position || !like) res.status(401).end();
+		
+		db.get(tid, function (err, reply) { 
+			if(err) throw err;
+			var These = JSON.parse(reply);
+			if(typ == 'w'){
+				if(position == "PRO"){
+					for(i = 0; i < These.W_PRO.length; i++){
+						if(These.W_PRO[i].UID == begruendungsid){
+							These.W_PRO[i].likes += like;
+						}
+					}	
+				}
+				if(position == "NEUTRAL"){
+					for(i = 0; i < These.W_NEUTRAL.length; i++){
+						if(These.W_NEUTRAL[i].UID == begruendungsid){
+							These.W_NEUTRAL[i].likes += like;
+						}
+					}	
+				}
+				if(position == "CONTRA"){
+					for(i = 0; i < These.W_CONTRA.length; i++){
+						if(These.W_CONTRA[i].UID == begruendungsid){
+							These.W_CONTRA[i].likes += like;
+						}
+					}	
+				}
+			}else if(typ == 'k'){
+				if(position == "PRO"){
+					for(i = 0; i < These.K_PRO.length; i++){
+						if(These.K_PRO[i].UID == begruendungsid){
+							These.K_PRO[i].likes += like;
+						}
+					}	
+				}
+				if(position == "NEUTRAL"){
+					for(i = 0; i < These.K_NEUTRAL.length; i++){
+						if(These.K_NEUTRAL[i].UID == begruendungsid){
+							These.K_NEUTRAL[i].likes += like;
+						}
+					}	
+				}
+				if(position == "CONTRA"){
+					for(i = 0; i < These.K_CONTRA.length; i++){
+						if(These.K_CONTRA[i].UID == begruendungsid){
+							These.K_CONTRA[i].likes += like;
+						}
+					}	
+				}
+			}
+			db.set(tid, JSON.stringify(These));
+			console.log("THESE :", These);
+			res.status(201).send(These).end();
+		});
+	}
+}

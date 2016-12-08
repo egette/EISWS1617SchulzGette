@@ -17,6 +17,7 @@ import java.util.List;
 
 import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
+import de.schulzgette.thes_o_naise.Models.KommentarModel;
 import de.schulzgette.thes_o_naise.Models.ThesenModel;
 
 /**
@@ -72,6 +73,14 @@ public class Database {
 
     }
 
+    public static abstract  class BegruendungTable implements BaseColumns{
+        public static final String TABLE_NAME = "begruendungen";
+        public static final String COLUMN_NAME_PRIMARYKEY = "pk";
+        public static final String COLUMN_NAME_TID = "tid";
+        public static final String COLUMN_NAME_POSITION = "position";
+        public static final String COLUMN_NAME_BID = "bid";
+        public static final String COLUMN_NAME_LIKE = "like";
+    }
 
     public static final String SQL_CREATE_USERPOSITIONDATATABLE =
             "CREATE TABLE " + UserpositiondataTable.TABLE_NAME + " (" +
@@ -121,16 +130,27 @@ public class Database {
                     ThesenTable.COLUMN_NAME_K_POSITION + " TEXT" +
                     " )";
 
+    public static final String SQL_CREATE_BEGRUENDUNGDATATABLE =
+            "CREATE TABLE " + BegruendungTable.TABLE_NAME + " (" +
+                    BegruendungTable.COLUMN_NAME_PRIMARYKEY + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    BegruendungTable.COLUMN_NAME_TID + " TEXT," +
+                    BegruendungTable.COLUMN_NAME_POSITION + " TEXT," +
+                    BegruendungTable.COLUMN_NAME_BID + " TEXT," +
+                    BegruendungTable.COLUMN_NAME_LIKE + " INTEGER" +
+                    " )";
+
     public static final String SQL_DELETE_USERPOSTIONDATATABLE =
             "DROP TABLE IF EXISTS " + UserpositiondataTable.TABLE_NAME;
     public static final String SQL_DELETE_THESENTABLE =
             "DROP TABLE IF EXISTS " + ThesenTable.TABLE_NAME;
     public static final String SQL_DELETE_KANDIDATENTABLE =
             "DROP TABLE IF EXISTS " + KandidatenTable.TABLE_NAME;
+    public static final String SQL_DELETE_BEGRUENDUNGDATATABLE =
+            "DROP TABLE IF EXISTS " + BegruendungTable.TABLE_NAME;
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 2;
+        public static final int DATABASE_VERSION = 3;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -141,13 +161,15 @@ public class Database {
             db.execSQL(SQL_CREATE_USERPOSITIONDATATABLE);
             db.execSQL(SQL_CREATE_THESENTABLE);
             db.execSQL(SQL_CREATE_KANDIDATENTABLE);
+            db.execSQL(SQL_CREATE_BEGRUENDUNGDATATABLE);
         }
 
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            onUpgrade(db, oldVersion, newVersion);
+//            onUpgrade(db, oldVersion, newVersion);
             db.execSQL(SQL_DELETE_USERPOSTIONDATATABLE);
             db.execSQL(SQL_DELETE_THESENTABLE);
             db.execSQL(SQL_DELETE_KANDIDATENTABLE);
+            db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
             onCreate(db);
         }
 
@@ -155,6 +177,7 @@ public class Database {
             db.execSQL(SQL_DELETE_USERPOSTIONDATATABLE);
             db.execSQL(SQL_DELETE_THESENTABLE);
             db.execSQL(SQL_DELETE_KANDIDATENTABLE);
+            db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
             onCreate(db);
         }
     }
@@ -501,15 +524,15 @@ public class Database {
                         JSONArray w_pro_Array = new JSONArray(w_pro);
                         JSONArray w_neutral_Array = new JSONArray(w_neutral);
                         JSONArray w_contra_Array = new JSONArray(w_contra);
-                        if(position.equals("PRO")){
-                            for(int i = 0; i<k_pro_Array.length(); i++){
-                                JSONObject object =(JSONObject) k_pro_Array.get(i);
-                                JSONArray kommentare = (JSONArray) object.get("Kommentare");
-
-                            }
+                        if(position.equals("Pro")){
+                           result =  makeArraylistWithJSONArrays(k_pro_Array, w_pro_Array);
                         }
-                       //f(position.equals("NEUTRAL")) result = postionen_neutral_Array;
-                       // if(position.equals("CONTRA")) result = postionen_contra_Array;
+                       if(position.equals("Neutral")) {
+                           result =  makeArraylistWithJSONArrays(k_neutral_Array, w_neutral_Array);
+                       }
+                       if(position.equals("Contra")){
+                           result =  makeArraylistWithJSONArrays(k_contra_Array, w_contra_Array);
+                       }
                     }
                 }
             }
@@ -520,6 +543,53 @@ public class Database {
             db.close();
         }
         return result;
+    }
+
+    public ArrayList<BegruendungModel> makeArraylistWithJSONArrays (JSONArray k, JSONArray w){
+        ArrayList<BegruendungModel> result = new ArrayList<>();
+        try{
+            for(int i = 0; i<k.length(); i++){
+                JSONObject object =(JSONObject) k.get(i);
+                String UID = object.getString("UID");
+                String Username = object.getString("Username");
+                String begruendungstext = object.getString("Text");
+                Integer likes = object.getInt("likes");
+                JSONArray kommentare = (JSONArray) object.get("Kommentare");
+                ArrayList<KommentarModel> kommentareliste = new ArrayList<>();
+                if (kommentare.length() > 0) {
+                    for (int j = 0; j < kommentare.length(); j++) {
+                        JSONObject kommentar = (JSONObject) kommentare.get(j);
+                        String kommentartext = kommentar.getString("Kommentar");
+                        String uid = kommentar.getString("UID");
+                        String username = kommentar.getString("USERNAME");
+                        kommentareliste.add(new KommentarModel(kommentartext,uid,username));
+                    }
+                }
+                result.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "k", Username));
+            }
+            for(int i = 0; i<w.length(); i++){
+                JSONObject object =(JSONObject) w.get(i);
+                String UID = object.getString("UID");
+                String Username = object.getString("Username");
+                String begruendungstext = object.getString("Text");
+                Integer likes = object.getInt("likes");
+                JSONArray kommentare = (JSONArray) object.get("Kommentare");
+                ArrayList<KommentarModel> kommentareliste = new ArrayList<>();
+                if (kommentare.length() > 0) {
+                    for (int j = 0; j < kommentare.length(); j++) {
+                        JSONObject kommentar = (JSONObject) kommentare.get(j);
+                        String kommentartext = kommentar.getString("Kommentar");
+                        String uid = kommentar.getString("UID");
+                        String username = kommentar.getString("USERNAME");
+                        kommentareliste.add(new KommentarModel(kommentartext,uid,username));
+                    }
+                }
+                result.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "w", Username));
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  result;
     }
 
     public void insertKandidat(String KID, String vorname, String nachname, String partei, String email, String wahlkreis, JSONArray beantworteteThesen ){
@@ -729,4 +799,59 @@ public class Database {
         return kandidatenModel;
     }
 
+    public void insertLikeBegruendung(String TID, String BID, String Position, Integer Like){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
+        Cursor cursor;
+        if (TID != null && Position != null) {
+            cursor = dbread.query(BegruendungTable.TABLE_NAME, new String[]{BegruendungTable.COLUMN_NAME_TID, BegruendungTable.COLUMN_NAME_BID, BegruendungTable.COLUMN_NAME_POSITION}, "tid=? AND bid=? AND position=?", new String[]{TID, BID, Position}, null, null, null);
+
+            SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+
+            if (cursor.getCount() < 1) {
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(BegruendungTable.COLUMN_NAME_POSITION, Position);
+                    values.put(BegruendungTable.COLUMN_NAME_TID, TID);
+                    values.put(BegruendungTable.COLUMN_NAME_BID, BID);
+                    values.put(BegruendungTable.COLUMN_NAME_LIKE, Like);
+                    dbwrite.insert(BegruendungTable.TABLE_NAME, null, values);
+                } finally {
+                    dbread.close();
+                    dbwrite.close();
+                }
+            } else {
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(BegruendungTable.COLUMN_NAME_POSITION, Position);
+                    values.put(BegruendungTable.COLUMN_NAME_TID, TID);
+                    values.put(BegruendungTable.COLUMN_NAME_BID, BID);
+                    values.put(BegruendungTable.COLUMN_NAME_LIKE, Like);
+                    dbwrite.update(BegruendungTable.TABLE_NAME, values, "tid=? AND bid=? AND position=?", new String[]{TID, BID, Position});
+                } finally {
+                    dbread.close();
+                    dbwrite.close();
+                }
+            }
+        }
+    }
+
+    public Integer getLikeBegruendung(String TID, String BID, String Position ){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
+        Cursor cursor;
+        Integer result = 0;
+        if (TID != null && Position != null && BID != null) {
+            try{
+                cursor = dbread.query(BegruendungTable.TABLE_NAME, new String[]{BegruendungTable.COLUMN_NAME_TID, BegruendungTable.COLUMN_NAME_BID, BegruendungTable.COLUMN_NAME_POSITION, BegruendungTable.COLUMN_NAME_LIKE}, "tid=? AND bid=? AND position=?", new String[]{TID, BID, Position}, null, null, null);
+                while(cursor.moveToNext()){
+                    result = cursor.getInt(3);
+                }
+            } finally {
+                dbread.close();
+            }
+
+        }
+        return result;
+    }
 }

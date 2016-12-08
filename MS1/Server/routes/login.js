@@ -50,7 +50,8 @@ function makeToken(userID, db, reqPassword, app, res, jwt){
 			wahlkreis: userDataJSON.wahlkreis,
 			userID: userID,
 			sucess: true,
-			token: token
+			token: token,
+			username: userDataJSON.username
 			}).status(200).end();
 		}else{
 			res.status(403).end();
