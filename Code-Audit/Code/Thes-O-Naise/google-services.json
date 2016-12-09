@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "1030726818153",
+    "project_id": "thes-o-naise"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030726818153:android:d40f46309598fc49",
+        "android_client_info": {
+          "package_name": "de.schulzgette.thes_o_naise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgmealiA-479DYhAGoWOYARotF1ODW77U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

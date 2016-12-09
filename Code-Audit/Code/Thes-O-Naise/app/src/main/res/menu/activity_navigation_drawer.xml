@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+        android:id="@+id/nav_profil"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:title="Mein Profil" />
+        <item
+            android:id="@+id/nav_publishThesen"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="Thesen veröffentlichen" />
+        <item
+            android:id="@+id/nav_showthesen"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Thesen sehen" />
+        <item
+            android:id="@+id/nav_matching"
+            android:icon="@android:drawable/btn_star"
+            android:title="Matching" />
+        <item
+            android:id="@+id/nav_kandidaten"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:title="Kandidaten" />
+
+        <item
+            android:id="@+id/nav_ausloggen"
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:title="Ausloggen" />
+    </group>
+
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="Share" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_send"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Send" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

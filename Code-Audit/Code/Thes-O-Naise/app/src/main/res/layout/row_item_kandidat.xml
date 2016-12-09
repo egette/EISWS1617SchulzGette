@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="10dp">
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/kandidateninfo">
+
+    <TextView
+        android:id="@+id/vornamekandidat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/nachnamekandidat"
+        android:textColor="@android:color/black" />
+    <TextView
+        android:id="@+id/nachnamekandidat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/vornamekandidat"
+        android:textColor="@android:color/black"
+        android:padding="15dp"/>
+    <TextView
+        android:id="@+id/partei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Partei: "
+        android:layout_alignBaseline="@+id/parteikandidat"
+        android:layout_below="@+id/nachnamekandidat"
+        android:textColor="@android:color/holo_blue_dark"/>
+    <TextView
+        android:id="@+id/parteikandidat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nachnamekandidat"
+        android:layout_toRightOf="@+id/partei"
+        android:textColor="@android:color/black"
+        android:padding="5dp"/>
+
+</RelativeLayout>
+    <Button
+        android:text="Mehr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/einkandidatbutton"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/Widget.AppCompat.Button.Colored"/>
+
+
+</RelativeLayout>

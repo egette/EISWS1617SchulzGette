@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_kandidat_ansicht"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.schulzgette.thes_o_naise.KandidatAnsichtActivity"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:id="@+id/vornamekandidatansicht"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/nachnamekandidatansicht"
+        android:textColor="@android:color/black"/>
+    <TextView
+        android:id="@+id/nachnamekandidatansicht"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf= "@+id/vornamekandidatansicht"
+        android:layout_marginLeft="5dp"
+        android:textColor="@android:color/black" />
+    <TextView
+        android:id="@+id/parteiansicht"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Partei:"
+        android:layout_alignBaseline="@+id/parteikandidatansicht"
+        android:layout_below="@+id/nachnamekandidat"
+        android:textColor="@android:color/holo_blue_dark" />
+    <TextView
+        android:id="@+id/parteikandidatansicht"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nachnamekandidatansicht"
+        android:layout_toRightOf="@+id/parteiansicht"
+        android:layout_marginLeft="5dp"
+        android:textColor="@android:color/black" />
+
+    <ListView
+        android:id="@+id/kandidatthesenliste"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/parteiansicht"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="22dp" />
+</RelativeLayout>
+
