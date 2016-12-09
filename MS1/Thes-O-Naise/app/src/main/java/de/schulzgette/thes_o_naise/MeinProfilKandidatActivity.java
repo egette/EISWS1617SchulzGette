@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
-import de.schulzgette.thes_o_naise.adapter.MeinProfilAdapter;
+import de.schulzgette.thes_o_naise.adapter.MeinProfilKandidatAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import de.schulzgette.thes_o_naise.utils.TheseToLokalDatabase;
@@ -34,7 +34,7 @@ import okhttp3.Response;
 public class MeinProfilKandidatActivity extends FragmentActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private MeinProfilAdapter adapter;
+    private MeinProfilKandidatAdapter adapter;
     static final String ARG_KID = "KID";
     String kid;
     String MODE;
@@ -54,7 +54,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
             MODE = (String) bd.get("MODE");
             TheseToLokalDatabase.updateKandidatData(kid, db);
             updateKandidatView(kid);
-            adapter = new MeinProfilAdapter(getSupportFragmentManager(), kid, MODE);
+            adapter = new MeinProfilKandidatAdapter(getSupportFragmentManager(), kid, MODE);
         }
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.viewpager);

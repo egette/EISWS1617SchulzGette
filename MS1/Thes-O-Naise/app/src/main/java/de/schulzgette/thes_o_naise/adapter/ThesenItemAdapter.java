@@ -99,9 +99,6 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         }
 
         viewHolder.txtThesentext.setText(thesenModel.getThesentext());
-//        viewHolder.txtPro.setText(thesenModel.getPro().toString()); //TODO
-//        viewHolder.txtNeutral.setText(thesenModel.getNeutral().toString());
-//        viewHolder.txtContra.setText(thesenModel.getContra().toString());
 
         //User Position aus der Datenbank holen und den richtigen Radiobutton checken
         String userposition = db.getUserPositionWithTID(thesenModel.getTID());

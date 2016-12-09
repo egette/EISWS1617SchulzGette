@@ -77,7 +77,7 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
         final Database db = new Database(getContext());
         final View result;
         Log.d("MODUS1235", MODE);
-        if(MODE.equals("MEINPROFIL")){
+        if(MODE.equals("MEINPROFIL") || MODE.equals("WAEHLER")){
             if (convertView == null) {
 
                 viewHolder = new KandidatBeantworteteThesenAdapter.ViewHolder();

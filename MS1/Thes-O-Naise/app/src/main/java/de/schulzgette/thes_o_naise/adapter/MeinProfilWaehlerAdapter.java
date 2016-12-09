@@ -8,27 +8,26 @@ import de.schulzgette.thes_o_naise.KandidatenAnsichtFragments.BegruendungenTabFr
 import de.schulzgette.thes_o_naise.KandidatenAnsichtFragments.BiografieTabFragment;
 import de.schulzgette.thes_o_naise.KandidatenAnsichtFragments.PositionenTabFragment;
 import de.schulzgette.thes_o_naise.KandidatenAnsichtFragments.WahlprogrammTabFragment;
+import de.schulzgette.thes_o_naise.WaehlerProfilFragments.AbonniertesTabFragment;
+import de.schulzgette.thes_o_naise.WaehlerProfilFragments.MeineThesenTabFragment;
 
 /**
  * Created by Jessica on 6.12.2016.
  */
 
-public class MeinProfilAdapter extends FragmentStatePagerAdapter {
-    public String KID2 = "KID_2";
-    public String MODE1 = "NORMAL";
-    public MeinProfilAdapter(FragmentManager fm, String KID, String MODE) {
+public class MeinProfilWaehlerAdapter extends FragmentStatePagerAdapter {
+    public String UID2 = "KID_2";
+    public MeinProfilWaehlerAdapter(FragmentManager fm, String UID) {
         super(fm);
-        KID2 = KID;
-        MODE1 = MODE;
+       UID2 = UID;
     }
     @Override
     public Fragment getItem(int pos) {
         switch(pos) {
-            case 0: return BiografieTabFragment.newInstance(MODE1, KID2);
-            case 1: return PositionenTabFragment.newInstance(MODE1, KID2);
-            case 2: return BegruendungenTabFragment.newInstance(MODE1, KID2);
-            case 3: return WahlprogrammTabFragment.newInstance(MODE1, KID2);
-            default: return BiografieTabFragment.newInstance(MODE1, KID2);
+            case 0: return MeineThesenTabFragment.newInstance();
+            case 1: return PositionenTabFragment.newInstance("WAEHLER", UID2);
+            case 2: return AbonniertesTabFragment.newInstance();
+            default: return MeineThesenTabFragment.newInstance();
         }
     }
 

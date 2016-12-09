@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,11 +67,54 @@ public class PositionenTabFragment extends Fragment {
         lv = (ListView) view.findViewById(R.id.kandidatpositionenliste);
         listadapter = new KandidatBeantworteteThesenAdapter(beantworteteThesenKandidatenModels, getContext(), MODE);
         lv.setAdapter(listadapter);
-        updatePositionenView(kid);
+        if(MODE.equals("MEINPROFIL"))updatePositionenKandidatView(kid);
+        if(MODE.equals("WAEHLER")) updatePositionenWaehlerView();
+        if(MODE.equals("NORMAL")) updatePositionenNormalView(kid);
         return view;
     }
 
-    public void updatePositionenView(String kid){
+    public void updatePositionenNormalView(String KID) {
+        Database db = new Database(getContext());
+        kandidat = db.getKandidat(KID);
+        if(kandidat != null){
+            JSONArray kandidatthesen = kandidat.getBeantworteteThesen();
+            Log.d("JSONARRAY", kandidatthesen.toString());
+
+            for(int i = 0; i< kandidatthesen.length(); i++){
+                JSONObject jsonObject;
+                try {
+                    jsonObject = (JSONObject) kandidatthesen.get(i);
+                    String tid = jsonObject.getString("TID");
+                    String position = jsonObject.getString("POS");
+                    String thesentext = db.getThesentextWithTID(tid);
+                    String userposition = db.getUserPositionWithTID(tid);
+                    beantworteteThesenKandidatenModels.add(new BeantworteteThesenKandidatenModel(thesentext, tid, position, userposition));
+                    lv.setAdapter(listadapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void updatePositionenWaehlerView(){
+        Database db = new Database(getContext());
+        JSONObject object = db.getallPositions();
+        try {
+            JSONArray  positionen = object.getJSONArray("Positionen");
+            for (int i = 0; i < positionen.length() ; i++){
+                JSONObject position = (JSONObject) positionen.get(i);
+                String TID = position.getString("TID");
+                String positiontxt = position.getString("POSITION");
+                String thesentext = db.getThesentextWithTID(TID);
+                beantworteteThesenKandidatenModels.add(new BeantworteteThesenKandidatenModel(thesentext, TID, positiontxt, ""));
+                listadapter.notifyDataSetChanged();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void updatePositionenKandidatView(String kid){
         Database db = new Database(getContext());
         kandidat = db.getKandidat(kid);
         JSONArray kandidatthesen = kandidat.getBeantworteteThesen();
