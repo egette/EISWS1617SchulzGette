@@ -3,7 +3,6 @@ package de.schulzgette.thes_o_naise.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.schulzgette.thes_o_naise.KandidatAnsichtActivity;
+import de.schulzgette.thes_o_naise.MeinProfilKandidatActivity;
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.R;
 import de.schulzgette.thes_o_naise.database.Database;
@@ -120,9 +119,10 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
         viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public  void onClick(View v) {
-               Intent intent = new Intent(getContext(), KandidatAnsichtActivity.class);
-               intent.putExtra("KID", kandidatenModel.getKid());
-               getContext().startActivity(intent);
+                Intent intent = new Intent(getContext(), MeinProfilKandidatActivity.class);
+                intent.putExtra("KID", kandidatenModel.getKid());
+                intent.putExtra("MODE", "NORMAL");
+                getContext().startActivity(intent);
             }
         });
 

@@ -91,13 +91,13 @@ public class WahlprogrammTabFragment extends Fragment {
             e.printStackTrace();
         }
 
-
+        if(MODE.equals("NORMAL")) bearbeiten.setVisibility(View.GONE);
         bearbeiten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                webseitetext.setVisibility(View.INVISIBLE);
-                beschreibungtext.setVisibility(View.INVISIBLE);
-                linktext.setVisibility(View.INVISIBLE);
+                webseitetext.setVisibility(View.GONE);
+                beschreibungtext.setVisibility(View.GONE);
+                linktext.setVisibility(View.GONE);
                 webseiteedit.setVisibility(View.VISIBLE);
                 beschreibungedit.setVisibility(View.VISIBLE);
                 linkedit.setVisibility(View.VISIBLE);
@@ -106,7 +106,7 @@ public class WahlprogrammTabFragment extends Fragment {
                 linkedit.setText(linktext.getText().toString());
 
                 veröffentlichen.setVisibility(View.VISIBLE);
-                bearbeiten.setVisibility(View.INVISIBLE);
+                bearbeiten.setVisibility(View.GONE);
 
             }
         });
@@ -123,10 +123,10 @@ public class WahlprogrammTabFragment extends Fragment {
                 beschreibungtext.setVisibility(View.VISIBLE);
                 linktext.setVisibility(View.VISIBLE);
                 sendWahlprogrammToServer(webseitetext2, beschreibungtext2, linktext2);
-                webseiteedit.setVisibility(View.INVISIBLE);
-                beschreibungedit.setVisibility(View.INVISIBLE);
-                linkedit.setVisibility(View.INVISIBLE);
-                veröffentlichen.setVisibility(View.INVISIBLE);
+                webseiteedit.setVisibility(View.GONE);
+                beschreibungedit.setVisibility(View.GONE);
+                linkedit.setVisibility(View.GONE);
+                veröffentlichen.setVisibility(View.GONE);
                 bearbeiten.setVisibility(View.VISIBLE);
             }
         });

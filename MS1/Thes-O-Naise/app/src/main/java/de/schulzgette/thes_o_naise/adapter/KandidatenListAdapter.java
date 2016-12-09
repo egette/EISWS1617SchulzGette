@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.schulzgette.thes_o_naise.KandidatAnsichtActivity;
+import de.schulzgette.thes_o_naise.MeinProfilKandidatActivity;
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.R;
 import de.schulzgette.thes_o_naise.database.Database;
@@ -84,8 +84,9 @@ public class KandidatenListAdapter extends ArrayAdapter<KandidatenModel> impleme
         viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public  void onClick(View v) {
-               Intent intent = new Intent(getContext(), KandidatAnsichtActivity.class);
+               Intent intent = new Intent(getContext(), MeinProfilKandidatActivity.class);
                intent.putExtra("KID", kandidatenModel.getKid());
+                intent.putExtra("MODE", "NORMAL");
                getContext().startActivity(intent);
             }
         });

@@ -20,43 +20,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/positionlayout"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/begruendunganfangtext"
             android:text="Ihre Begründung: "
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/begruendungkandidat"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:textColor="@android:color/black"/>
-        <Button
-            android:text="Zur These"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/zurthesebutton"
-            android:textColor="@color/colorPrimaryDark"
-            style="@style/Widget.AppCompat.Button.Colored"/>
+            android:textColor="@android:color/black"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
             android:layout_height="wrap_content"
             android:text="Likes: "/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/likesbegruendung"/>
+        <Button
+        android:text="Zur These"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/zurthesebutton"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/Widget.AppCompat.Button.Colored"/>
     </LinearLayout>
 
 

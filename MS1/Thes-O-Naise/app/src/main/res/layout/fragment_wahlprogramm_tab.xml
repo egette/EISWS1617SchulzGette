@@ -22,15 +22,19 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp">
                     <TextView
-                    android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:text="Webseite: "/>
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:autoLink="web"
                     android:id="@+id/webseitetextid"/>
                 <EditText
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:id="@+id/webseiteeditid"
                     android:visibility="gone"/>
@@ -42,15 +46,20 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
                         android:layout_height="wrap_content"
                         android:text="Beschreibung: "/>
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:id="@+id/beschreibungtextid"/>
                     <EditText
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:id="@+id/beschreibungeditid"
                         android:visibility="gone"/>
@@ -63,15 +72,19 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
                         android:layout_height="wrap_content"
                         android:text="Link zum Wahlprogramm: "/>
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:autoLink="web"
                     android:id="@+id/linktextid"/>
                     <EditText
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:id="@+id/linkeditid"
                         android:visibility="gone"/>
@@ -80,9 +93,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="100dp">
+                    android:layout_marginLeft="250dp"
+                    android:layout_marginStart="250dp"
+                    android:layout_marginTop="20dp">
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

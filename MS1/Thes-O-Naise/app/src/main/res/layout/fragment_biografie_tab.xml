@@ -23,18 +23,21 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp">
                     <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Geburtsdatum: "/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/geburtsdatumtextid"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:id="@+id/geburtsdatumeditid"/>
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:text="Geburtsdatum:"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/geburtsdatumtextid"/>
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:id="@+id/geburtsdatumeditid"/>
             </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,15 +47,18 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:text="Bildungsweg: "/>
+                    android:text="Bildungsweg:"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/bildungswegtextid"/>
                 <EditText
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:id="@+id/bildungswegeditid"/>
@@ -65,15 +71,18 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:text="Berufe: "/>
+                    android:text="Berufe:"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/berufetextid"/>
                 <EditText
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:id="@+id/berufeeditid"/>
@@ -86,15 +95,18 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:text="Mitgliedschaften: "/>
+                    android:text="Mitgliedschaften:"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/mitgliedschaftentextid"/>
                 <EditText
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:id="@+id/mitgliedschafteneditid"/>
@@ -103,34 +115,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="40dp">
+                android:layout_marginLeft="250dp"
+                android:layout_marginStart="250dp"
+                android:layout_marginTop="20dp">
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/bearbeitenbuttonid"
                     android:text="Bearbeiten"
                     android:textColor="@color/colorPrimaryDark"
+                    style="@style/Widget.AppCompat.Button.Colored" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/veröffentlichenbiografieid"
+                    android:text="Veröffentlichen"
+                    android:textColor="@color/colorPrimaryDark"
                     style="@style/Widget.AppCompat.Button.Colored"
-                   />
+                    android:visibility="gone"/>
             </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="20dp">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/veröffentlichenbiografieid"
-                android:text="Veröffentlichen"
-                android:textColor="@color/colorPrimaryDark"
-                style="@style/Widget.AppCompat.Button.Colored"
-                 android:visibility="gone"/>
-        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

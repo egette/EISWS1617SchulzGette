@@ -87,14 +87,14 @@ public class BiografieTabFragment extends Fragment {
             e.printStackTrace();
         }
 
-
+        if(MODE.equals("NORMAL")) bearbeiten.setVisibility(View.GONE);
         bearbeiten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                geburtsdatumtext.setVisibility(View.INVISIBLE);
-                bildungswegtext.setVisibility(View.INVISIBLE);
-                berufetext.setVisibility(View.INVISIBLE);
-                mitgliedschaftentext.setVisibility(View.INVISIBLE);
+                geburtsdatumtext.setVisibility(View.GONE);
+                bildungswegtext.setVisibility(View.GONE);
+                berufetext.setVisibility(View.GONE);
+                mitgliedschaftentext.setVisibility(View.GONE);
                 geburtsdatumedit.setVisibility(View.VISIBLE);
                 bildungswegedit.setVisibility(View.VISIBLE);
                 berufeedit.setVisibility(View.VISIBLE);
@@ -105,7 +105,7 @@ public class BiografieTabFragment extends Fragment {
                 mitgliedschaftenedit.setText(mitgliedschaftentext.getText().toString());
 
                 veröffentlichen.setVisibility(View.VISIBLE);
-                bearbeiten.setVisibility(View.INVISIBLE);
+                bearbeiten.setVisibility(View.GONE);
 
             }
         });
@@ -125,11 +125,11 @@ public class BiografieTabFragment extends Fragment {
                 berufetext.setVisibility(View.VISIBLE);
                 mitgliedschaftentext.setVisibility(View.VISIBLE);
                 sendBiografieToServer(geburtsdatumtext2, bildungeswegtext2, berufetext2, mitgliedschaftentext2);
-                geburtsdatumedit.setVisibility(View.INVISIBLE);
-                bildungswegedit.setVisibility(View.INVISIBLE);
-                berufeedit.setVisibility(View.INVISIBLE);
-                mitgliedschaftenedit.setVisibility(View.INVISIBLE);
-                veröffentlichen.setVisibility(View.INVISIBLE);
+                geburtsdatumedit.setVisibility(View.GONE);
+                bildungswegedit.setVisibility(View.GONE);
+                berufeedit.setVisibility(View.GONE);
+                mitgliedschaftenedit.setVisibility(View.GONE);
+                veröffentlichen.setVisibility(View.GONE);
                 bearbeiten.setVisibility(View.VISIBLE);
             }
         });
