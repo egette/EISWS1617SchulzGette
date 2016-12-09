@@ -44,7 +44,34 @@ public class KandidatenModel {
         this.Biografie = Biografie;
         this.Wahlprogramm = Wahlprogramm;
     }
-
+    public String getGeburtsdatum() throws JSONException {
+        String geburtsdatum = Biografie.getString("Geburtsdatum");
+        return geburtsdatum;
+    }
+    public String getBildungsweg() throws JSONException {
+        String bildungsweg = Biografie.getString("Bildungsweg");
+        return bildungsweg;
+    }
+    public String getBerufe() throws JSONException {
+        String berufe = Biografie.getString("Berufe");
+        return berufe;
+    }
+    public String getMitgliedschaften() throws JSONException {
+        String mitgliedschaften = Biografie.getString("Mitgliedschaften");
+        return mitgliedschaften;
+    }
+    public String getWebseite() throws JSONException {
+        String webseite = Wahlprogramm.getString("Webseite");
+        return webseite;
+    }
+    public String getBeschreibung() throws JSONException {
+        String beschreibung = Wahlprogramm.getString("Text");
+        return beschreibung;
+    }
+    public String getLink() throws JSONException {
+        String link = Wahlprogramm.getString("Link");
+        return link;
+    }
 
     public JSONArray getBegruendungen() {
         return Begruendungen;

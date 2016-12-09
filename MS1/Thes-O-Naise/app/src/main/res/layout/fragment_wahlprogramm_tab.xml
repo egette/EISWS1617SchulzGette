@@ -5,7 +5,6 @@
     tools:context="de.schulzgette.thes_o_naise.KandidatenAnsichtFragments.WahlprogrammTabFragment">
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,10 +25,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Webseite: "/>
-                <EditText
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/webseitetextid"
+                    android:id="@+id/webseitetextid"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/webseiteeditid"
                     android:visibility="gone"/>
             </LinearLayout>
             <LinearLayout
@@ -37,16 +40,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginStart="10dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Beschreibung: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/beschreibungtextid"/>
                     <EditText
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/beschreibungstextid"
+                        android:id="@+id/beschreibungeditid"
                         android:visibility="gone"/>
             </LinearLayout>
             <LinearLayout
@@ -60,10 +66,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Link zum Wahlprogramm: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linktextid"/>
                     <EditText
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/linktextid"
+                        android:id="@+id/linkeditid"
                         android:visibility="gone"/>
             </LinearLayout>
             <LinearLayout

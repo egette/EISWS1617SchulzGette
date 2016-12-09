@@ -21,13 +21,12 @@ import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.R;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
+import de.schulzgette.thes_o_naise.utils.TheseToLokalDatabase;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
-import static de.schulzgette.thes_o_naise.R.id.bearbeitenbuttonid;
-import static de.schulzgette.thes_o_naise.R.id.veröffentlichenbiografieid;
 
 
 public class BiografieTabFragment extends Fragment {
@@ -46,13 +45,12 @@ public class BiografieTabFragment extends Fragment {
 
 
 
-    public static BiografieTabFragment newInstance(String MODE, String kid, KandidatenModel kandidat2) {
+    public static BiografieTabFragment newInstance(String MODE, String kid) {
         BiografieTabFragment fragment = new BiografieTabFragment();
         Bundle args = new Bundle();
         args.putString(ARG_MODE, MODE);
         args.putString(ARG_KID, kid);
         fragment.setArguments(args);
-        kandidat = kandidat2;
         return fragment;
     }
 
@@ -63,15 +61,14 @@ public class BiografieTabFragment extends Fragment {
             MODE = getArguments().getString(ARG_MODE);
             kid = getArguments().getString(ARG_KID);
         }
-        Database db = new Database(getContext());
-        kandidat = db.getKandidat(kid);
+        updateKandidat(kid);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        myView = inflater.inflate(R.layout.fragment_biografie_tab, container, false);
-        final Button veröffentlichen = (Button) myView.findViewById(veröffentlichenbiografieid);
-        final Button bearbeiten = (Button) myView.findViewById(bearbeitenbuttonid);
+        final Button veröffentlichen = (Button) myView.findViewById(R.id.veröffentlichenbiografieid);
+        final Button bearbeiten = (Button) myView.findViewById(R.id.bearbeitenbuttonid);
         final EditText geburtsdatumedit =  (EditText) myView.findViewById(R.id.geburtsdatumeditid);
         final EditText bildungswegedit =  (EditText) myView.findViewById(R.id.bildungswegeditid);
         final EditText berufeedit =  (EditText) myView.findViewById(R.id.berufeeditid);
@@ -80,6 +77,16 @@ public class BiografieTabFragment extends Fragment {
         final TextView bildungswegtext = (TextView) myView.findViewById(R.id.bildungswegtextid);
         final TextView berufetext = (TextView) myView.findViewById(R.id.berufetextid);
         final TextView mitgliedschaftentext = (TextView) myView.findViewById(R.id.mitgliedschaftentextid);
+
+        try {
+            bildungswegtext.setText(kandidat.getBildungsweg());
+            berufetext.setText(kandidat.getBerufe());
+            mitgliedschaftentext.setText(kandidat.getMitgliedschaften());
+            geburtsdatumtext.setText(kandidat.getGeburtsdatum());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         bearbeiten.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +136,10 @@ public class BiografieTabFragment extends Fragment {
         return myView;
     }
 
+    public void updateKandidat(String kid){
+        Database db = new Database(getContext());
+        kandidat = db.getKandidat(kid);
+    }
         public void sendBiografieToServer(String geburtsdatum, String bildungeswegtext, String berufetext, String mitgliedschaftentext){
 
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
@@ -169,13 +180,14 @@ public class BiografieTabFragment extends Fragment {
                                     Toast.makeText(getActivity(), "Ihre Biografie wurde veröffentlicht", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
+                            TheseToLokalDatabase.updateKandidatData(kid, db);
+                            updateKandidat(kid);
                             response.body().close();
                         } else {
                             Log.d("Statuscode", String.valueOf(response.code()));
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(getActivity(), "Ihre Biografie konnten nicht veröffentlicht werden", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Ihre Biografie konnte nicht veröffentlicht werden", Toast.LENGTH_SHORT).show();
                                 }
                             });
                             response.body().close();

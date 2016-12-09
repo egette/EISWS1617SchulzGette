@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/geburtsdatumtextid"/>
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:id="@+id/geburtsdatumeditid"/>
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bildungswegtextid"/>
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:id="@+id/bildungswegeditid"/>
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/berufetextid"/>
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:id="@+id/berufeeditid"/>
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/mitgliedschaftentextid"/>
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:id="@+id/mitgliedschafteneditid"/>
@@ -105,7 +105,7 @@
                 android:orientation="horizontal"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="100dp">
+                android:layout_marginTop="40dp">
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                 android:text="Veröffentlichen"
                 android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:visibility="gone"/>
+                 android:visibility="gone"/>
         </LinearLayout>
         </LinearLayout>
     </ScrollView>
