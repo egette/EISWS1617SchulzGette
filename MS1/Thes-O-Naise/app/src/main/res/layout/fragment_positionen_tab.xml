@@ -11,6 +11,8 @@
         <ListView
             android:id="@+id/kandidatpositionenliste"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:divider="@color/colorPrimary"
+            android:dividerHeight="5.0sp"/>
     </LinearLayout>
 </FrameLayout>

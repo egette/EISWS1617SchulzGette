@@ -213,6 +213,7 @@ exports.putPosition = function(db){
 							}
 							if (neu == 1) These.W_CONTRA.push(position_json);
 						}
+						if(typ == 'kandidat') updateKandidatBegruendungen(position_json, richtung, tid, neu, db);
 						db.set(tid, JSON.stringify(These));
 						res.status(201).send(These).end();
 					}			
@@ -222,6 +223,44 @@ exports.putPosition = function(db){
 	}
 	
 };
+
+function updateKandidatBegruendungen(position, richtung, tid, neu, db){
+	var uid = position.UID;
+	var begruendung = {
+		Text: position.Text,
+		TID: tid,
+		likes: position.likes,
+		Kommentare: position.Kommentare,
+		Richtung: richtung
+	};
+	db.get(uid, function(err, reply){
+		if(err) throw err;
+		var kandidat = JSON.parse(reply);
+		if(neu == 0){
+			for(i=0; i<kandidat.Begruendungen.length; i++){
+				if(kandidat.Begruendungen[i].TID == tid && kandidat.Begruendungen[i].Richtung == richtung ){
+					kandidat.Begruendungen[i].Text = position.Text;
+				}
+			}
+		}else {
+			kandidat.Begruendungen.push(begruendung);
+		}	
+		db.set(uid, JSON.stringify(kandidat));
+	});
+}
+
+function updateKandidatBegruendungenKommentare(uid, kommentar, tid, richtung, db){
+	db.get(uid, function(err, reply){
+		if(err) throw err;
+		var kandidat = JSON.parse(reply);
+		for(i=0; i<kandidat.Begruendungen.length; i++){
+			if(kandidat.Begruendungen[i].TID == tid && kandidat.Begruendungen[i].Richtung == richtung ){
+				kandidat.Begruendungen[i].Kommentare.push(kommentar);
+			}
+		}	
+		db.set(uid, JSON.stringify(kandidat));
+	});
+}
 
 exports.postKommentar = function(db){
 	return function (req, res){
@@ -289,6 +328,7 @@ exports.postKommentar = function(db){
 						}
 					}	
 				}
+				updateKandidatBegruendungenKommentare(begruendungsid, Kommentarobject, tid, position, db);
 			}
 			db.set(tid, JSON.stringify(These));
 			console.log("THESE :", These);
@@ -296,6 +336,7 @@ exports.postKommentar = function(db){
 		});
 	}
 }
+
 function updateBeantworteteThesen(tid, kid, position, db, kategorie){
 	db.get(kid, function (err, reply) {
 		if (err) throw err;
@@ -316,7 +357,6 @@ function updateBeantworteteThesen(tid, kid, position, db, kategorie){
 		db.set(kid, JSON.stringify(kandidat));
 	});
 }
-
 
 exports.getThesen = function(db){
 	return function (req, res){
@@ -386,6 +426,19 @@ exports.getThesen = function(db){
 	}
 }	
 
+function updateKandidatBegruendungenLikes(uid, like, tid, richtung, db){
+	db.get(uid, function(err, reply){
+		if(err) throw err;
+		var kandidat = JSON.parse(reply);
+		for(i=0; i<kandidat.Begruendungen.length; i++){
+			if(kandidat.Begruendungen[i].TID == tid && kandidat.Begruendungen[i].Richtung == richtung ){
+				kandidat.Begruendungen[i].likes += like;
+			}
+		}	
+		db.set(uid, JSON.stringify(kandidat));
+	});
+}
+
 exports.putLikes = function(db){
 	return function (req, res){
 		console.log("BODY", req.body);
@@ -443,6 +496,7 @@ exports.putLikes = function(db){
 						}
 					}	
 				}
+				updateKandidatBegruendungenLikes(begruendungsid, like, tid, position, db);
 			}
 			db.set(tid, JSON.stringify(These));
 			console.log("THESE :", These);

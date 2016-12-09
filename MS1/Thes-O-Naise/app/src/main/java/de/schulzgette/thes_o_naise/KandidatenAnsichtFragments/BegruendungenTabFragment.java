@@ -7,46 +7,43 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import de.schulzgette.thes_o_naise.Models.BeantworteteThesenKandidatenModel;
+import de.schulzgette.thes_o_naise.Models.BegrundungenMeinProfilModel;
+import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.R;
+import de.schulzgette.thes_o_naise.adapter.KandidatBeantworteteThesenAdapter;
+import de.schulzgette.thes_o_naise.adapter.KandidatBegruendungenMeinProfilAdapter;
+import de.schulzgette.thes_o_naise.database.Database;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BegruendungenTabFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BegruendungenTabFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class BegruendungenTabFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private static final String ARG_KID = "kid";
+    private static final String ARG_MODE = "MODE";
+    private String kid;
+    private String MODE;
+    static KandidatenModel kandidat;
+    View myView;
+    ListView lv;
+    KandidatBegruendungenMeinProfilAdapter listadapter;
+    ArrayList<BegrundungenMeinProfilModel> begrundungenMeinProfilModels = new ArrayList<>();
 
     public BegruendungenTabFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BegruendungenTabFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BegruendungenTabFragment newInstance(String param1, String param2) {
+    public static BegruendungenTabFragment newInstance(String MODE, String kid) {
         BegruendungenTabFragment fragment = new BegruendungenTabFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_MODE, MODE);
+        args.putString(ARG_KID, kid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,17 +52,43 @@ public class BegruendungenTabFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            MODE = getArguments().getString(ARG_MODE);
+            kid = getArguments().getString(ARG_KID);
+
         }
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_begruendungen_tab, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        myView = inflater.inflate(R.layout.fragment_begruendungen_tab, container, false);
+        lv = (ListView) myView.findViewById(R.id.kandidatbegruendungenliste);
+        listadapter = new KandidatBegruendungenMeinProfilAdapter(begrundungenMeinProfilModels, getContext(), MODE);
+        lv.setAdapter(listadapter);
+        updateKandiatBegruendungen(kid);
+        return myView;
     }
 
+    public void updateKandiatBegruendungen(String kid){
+        Database db = new Database(getContext());
+        kandidat = db.getKandidat(kid);
+        if(kandidat != null){
+            JSONArray begruendungen = kandidat.getBegruendungen();
+            for (int i = 0; i < begruendungen.length(); i++){
+                try {
+                    JSONObject object = (JSONObject) begruendungen.get(i);
+                    String begruendungstext = object.getString("Text");
+                    String TID = object.getString("TID");
+                    String thesentext = db.getThesentextWithTID(TID);
+                    Integer likes = object.getInt("likes");
+                    String Richtung = object.getString("Richtung");
+                    begrundungenMeinProfilModels.add(new BegrundungenMeinProfilModel(begruendungstext,TID, thesentext, likes, Richtung));
+                    listadapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
 }

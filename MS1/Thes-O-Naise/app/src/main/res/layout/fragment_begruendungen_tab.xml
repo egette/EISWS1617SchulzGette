@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     tools:context="de.schulzgette.thes_o_naise.KandidatenAnsichtFragments.BegruendungenTabFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/kandidatbegruendungenliste"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/colorPrimary"
+            android:dividerHeight="5.0sp"/>
+    </LinearLayout>
 
 </FrameLayout>
