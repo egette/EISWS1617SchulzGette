@@ -1,3 +1,6 @@
+var devicesFunction = require('../functions/devices');
+var sendFunction = require('../functions/send-message');
+
 exports.publish = function(db){
 	return function(req, res){
 		console.log('Thesen JSON BODY:  ', req.body);
@@ -57,7 +60,14 @@ exports.publish = function(db){
 					db.SADD(wahlkreis_kategorie, new_Thesen_ID);
 					
 					//last_Thesen_ID wird aktuallierst
-					db.set('last_Thesen_ID', new_Thesen_ID);        
+					db.set('last_Thesen_ID', new_Thesen_ID);  
+					devicesFunction.listDevices(wahlkreis, db,  function(result) {
+						var registrationIds = result;
+						sendFunction.sendMessage(new_Thesen_ID, registrationIds, function(callback){
+						console.log(callback);
+						});
+					});
+					
 					res.send(These).status(201).end();	
 				});
 			}
@@ -116,6 +126,7 @@ exports.putPosition = function(db){
 					} else {
 						var These = JSON.parse(reply);
 						var kategorie = These.kategorie;
+						var wahlkreis = These.wahlkreis;
 						var Position = {
 							UID: uid,
 							POS: richtung
@@ -132,6 +143,11 @@ exports.putPosition = function(db){
 						if(neu == 1) These.K_POSITION.push(Position);
 						db.set(tid, JSON.stringify(These));
 						updateBeantworteteThesen(tid, uid, richtung, db, kategorie);
+						devicesFunction.listDevices(wahlkreis, db,  function(result) {
+							sendFunction.sendMessage(tid, result, function (callback){
+							console.log(callback);
+							});
+						});
 						res.status(201).send(These).end();
 					}
 					
@@ -144,6 +160,7 @@ exports.putPosition = function(db){
 					} else {
 						
 						var These = JSON.parse(reply);
+						var wahlkreis = Thesen.wahlkreis;
 						var typ2;
 						if( typ == 'waehler') typ2 = "W";
 						if( typ == 'kandidat') typ2 = "K";
@@ -215,6 +232,11 @@ exports.putPosition = function(db){
 						}
 						if(typ == 'kandidat') updateKandidatBegruendungen(position_json, richtung, tid, neu, db);
 						db.set(tid, JSON.stringify(These));
+						devicesFunction.listDevices(wahlkreis, db,  function(result) {
+							sendFunction.sendMessage(tid, result, function (callback){
+								console.log(callback);
+							});
+						});
 						res.status(201).send(These).end();
 					}			
 				});
@@ -278,6 +300,7 @@ exports.postKommentar = function(db){
 		db.get(tid, function (err, reply) { 
 			if(err) throw err;
 			var These = JSON.parse(reply);
+			var wahlkreis = These.wahlkreis;
 			var Kommentarobject = {
 				UID: uid,
 				USERNAME: username,
@@ -331,6 +354,11 @@ exports.postKommentar = function(db){
 				updateKandidatBegruendungenKommentare(begruendungsid, Kommentarobject, tid, position, db);
 			}
 			db.set(tid, JSON.stringify(These));
+			devicesFunction.listDevices(wahlkreis, db,  function(result) {
+				sendFunction.sendMessage(tid, result, function (callback){
+					console.log(callback);
+				});
+			});
 			console.log("THESE :", These);
 			res.status(201).send(These).end();
 		});
@@ -358,6 +386,16 @@ function updateBeantworteteThesen(tid, kid, position, db, kategorie){
 	});
 }
 
+exports.getThese = function(db){
+	return function (req, res){
+		var tid = req.params.tid;
+		db.get(tid, function (err, reply) { 
+			if(err) throw err;
+			var These = JSON.parse(reply);
+			res.send(These).status(200).end();
+		});
+	}
+}
 exports.getThesen = function(db){
 	return function (req, res){
 		var kategorie = req.query.kategorie;

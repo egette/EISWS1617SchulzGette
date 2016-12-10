@@ -8,6 +8,8 @@ const   redis 		= require('redis');
 const	db          = redis.createClient();
 const   jwt         = require('jsonwebtoken');
 const	app         = express();
+var io = require('socket.io');
+var apiRoutes   =  express.Router();
 
 const host = '127.0.0.1';
 const port = 3000;
@@ -49,52 +51,12 @@ app.use(function (req, res, next) {
 	next();
 });
 
-//Setting up Routes
-var register	= require('./routes/register');
-var thesen  	= require('./routes/thesen');
-var login       = require('./routes/login');
-var userroute   = require('./routes/user');
-var kandidatenroute = require('./routes/kandidaten');
-var matching	= require('./routes/matching');
-var apiRoutes   =  express.Router();
-
-//Routen ohne Login
-app.post('/login', login.auth(app, db, redis, jwt));
-app.post('/register', register.register(db, redis));
-app.get('/thesen', thesen.getThesen(db));
-app.get('/kandidaten', kandidatenroute.getKandidaten(db));
-
-apiRoutes.use(function(req, res, next) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  if (token) {
-    jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
-      if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });    
-      } else {
-        req.decoded = decoded;    
-        next();
-      }
-    });
-  } else {
-	//kein Token
-    return res.status(403).send({ 
-        success: false, 
-        message: 'No token provided.' 
-    });
-  }
-});
-
-//Routen mit Login
-//app.use('/', apiRoutes);
-app.post('/matching', matching.match(db, Promise)); 
-app.post('/thesen', thesen.publish(db));
-app.put('/thesen', thesen.putPosition(db));
-app.put('/thesen/kommentar', thesen.postKommentar(db));
-app.put('/thesen/likes', thesen.putLikes(db));
-app.put('/user', userroute.updateUserdata(db));
-app.delete('/user', userroute.deleteUserdata(db));
-
-
-app.listen(port,  function() {
+var listen = app.listen(port,  function() {
   console.log(`Server running at http://${host}:${port}/`);
 });
+var socket = io.listen(listen);
+
+require('./routes/routes')(app, socket, db, redis, jwt, Promise, apiRoutes);
+
+
+
