@@ -161,6 +161,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
+        public static final int DATABASE_VERSION = 6;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -172,6 +173,7 @@ public class Database {
             db.execSQL(SQL_CREATE_THESENTABLE);
             db.execSQL(SQL_CREATE_KANDIDATENTABLE);
             db.execSQL(SQL_CREATE_BEGRUENDUNGDATATABLE);
+//            db.execSQL(SQL_CREATE_MEINETHESENTABLE);
 
         }
 
@@ -181,6 +183,7 @@ public class Database {
             db.execSQL(SQL_DELETE_THESENTABLE);
             db.execSQL(SQL_DELETE_KANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
+   //         db.execSQL(SQL_CREATE_MEINETHESENTABLE);
 
             onCreate(db);
         }
