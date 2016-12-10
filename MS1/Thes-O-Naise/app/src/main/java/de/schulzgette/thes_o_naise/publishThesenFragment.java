@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -120,6 +119,13 @@ public class publishThesenFragment extends Fragment{
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
                         TheseToLokalDatabase.saveTheseInLokalDatabase(jsonData, db);
+                        try {
+                            JSONObject these = new JSONObject(jsonData);
+                            String tid = these.getString("TID");
+                            db.updateMeineThesen(tid);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {

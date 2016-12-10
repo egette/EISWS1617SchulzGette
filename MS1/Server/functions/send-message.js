@@ -6,6 +6,7 @@ exports.sendMessage = function(message, registrationIds, callback){
     var message = new gcm.Message({data: {message: message}});
 	for(i = 0; i<registrationIds.length; i++){
 		var regTokens = [registrationIds[i]];
+		console.log("reqtoken", regTokens);
 		var sender = new gcm.Sender(constants.gcm_api_key);
 		sender.send(message, { registrationTokens: regTokens }, function (err, response) {
 	 

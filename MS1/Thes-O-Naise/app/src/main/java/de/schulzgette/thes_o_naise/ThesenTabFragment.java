@@ -1,9 +1,7 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,6 +26,7 @@ import java.util.ArrayList;
 import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.Models.KommentarModel;
 import de.schulzgette.thes_o_naise.database.Database;
+import de.schulzgette.thes_o_naise.services.EventBus;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import de.schulzgette.thes_o_naise.utils.TheseToLokalDatabase;
 import okhttp3.Call;
@@ -40,7 +39,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Jessica on 15.11.2016.
  */
 
-public class ThesenTabFragment extends Fragment {
+public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsichtListner {
     View myView;
     static final String pos = "pro";
     String tid;
@@ -130,6 +129,29 @@ public class ThesenTabFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onFirebaseUpdate() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                ArrayList<BegruendungModel> neu = getBegruendung(tid, position);
+                loadHosts(neu);
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.register(this);
+        onFirebaseUpdate();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.unregister(this);
+        super.onStop();
+    }
+
     public class BegruendungsAdapter extends BaseExpandableListAdapter {
         private LayoutInflater inflater;
 
@@ -202,7 +224,8 @@ public class ThesenTabFragment extends Fragment {
                     public void onClick(View v) {
                         String kommentar = kommentaredit.getText().toString();
                         String beguid = begruendungModel.getUID();
-                        sendKommentarToServer(kommentar, beguid);
+                        String typ = begruendungModel.getTyp();
+                        sendKommentarToServer(kommentar, beguid, typ);
                     }
                 });
             }
@@ -241,7 +264,8 @@ public class ThesenTabFragment extends Fragment {
                     public void onClick(View v) {
                         String kommentar = kommentaredit.getText().toString();
                         String beguid = begruendungModel.getUID();
-                        sendKommentarToServer(kommentar, beguid);
+                        String typ = begruendungModel.getTyp();
+                        sendKommentarToServer(kommentar, beguid, typ);
                     }
                 });
 
@@ -413,9 +437,8 @@ public class ThesenTabFragment extends Fragment {
 
     }
 
-    public void sendKommentarToServer(String kommentartext, String begruendungsid){
+    public void sendKommentarToServer(String kommentartext, String begruendungsid, String Typ){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-        String Typ = sharedPreferences.getString("typ", "");
         String UID = sharedPreferences.getString("UID", "");
         String username = sharedPreferences.getString("username", "");
         String positionUpperCase = position.toUpperCase();
@@ -531,4 +554,5 @@ public class ThesenTabFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 }

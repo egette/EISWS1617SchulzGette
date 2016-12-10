@@ -74,12 +74,12 @@ module.exports = function(app,io, db, redis, jwt, Promise, apiRoutes) {
 			console.log(constants.error.msg_invalid_param.message);
 			res.json(constants.error.msg_invalid_param);
  
-        } else if ( !uid.trim() || !deviceId.trim() || !registrationId.trim() || !wahlkreis.trim()) {
+        } else if ( !uid.trim()  || !registrationId.trim() || !wahlkreis.trim()) {
 			console.log(constants.error.msg_empty_param.message);
 			res.json(constants.error.msg_empty_param);
  
         } else {
-				registerFunction.register( uid, deviceId, registrationId, wahlkreis, db, function(result) {
+				registerFunction.register( uid, registrationId, wahlkreis, db, function(result) {
 				res.json(result).end();
 				if (result.result != 'error'){
 					io.emit('update', { message: 'New Device Added',update:true});

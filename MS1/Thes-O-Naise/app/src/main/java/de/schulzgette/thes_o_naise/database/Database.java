@@ -32,6 +32,10 @@ public class Database {
         public static final String COLUMN_NAME_SERVER = "server";
         public static final String COLUMN_NAME_LAST_POSITION = "lastposition";
     }
+    public static abstract class MeineThesenTable implements BaseColumns{
+        public static final String TABLE_NAME = "meinethesen";
+        public static final String COLUMN_NAME_TID = "tid";
+    }
 
     //TODO MEHR KATEGORIEN ?
     public static abstract  class KandidatenTable implements BaseColumns{
@@ -90,6 +94,10 @@ public class Database {
                     UserpositiondataTable.COLUMN_NAME_LAST_POSITION + " TEXT" +
 
             " )";
+    public static final String SQL_CREATE_MEINETHESENTABLE =
+            "CREATE TABLE " + MeineThesenTable.TABLE_NAME + " (" +
+                    MeineThesenTable.COLUMN_NAME_TID + " STRING PRIMARY KEY" +
+                    " )";
 
     //TODO MEHR KATEGORIEN ?
 
@@ -148,10 +156,11 @@ public class Database {
             "DROP TABLE IF EXISTS " + KandidatenTable.TABLE_NAME;
     public static final String SQL_DELETE_BEGRUENDUNGDATATABLE =
             "DROP TABLE IF EXISTS " + BegruendungTable.TABLE_NAME;
+    public static final String SQL_DELETE_MEINETHESENTABLE =
+            "DROP TABLE IF EXISTS " + MeineThesenTable.TABLE_NAME;
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 4;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -163,6 +172,7 @@ public class Database {
             db.execSQL(SQL_CREATE_THESENTABLE);
             db.execSQL(SQL_CREATE_KANDIDATENTABLE);
             db.execSQL(SQL_CREATE_BEGRUENDUNGDATATABLE);
+
         }
 
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -171,6 +181,7 @@ public class Database {
             db.execSQL(SQL_DELETE_THESENTABLE);
             db.execSQL(SQL_DELETE_KANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
+
             onCreate(db);
         }
 
@@ -188,6 +199,34 @@ public class Database {
 
     public  Database(Context context) { this.context = context; }
 
+    public void updateMeineThesen(String tid){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+            if(tid != null){
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(MeineThesenTable.COLUMN_NAME_TID, tid);
+                    dbwrite.insert(MeineThesenTable.TABLE_NAME, null, values);
+                } finally {
+                    dbwrite.close();
+                }
+            }
+    }
+    public ArrayList<String> getMeineThesen(){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
+        Cursor cursor;
+        ArrayList<String> result = new ArrayList<>();
+        cursor = dbread.query(MeineThesenTable.TABLE_NAME, new String[]{MeineThesenTable.COLUMN_NAME_TID}, null, null, null, null, null);
+        try {
+            while(cursor.moveToNext()){
+                result.add(cursor.getString(0));
+            }
+        }finally{
+            cursor.close();
+        }
+        return result;
+    }
     //schreibt eine Position zu einer tid in die Datenbank und ändert die Positon falls die TID schon vorhanden war
     public void insertposition(String position, String tid) {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);

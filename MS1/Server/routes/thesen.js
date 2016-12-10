@@ -160,7 +160,7 @@ exports.putPosition = function(db){
 					} else {
 						
 						var These = JSON.parse(reply);
-						var wahlkreis = Thesen.wahlkreis;
+						var wahlkreis = These.wahlkreis;
 						var typ2;
 						if( typ == 'waehler') typ2 = "W";
 						if( typ == 'kandidat') typ2 = "K";
@@ -272,6 +272,7 @@ function updateKandidatBegruendungen(position, richtung, tid, neu, db){
 }
 
 function updateKandidatBegruendungenKommentare(uid, kommentar, tid, richtung, db){
+	console.log("Kandidat " + uid + "hat den Kommentar bekommen" + kommentar);
 	db.get(uid, function(err, reply){
 		if(err) throw err;
 		var kandidat = JSON.parse(reply);
@@ -307,7 +308,7 @@ exports.postKommentar = function(db){
 				Kommentar: kommentartext
 			};
 			
-			if(typ == 'waehler'){
+			if(typ == 'w'){
 				if(position == "PRO"){
 					for(i = 0; i < These.W_PRO.length; i++){
 						if(These.W_PRO[i].UID == begruendungsid){
@@ -329,7 +330,7 @@ exports.postKommentar = function(db){
 						}
 					}	
 				}
-			}else if(typ == 'kandidat'){
+			}else if(typ == 'k'){
 				if(position == "PRO"){
 					for(i = 0; i < These.K_PRO.length; i++){
 						if(These.K_PRO[i].UID == begruendungsid){
@@ -351,8 +352,9 @@ exports.postKommentar = function(db){
 						}
 					}	
 				}
-				updateKandidatBegruendungenKommentare(begruendungsid, Kommentarobject, tid, position, db);
+				
 			}
+			if(begruendungsid.substring(0,1) == "K") updateKandidatBegruendungenKommentare(begruendungsid, Kommentarobject, tid, position, db);
 			db.set(tid, JSON.stringify(These));
 			devicesFunction.listDevices(wahlkreis, db,  function(result) {
 				sendFunction.sendMessage(tid, result, function (callback){

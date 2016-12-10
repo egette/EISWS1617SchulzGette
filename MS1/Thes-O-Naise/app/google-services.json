@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "653114509405-rjud8gfmnmqrrmot7vmpoc6ntm2t5pa3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.schulzgette.thes_o_naise",
+            "certificate_hash": "A66BA8C863CABC54CE01A85CCEE764E5FA55F045"
+          }
+        },
+        {
           "client_id": "653114509405-uurstgo8oa3s5slui0esprcm8ovpg8p4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
