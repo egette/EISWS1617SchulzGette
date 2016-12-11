@@ -77,6 +77,7 @@ public class BiografieTabFragment extends Fragment {
         final TextView bildungswegtext = (TextView) myView.findViewById(R.id.bildungswegtextid);
         final TextView berufetext = (TextView) myView.findViewById(R.id.berufetextid);
         final TextView mitgliedschaftentext = (TextView) myView.findViewById(R.id.mitgliedschaftentextid);
+        final EditText passwortedit = (EditText) myView.findViewById(R.id.passwortid);
 
         try {
             bildungswegtext.setText(kandidat.getBildungsweg());
@@ -103,7 +104,7 @@ public class BiografieTabFragment extends Fragment {
                 bildungswegedit.setText(bildungswegtext.getText().toString());
                 berufeedit.setText(berufetext.getText().toString());
                 mitgliedschaftenedit.setText(mitgliedschaftentext.getText().toString());
-
+                passwortedit.setVisibility(View.VISIBLE);
                 veröffentlichen.setVisibility(View.VISIBLE);
                 bearbeiten.setVisibility(View.GONE);
 
@@ -113,24 +114,31 @@ public class BiografieTabFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String geburtsdatumtext2 = geburtsdatumedit.getText().toString();
-                String bildungeswegtext2 = bildungswegedit.getText().toString();
-                String berufetext2 = berufeedit.getText().toString();
-                String mitgliedschaftentext2 = mitgliedschaftenedit.getText().toString();
-                geburtsdatumtext.setText(geburtsdatumtext2);
-                bildungswegtext.setText(bildungeswegtext2);
-                berufetext.setText(berufetext2);
-                mitgliedschaftentext.setText(mitgliedschaftentext2);
-                geburtsdatumtext.setVisibility(View.VISIBLE);
-                bildungswegtext.setVisibility(View.VISIBLE);
-                berufetext.setVisibility(View.VISIBLE);
-                mitgliedschaftentext.setVisibility(View.VISIBLE);
-                sendBiografieToServer(geburtsdatumtext2, bildungeswegtext2, berufetext2, mitgliedschaftentext2);
-                geburtsdatumedit.setVisibility(View.GONE);
-                bildungswegedit.setVisibility(View.GONE);
-                berufeedit.setVisibility(View.GONE);
-                mitgliedschaftenedit.setVisibility(View.GONE);
-                veröffentlichen.setVisibility(View.GONE);
-                bearbeiten.setVisibility(View.VISIBLE);
+                String bildungeswegtext2 = bildungswegedit.getText().toString().trim();
+                String berufetext2 = berufeedit.getText().toString().trim();
+                String mitgliedschaftentext2 = mitgliedschaftenedit.getText().toString().trim();
+                String passwort = passwortedit.getText().toString();
+
+                if(passwort.isEmpty()){
+                    Toast.makeText(getContext(), "Bitte Passwort eingeben", Toast.LENGTH_SHORT).show();
+                }else {
+                    geburtsdatumtext.setText(geburtsdatumtext2);
+                    bildungswegtext.setText(bildungeswegtext2);
+                    berufetext.setText(berufetext2);
+                    mitgliedschaftentext.setText(mitgliedschaftentext2);
+                    geburtsdatumtext.setVisibility(View.VISIBLE);
+                    bildungswegtext.setVisibility(View.VISIBLE);
+                    berufetext.setVisibility(View.VISIBLE);
+                    mitgliedschaftentext.setVisibility(View.VISIBLE);
+                    sendBiografieToServer(geburtsdatumtext2, bildungeswegtext2, berufetext2, mitgliedschaftentext2, passwort);
+                    geburtsdatumedit.setVisibility(View.GONE);
+                    bildungswegedit.setVisibility(View.GONE);
+                    berufeedit.setVisibility(View.GONE);
+                    mitgliedschaftenedit.setVisibility(View.GONE);
+                    veröffentlichen.setVisibility(View.GONE);
+                    bearbeiten.setVisibility(View.VISIBLE);
+                    passwortedit.setVisibility(View.GONE);
+                }
             }
         });
         return myView;
@@ -140,7 +148,7 @@ public class BiografieTabFragment extends Fragment {
         Database db = new Database(getContext());
         kandidat = db.getKandidat(kid);
     }
-        public void sendBiografieToServer(String geburtsdatum, String bildungeswegtext, String berufetext, String mitgliedschaftentext){
+        public void sendBiografieToServer(String geburtsdatum, String bildungeswegtext, String berufetext, String mitgliedschaftentext, String passwort){
 
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
             String token = sharedPreferences.getString("token", "");
@@ -153,6 +161,7 @@ public class BiografieTabFragment extends Fragment {
                 biografie.accumulate("Berufe", berufetext);
                 biografie.accumulate("Mitgliedschaften", mitgliedschaftentext);
                 jsonObject.accumulate("Biografie", biografie);
+                jsonObject.accumulate("passwort", passwort);
                 jsonObject.accumulate("token", token);
                 jsonObject.accumulate("typ", "kandidat");
                 jsonObject.accumulate("uid", uid);

@@ -111,20 +111,31 @@
                     android:visibility="gone"
                     android:id="@+id/mitgliedschafteneditid"/>
         </LinearLayout>
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="250dp"
-                android:layout_marginStart="250dp"
                 android:layout_marginTop="20dp">
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/bearbeitenbuttonid"
                     android:text="Bearbeiten"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
                     android:textColor="@color/colorPrimaryDark"
                     style="@style/Widget.AppCompat.Button.Colored" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/passwortid"
+                    android:inputType="textPassword"
+                    android:visibility="gone"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:hint="Passwort"/>
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,8 +143,12 @@
                     android:text="Veröffentlichen"
                     android:textColor="@color/colorPrimaryDark"
                     style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="gone"/>
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
