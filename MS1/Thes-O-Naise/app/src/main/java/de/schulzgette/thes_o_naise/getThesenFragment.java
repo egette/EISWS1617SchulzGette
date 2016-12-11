@@ -58,7 +58,7 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 kategorie = (String) parent.getItemAtPosition(position);
                 Log.d("ausgewählte Kategorie:", kategorie);
-
+                if(kategorie.equals("Lokale Thesen")) kategorie = "Lokal";
                 Intent intent = new Intent(getActivity(), GetThesenFromAPI.class);
                 intent.putExtra("kategorie", kategorie);
                 getActivity().startService(intent);

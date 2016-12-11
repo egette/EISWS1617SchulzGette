@@ -16,7 +16,7 @@
     </string>
     <string name="title_activity_register">RegisterActivity</string>
     <string-array name="kategorien">
-        <item>Lokal</item>
+        <item>Lokale Thesen</item>
         <item>Umwelt</item>
         <item>Aussenpolitik</item>
         <item>Satire</item>
@@ -24,7 +24,7 @@
     <!--//TODO MEHR KATEGORIEN ?-->
     <string-array name="kategorien_ergebnis">
         <item>Insgesamt</item>
-        <item>Lokal</item>
+        <item>Lokale Thesen</item>
         <item>Umwelt</item>
         <item>Aussenpolitik</item>
         <item>Satire</item>

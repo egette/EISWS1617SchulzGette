@@ -2,19 +2,23 @@ package de.schulzgette.thes_o_naise;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
@@ -41,16 +45,22 @@ public class AuthActivity extends AppCompatActivity {
                 email =  usermail.getText().toString();
                 EditText pw =  (EditText) findViewById(R.id.passwortid);
                 passwort =  pw.getText().toString();
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("username", username);
-                    jsonObject.accumulate("password", passwort);
-                    jsonObject.accumulate("email", email);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(username.isEmpty() && email.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Bitte Username oder Email eingeben", Toast.LENGTH_SHORT).show();
+                } else if(passwort.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Bitte Passwort eingeben", Toast.LENGTH_SHORT).show();
+                }else {
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.accumulate("username", username);
+                        jsonObject.accumulate("password", passwort);
+                        jsonObject.accumulate("email", email);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String jsondata = jsonObject.toString();
+                    authUser(jsondata);
                 }
-                String jsondata =  jsonObject.toString();
-                authUser(jsondata);
             }
         });
     }
@@ -61,38 +71,60 @@ public class AuthActivity extends AppCompatActivity {
             HttpClient.POST("login", authData, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-
+                    Integer statusCode = response.code();
+                    Log.d("Response", response.toString());
                     if (response.isSuccessful()) {
-                        Log.d("Response", response.toString());
-                        String jsonData = response.body().string();
-                        try {
-                            JSONObject Jobject = new JSONObject(jsonData);
-                            String token = (String) Jobject.get("token");
-                            String uid = (String) Jobject.get("userID");
-                            String typ = uid.substring(0,1);
-                            String wahlkreis = (String) Jobject.get("wahlkreis");
-                            String username = (String) Jobject.get("username");
-                            SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
-                            sharedPreferences.edit().putString("token", token).apply();
-                            sharedPreferences.edit().putString("UID", uid).apply();
-                            sharedPreferences.edit().putString("wahlkreis", wahlkreis).apply();
-                            sharedPreferences.edit().putString("username", username).apply();
-                            if(typ.equals("W"))sharedPreferences.edit().putString("typ", "waehler").apply();
-                            if(typ.equals("K"))sharedPreferences.edit().putString("typ", "kandidat").apply();
-                            getAllThesenFromWahlkreis(wahlkreis);
-                            getKandidaten(wahlkreis);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if(statusCode==200) {
+                            String jsonData = response.body().string();
+                            try {
+                                JSONObject Jobject = new JSONObject(jsonData);
+                                String token = (String) Jobject.get("token");
+                                String uid = (String) Jobject.get("userID");
+                                String typ = uid.substring(0, 1);
+                                String wahlkreis = (String) Jobject.get("wahlkreis");
+                                String username = (String) Jobject.get("username");
+                                SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
+                                sharedPreferences.edit().putString("token", token).apply();
+                                sharedPreferences.edit().putString("UID", uid).apply();
+                                sharedPreferences.edit().putString("wahlkreis", wahlkreis).apply();
+                                sharedPreferences.edit().putString("username", username).apply();
+                                if (typ.equals("W"))
+                                    sharedPreferences.edit().putString("typ", "waehler").apply();
+                                if (typ.equals("K"))
+                                    sharedPreferences.edit().putString("typ", "kandidat").apply();
+                                getAllThesenFromWahlkreis(wahlkreis);
+                                getKandidaten(wahlkreis);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            response.body().close();
+                            toNavigationActivity();
                         }
-                        response.body().close();
-                        toNavigationActivity();
                     } else {
                         Log.d("Statuscode", String.valueOf(response.code()));
+                        if(statusCode==403){
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "Falsches Passwort", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else if(statusCode == 400){
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "Fehlerhafte Daten", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                         response.body().close();
                     }
                 }

@@ -1,3 +1,5 @@
+var constants = require('../constants/constants.json');
+
 exports.auth = function(app, db, redis, jwt){
 	return function(req, res){
 		console.log('REQ BODY:  ', req.body);
@@ -8,22 +10,26 @@ exports.auth = function(app, db, redis, jwt){
 		var userID = "";
 
 		
-		if(!emaildata && !username || !reqPassword ){
-				res.status(403).end();
-		}
+		if ( typeof emaildata  == 'undefined' && typeof username  == 'undefined' || typeof reqPassword  == 'undefined' ) {
+			console.log(constants.error.msg_invalid_param.message);
+			res.status(400).end();
 			
-		if (username != null || username != undefined) {
+        } else if ( !emaildata.trim()  && !username.trim() || !reqPassword.trim()) {
+			console.log(constants.error.msg_empty_param.message);
+			res.status(400).end();
+ 
+        } else if (username) {
 			getDB(username, db).then(function(reply){
 				userID = reply;
-				if(userID == 0) res.status(403).end();
+				if(userID == 0) res.status(400).end();
 				return userID;
 			}).then(function(userID){
 			 makeToken(userID, db, reqPassword, app, res, jwt);
 			});
-		}else if (emaildata != null || emaildata != undefined) {
+		}else if (emaildata) {
 			getDB(emaildata, db).then(function(reply){
 				userID = reply;
-				if(userID == 0) res.status(403).end();
+				if(userID == 0) res.status(400).end();
 				return userID;
 			}).then(function(userID){
 			 makeToken(userID, db, reqPassword, app, res, jwt);

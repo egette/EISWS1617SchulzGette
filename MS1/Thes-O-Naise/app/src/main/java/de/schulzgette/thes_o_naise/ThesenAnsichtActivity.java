@@ -104,13 +104,19 @@ public class ThesenAnsichtActivity extends FragmentActivity {
         }
 
         final ImageButton hide = (ImageButton) findViewById(R.id.hidethesentext);
+
         hide.setOnClickListener(new View.OnClickListener() {
+            Boolean isExpanded = false;
             public void onClick(View v) {
                 theseninfo.setVisibility((theseninfo.getVisibility() == View.VISIBLE)
                      ? View.GONE : View.VISIBLE);
 
-                float deg = hide.getRotation() + 180F;
-                hide.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
+                hide.setImageResource(isExpanded?R.drawable.ic_expand_less_black_24dp:R.drawable.ic_expand_more_black_24dp);
+                if(isExpanded){
+                    isExpanded = false;
+                }else{
+                    isExpanded = true;
+                }
             }
         });
     }

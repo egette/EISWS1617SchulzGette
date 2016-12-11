@@ -13,6 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
@@ -589,6 +592,8 @@ public class Database {
     }
 
     public ArrayList<BegruendungModel> makeArraylistWithJSONArrays (JSONArray k, JSONArray w){
+        ArrayList<BegruendungModel> resultkandidaten = new ArrayList<>();
+        ArrayList<BegruendungModel> resultwaehler = new ArrayList<>();
         ArrayList<BegruendungModel> result = new ArrayList<>();
         try{
             for(int i = 0; i<k.length(); i++){
@@ -608,8 +613,15 @@ public class Database {
                         kommentareliste.add(new KommentarModel(kommentartext,uid,username));
                     }
                 }
-                result.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "k", Username));
+                resultkandidaten.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "k", Username));
             }
+            Collections.sort(resultkandidaten, new Comparator<BegruendungModel>() {
+                //Begründungen werden absteigend nach Likes sortiert
+                @Override
+                public int compare(BegruendungModel obj1, BegruendungModel obj2) {
+                    return (obj1.getLikes() > obj2.getLikes()) ? -1: (obj1.getLikes() > obj2.getLikes()) ? 1:0 ;
+                }
+            });
             for(int i = 0; i<w.length(); i++){
                 JSONObject object =(JSONObject) w.get(i);
                 String UID = object.getString("UID");
@@ -627,11 +639,20 @@ public class Database {
                         kommentareliste.add(new KommentarModel(kommentartext,uid,username));
                     }
                 }
-                result.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "w", Username));
+                resultwaehler.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "w", Username));
             }
+            Collections.sort(resultwaehler, new Comparator<BegruendungModel>() {
+                //Begründungen werden absteigend nach Likes sortiert
+                @Override
+                public int compare(BegruendungModel obj1, BegruendungModel obj2) {
+                    return (obj1.getLikes() > obj2.getLikes()) ? -1: (obj1.getLikes() > obj2.getLikes()) ? 1:0 ;
+                }
+            });
         }catch (JSONException e) {
             e.printStackTrace();
         }
+        result.addAll(resultkandidaten);
+        result.addAll(resultwaehler);
         return  result;
     }
 

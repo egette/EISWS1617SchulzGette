@@ -28,6 +28,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
+import static de.schulzgette.thes_o_naise.R.id.center_horizontal;
 import static de.schulzgette.thes_o_naise.R.id.publishthesebutton;
 import static de.schulzgette.thes_o_naise.R.id.spinner2;
 import static de.schulzgette.thes_o_naise.R.id.thesentext;
@@ -63,9 +64,20 @@ public class publishThesenFragment extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 kategorie = (String) parent.getItemAtPosition(position);
+                if(kategorie.equals("Lokale Thesen")) kategorie = "Lokal";
                 Log.d("ausgewählte Kategorie:", kategorie);
             }
 
+        });
+        final EditText thesentextid =  (EditText) myView.findViewById(thesentext);
+        thesentextid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    thesentextid.setGravity(center_horizontal);
+                }
+
+            }
         });
 
         Button theseabschickenbutton = (Button) myView.findViewById(publishthesebutton);
@@ -73,8 +85,8 @@ public class publishThesenFragment extends Fragment{
             public void onClick(View v) {
                 Log.d("Button  clicked", "Mal sehen");
 
-                EditText thesentextid =  (EditText) myView.findViewById(thesentext);
-                thesentext2 = thesentextid.getText().toString();
+
+                thesentext2 = thesentextid.getText().toString().trim();
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
                 String token = sharedPreferences.getString("token", "");
                 String wahlkreis = sharedPreferences.getString("wahlkreis", "");
@@ -108,6 +120,11 @@ public class publishThesenFragment extends Fragment{
             HttpClient.POST("thesen", Thesendata, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,7 +104,7 @@ public class KandidatenFragment extends Fragment {
                    kategorie = (String) parent.getItemAtPosition(position);
                    Log.d("ausgewählte Kategorie:", kategorie);
                    if(kategorie.equals("Insgesamt")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT;
-                   if(kategorie.equals("Lokal")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL;
+                   if(kategorie.equals("Lokale Thesen")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL;
                    if(kategorie.equals("Aussenpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_AP;
                    if(kategorie.equals("Umwelt")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT;
                    if(kategorie.equals("Satire")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE;
@@ -132,6 +133,11 @@ public class KandidatenFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 
