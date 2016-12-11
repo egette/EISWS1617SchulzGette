@@ -7,7 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import de.schulzgette.thes_o_naise.services.RegistrationIntentService;
 
@@ -26,14 +27,25 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_settings, container, false);
-        Button register = (Button) myView.findViewById(R.id.registerdevicebutton);
-        register.setOnClickListener(new View.OnClickListener() {
+        final ToggleButton firebase = (ToggleButton) myView.findViewById(R.id.firebaseid);
+        firebase.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RegistrationIntentService.class);
-                getActivity().startService(intent);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    Intent intent = new Intent(getActivity(), RegistrationIntentService.class);
+                    intent.putExtra("register", "true");
+                    getActivity().startService(intent);
+                } else {
+                    // The toggle is disabled
+                    Intent intent = new Intent(getActivity(), RegistrationIntentService.class);
+                    intent.putExtra("register", "false");
+                    getActivity().startService(intent);
+                }
+
             }
         });
+
         return myView;
     }
 

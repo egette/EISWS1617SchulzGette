@@ -9,12 +9,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:text="FirebaseMessasing"
+        <ToggleButton
+            android:text="Firebase Messaging"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:id="@+id/firebaseid"
             android:layout_centerHorizontal="true"
-            android:id="@+id/registerdevicebutton" />
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="32dp" />
+
+        <TextView
+            android:text="Firebase Messaging erlauben:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:id="@+id/textView4"
+            android:layout_above="@+id/firebaseid"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </FrameLayout>
