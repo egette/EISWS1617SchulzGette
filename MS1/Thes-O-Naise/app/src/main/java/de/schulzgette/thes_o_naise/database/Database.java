@@ -819,7 +819,13 @@ public class Database {
                         JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
                         Integer check = 0;
                         String kategorie2 = "";
-                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT)) check = 1;
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT)){
+                            if(Punkte_Insgesamt==0){
+                                check = 0;
+                            }else{
+                                check = 1;
+                            }
+                        }
                         if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL)) kategorie2 = "Lokal";
                         if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT)) kategorie2 = "Umwelt";
                         if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_AP)) kategorie2 = "Aussenpolitik";
