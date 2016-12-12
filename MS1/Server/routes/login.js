@@ -1,5 +1,6 @@
 var constants = require('../constants/constants.json');
 
+//Funktion zum authentifiezieren eines Benutzers
 exports.auth = function(app, db, redis, jwt){
 	return function(req, res){
 		console.log('REQ BODY:  ', req.body);
@@ -37,14 +38,14 @@ exports.auth = function(app, db, redis, jwt){
 		}	
 	}
 };
-
+//Funktion um asynchron etwas aus der Datenbank zu holen
 function getDB(data, db) {
 	return db.getAsync(data).then(function (reply){
 			if(!reply) return 0;
 			return reply;
 		});
  };
- 
+//Funktion zum Erzeugen eines Tokens  
 function makeToken(userID, db, reqPassword, app, res, jwt){
 	getDB(userID, db).then(function(reply){ 
 		var userDataJSON = JSON.parse(reply);

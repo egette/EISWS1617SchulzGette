@@ -1,6 +1,6 @@
 var constants = require('../constants/constants.json');
 
- 
+ //Speichert die ID in der Liste des Wahlkreises
 exports.register = function(uid, registrationId, wahlkreis, db, callback){
  
     var newDevice = { 

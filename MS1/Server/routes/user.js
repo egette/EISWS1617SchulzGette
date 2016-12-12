@@ -2,6 +2,7 @@ var devicesFunction = require('../functions/devices');
 var sendFunction = require('../functions/send-message');
 var constants = require('../constants/constants.json');
 
+//Funktion um die Daten des Benutzers zu aktuallisieren
 exports.updateUserdata = function(db){
 	return function(req, res){
 		console.log("BODY:", req.body);

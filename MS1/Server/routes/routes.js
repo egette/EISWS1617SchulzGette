@@ -63,7 +63,8 @@ module.exports = function(app,io, db, redis, jwt, Promise, apiRoutes) {
 	app.put('/thesen/likes', thesen.putLikes(db));
 	app.put('/user', userroute.updateUserdata(db));
 	app.delete('/user', userroute.deleteUserdata(db));
- 
+		
+ //Ein Gerät meldet sich für den Wahlkreis für Firebase Cloud Messaging an 
     app.post('/devices',function(req,res) {
 		console.log("REGISTERBODY:", req.body);
 		var wahlkreis = req.body.wahlkreis;
@@ -88,7 +89,7 @@ module.exports = function(app,io, db, redis, jwt, Promise, apiRoutes) {
         }
     });
  
- 
+ //Ein Gerät wird aus der Liste des Wahlkreises aus Firebase Cloud Messaging entfernt
     app.delete('/devices/:device',function(req,res) {
  
         var registrationId = req.params.device;

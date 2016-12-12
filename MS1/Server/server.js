@@ -56,6 +56,7 @@ var listen = app.listen(port,  function() {
 });
 var socket = io.listen(listen);
 
+//Die Routen werden festgelegt
 require('./routes/routes')(app, socket, db, redis, jwt, Promise, apiRoutes);
 
 
