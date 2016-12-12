@@ -16,6 +16,8 @@
     "https": "^1.0.0",
     "jsonwebtoken": "^7.1.9",
     "lodash": "^4.17.2",
-    "redis": "^2.6.2"
+    "node-gcm": "^0.14.4",
+    "redis": "^2.6.2",
+    "socket.io": "^1.7.1"
   }
 }

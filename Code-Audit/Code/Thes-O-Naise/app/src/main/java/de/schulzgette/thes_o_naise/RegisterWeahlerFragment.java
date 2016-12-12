@@ -50,13 +50,13 @@ public class RegisterWeahlerFragment extends Fragment {
                 Log.d("Button  clicked", "Mal sehen");
 
                 EditText user =  (EditText) myView.findViewById(R.id.username);
-                username =  user.getText().toString();
+                username =  user.getText().toString().trim();
                 EditText usermail =  (EditText) myView.findViewById(R.id.usermail);
-                mail =  usermail.getText().toString();
+                mail =  usermail.getText().toString().trim();
                 EditText pw =  (EditText) myView.findViewById(R.id.userpw);
                 password =  pw.getText().toString();
                 EditText userwahlkreis =  (EditText) myView.findViewById(R.id.userwahlkreis);
-                wahlkreis =  userwahlkreis.getText().toString();
+                wahlkreis =  userwahlkreis.getText().toString().trim();
                 if(username.isEmpty() ||  mail.isEmpty() || password.isEmpty() || wahlkreis.isEmpty()){
                     Toast.makeText(getContext(), "Bitte füllen Sie alle Felder aus ", Toast.LENGTH_SHORT).show();
                 }else {
@@ -102,6 +102,11 @@ public class RegisterWeahlerFragment extends Fragment {
             HttpClient.POST("register", registerData, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 

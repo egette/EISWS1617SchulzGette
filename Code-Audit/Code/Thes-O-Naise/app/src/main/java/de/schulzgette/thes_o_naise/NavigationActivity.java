@@ -88,7 +88,9 @@ public class NavigationActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame_nav, new SettingsFragment())
+                    .commit();
         }
 
         return super.onOptionsItemSelected(item);

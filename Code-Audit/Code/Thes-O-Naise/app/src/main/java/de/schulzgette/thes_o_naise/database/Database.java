@@ -13,6 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
@@ -31,6 +34,10 @@ public class Database {
         public static final String COLUMN_NAME_POSITION = "position";
         public static final String COLUMN_NAME_SERVER = "server";
         public static final String COLUMN_NAME_LAST_POSITION = "lastposition";
+    }
+    public static abstract class MeineThesenTable implements BaseColumns{
+        public static final String TABLE_NAME = "meinethesen";
+        public static final String COLUMN_NAME_TID = "tid";
     }
 
     //TODO MEHR KATEGORIEN ?
@@ -90,6 +97,10 @@ public class Database {
                     UserpositiondataTable.COLUMN_NAME_LAST_POSITION + " TEXT" +
 
             " )";
+    public static final String SQL_CREATE_MEINETHESENTABLE =
+            "CREATE TABLE " + MeineThesenTable.TABLE_NAME + " (" +
+                    MeineThesenTable.COLUMN_NAME_TID + " STRING PRIMARY KEY" +
+                    " )";
 
     //TODO MEHR KATEGORIEN ?
 
@@ -148,10 +159,12 @@ public class Database {
             "DROP TABLE IF EXISTS " + KandidatenTable.TABLE_NAME;
     public static final String SQL_DELETE_BEGRUENDUNGDATATABLE =
             "DROP TABLE IF EXISTS " + BegruendungTable.TABLE_NAME;
+    public static final String SQL_DELETE_MEINETHESENTABLE =
+            "DROP TABLE IF EXISTS " + MeineThesenTable.TABLE_NAME;
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 4;
+        public static final int DATABASE_VERSION = 6;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -163,6 +176,8 @@ public class Database {
             db.execSQL(SQL_CREATE_THESENTABLE);
             db.execSQL(SQL_CREATE_KANDIDATENTABLE);
             db.execSQL(SQL_CREATE_BEGRUENDUNGDATATABLE);
+//            db.execSQL(SQL_CREATE_MEINETHESENTABLE);
+
         }
 
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -171,6 +186,8 @@ public class Database {
             db.execSQL(SQL_DELETE_THESENTABLE);
             db.execSQL(SQL_DELETE_KANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
+   //         db.execSQL(SQL_CREATE_MEINETHESENTABLE);
+
             onCreate(db);
         }
 
@@ -188,6 +205,34 @@ public class Database {
 
     public  Database(Context context) { this.context = context; }
 
+    public void updateMeineThesen(String tid){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+            if(tid != null){
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(MeineThesenTable.COLUMN_NAME_TID, tid);
+                    dbwrite.insert(MeineThesenTable.TABLE_NAME, null, values);
+                } finally {
+                    dbwrite.close();
+                }
+            }
+    }
+    public ArrayList<String> getMeineThesen(){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
+        Cursor cursor;
+        ArrayList<String> result = new ArrayList<>();
+        cursor = dbread.query(MeineThesenTable.TABLE_NAME, new String[]{MeineThesenTable.COLUMN_NAME_TID}, null, null, null, null, null);
+        try {
+            while(cursor.moveToNext()){
+                result.add(cursor.getString(0));
+            }
+        }finally{
+            cursor.close();
+        }
+        return result;
+    }
     //schreibt eine Position zu einer tid in die Datenbank und ändert die Positon falls die TID schon vorhanden war
     public void insertposition(String position, String tid) {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
@@ -547,6 +592,8 @@ public class Database {
     }
 
     public ArrayList<BegruendungModel> makeArraylistWithJSONArrays (JSONArray k, JSONArray w){
+        ArrayList<BegruendungModel> resultkandidaten = new ArrayList<>();
+        ArrayList<BegruendungModel> resultwaehler = new ArrayList<>();
         ArrayList<BegruendungModel> result = new ArrayList<>();
         try{
             for(int i = 0; i<k.length(); i++){
@@ -566,8 +613,15 @@ public class Database {
                         kommentareliste.add(new KommentarModel(kommentartext,uid,username));
                     }
                 }
-                result.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "k", Username));
+                resultkandidaten.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "k", Username));
             }
+            Collections.sort(resultkandidaten, new Comparator<BegruendungModel>() {
+                //Begründungen werden absteigend nach Likes sortiert
+                @Override
+                public int compare(BegruendungModel obj1, BegruendungModel obj2) {
+                    return (obj1.getLikes() > obj2.getLikes()) ? -1: (obj1.getLikes() > obj2.getLikes()) ? 1:0 ;
+                }
+            });
             for(int i = 0; i<w.length(); i++){
                 JSONObject object =(JSONObject) w.get(i);
                 String UID = object.getString("UID");
@@ -585,11 +639,20 @@ public class Database {
                         kommentareliste.add(new KommentarModel(kommentartext,uid,username));
                     }
                 }
-                result.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "w", Username));
+                resultwaehler.add(new BegruendungModel(kommentareliste, begruendungstext, likes, UID, "w", Username));
             }
+            Collections.sort(resultwaehler, new Comparator<BegruendungModel>() {
+                //Begründungen werden absteigend nach Likes sortiert
+                @Override
+                public int compare(BegruendungModel obj1, BegruendungModel obj2) {
+                    return (obj1.getLikes() > obj2.getLikes()) ? -1: (obj1.getLikes() > obj2.getLikes()) ? 1:0 ;
+                }
+            });
         }catch (JSONException e) {
             e.printStackTrace();
         }
+        result.addAll(resultkandidaten);
+        result.addAll(resultwaehler);
         return  result;
     }
 
@@ -756,7 +819,13 @@ public class Database {
                         JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
                         Integer check = 0;
                         String kategorie2 = "";
-                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT)) check = 1;
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT)){
+                            if(Punkte_Insgesamt==0){
+                                check = 0;
+                            }else{
+                                check = 1;
+                            }
+                        }
                         if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL)) kategorie2 = "Lokal";
                         if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT)) kategorie2 = "Umwelt";
                         if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_AP)) kategorie2 = "Aussenpolitik";

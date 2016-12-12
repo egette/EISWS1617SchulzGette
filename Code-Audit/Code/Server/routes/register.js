@@ -1,3 +1,7 @@
+var constants = require('../constants/constants.json');
+var devicesFunction = require('../functions/devices');
+var sendFunction = require('../functions/send-message');
+ 
  //Funktion zum registrieren von Wähler und Kandidaten
  exports.register = function (db, redis) {
  	return function (req, res) {
@@ -9,12 +13,15 @@
 		var password = req.body.password;
 		var wahlkreis = req.body.wahlkreis;
 	
-		if(!typ || !emaildata || !username || !password || !wahlkreis ){
-			res.status(409).end();
-		}
-			
- 		//EMAIL CHECK
- 		if (emaildata) {
+		if ( typeof emaildata  == 'undefined' || typeof username  == 'undefined' || typeof password  == 'undefined' || typeof typ  == 'undefined' || typeof wahlkreis  == 'undefined') {
+			console.log(constants.error.msg_invalid_param.message);
+			res.status(403).json(constants.error.msg_invalid_param).end();
+ 
+        } else if ( !emaildata.trim()  || !username.trim() || !password.trim()  || !typ.trim() || !wahlkreis.trim()) {
+			console.log(constants.error.msg_empty_param.message);
+			res.status(403).json(constants.error.msg_empty_param).end();
+ 
+        } else if (emaildata) {
  			//Überprüfung ob im SET "email" die geschickte EMAIL dabei ist
  			checkSET("email", emaildata).then(function (check) {
  				if (check == 1) {
@@ -136,6 +143,11 @@
 									db.set('last_Kandidat_ID', new_Kandidat_ID); 						
 									Client_JSON.Client_ID = new_Kandidat_ID;
 									res.status(201).send(Client_JSON).end();
+									devicesFunction.listDevices(wahlkreis, db,  function(result) {
+										sendFunction.sendMessage(new_Kandidat_ID, result, function (callback){
+											console.log(callback);
+										});
+									});
 								});
 
 							} 

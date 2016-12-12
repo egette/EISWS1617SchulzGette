@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,12 +17,28 @@
         android:textColor="@color/colorPrimaryDark"
         style="@style/Widget.AppCompat.Button.Colored"/>
 
-    <TextView
-        android:text='Mit dem drücken des "Matching"  akzeptieren Sie, dass ihre Positionen zu den Thesen an den Server zur Auswertung übermiittelt werden'
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:id="@+id/textView3"
-        android:layout_alignParentTop="true" />
+        app:srcCompat="@mipmap/punktetabelle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="186dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/imageView3" />
+
+    <TextView
+        android:text="Vergabe der Punkte"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="65dp"
+        android:id="@+id/textView3" />
+
 
 </RelativeLayout>

@@ -1,9 +1,8 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.Models.KommentarModel;
 import de.schulzgette.thes_o_naise.database.Database;
+import de.schulzgette.thes_o_naise.services.EventBus;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import de.schulzgette.thes_o_naise.utils.TheseToLokalDatabase;
 import okhttp3.Call;
@@ -40,7 +40,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Jessica on 15.11.2016.
  */
 
-public class ThesenTabFragment extends Fragment {
+public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsichtListner {
     View myView;
     static final String pos = "pro";
     String tid;
@@ -63,13 +63,34 @@ public class ThesenTabFragment extends Fragment {
 
         begruendungtext = (EditText) myView.findViewById(R.id.editbegruendung);
         begruendungtext.setHint("Begründung " + position);
+        begruendungtext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                LinearLayout begruendungslayout = (LinearLayout) myView.findViewById(R.id.begruendungslayout);
+                LinearLayout.LayoutParams mLay = (LinearLayout.LayoutParams) begruendungslayout.getLayoutParams();
+
+                if(hasFocus){
+                    mLay.weight = (float) 0.2;
+                    begruendungtext.setBackgroundColor(getResources().getColor(R.color.edittextBackgroundLeight));
+                    begruendungslayout.setLayoutParams(mLay);
+                }else{
+                    mLay.weight = (float) 0.08;
+                    begruendungtext.setBackgroundColor(getResources().getColor(R.color.edittextBackgroundDark));
+                    begruendungslayout.setLayoutParams(mLay);
+                }
+            }
+        });
 
         ImageButton send = (ImageButton) myView.findViewById(R.id.begruendungsbutton);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String begruendung  =  begruendungtext.getText().toString();
-                sendBegruendungToServer(begruendung);
+                String begruendung  =  begruendungtext.getText().toString().trim();
+                if(begruendung.isEmpty()){
+                    Toast.makeText(getContext(), "Bitte eine Begründung eingeben", Toast.LENGTH_SHORT).show();
+                }else{
+                    sendBegruendungToServer(begruendung);
+                }
             }
         });
 
@@ -128,6 +149,29 @@ public class ThesenTabFragment extends Fragment {
             BegruendungsAdapter mAdapter = (BegruendungsAdapter) elv.getExpandableListAdapter();
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onFirebaseUpdate() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                ArrayList<BegruendungModel> neu = getBegruendung(tid, position);
+                loadHosts(neu);
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.register(this);
+        onFirebaseUpdate();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.unregister(this);
+        super.onStop();
     }
 
     public class BegruendungsAdapter extends BaseExpandableListAdapter {
@@ -192,17 +236,34 @@ public class ThesenTabFragment extends Fragment {
             String anzahlkommentare = begruendungModel.getAnzahlKommentare().toString();
             ((TextView) convertView.findViewById(R.id.anzahlkommentare)).setText(anzahlkommentare);
 
-            if(getChildrenCount(groupPosition)==0){
+            if(getChildrenCount(groupPosition)==0 && isExpanded){
+
                 LinearLayout kommentarlayout = (LinearLayout) convertView.findViewById(R.id.kommentarlayout);
                 kommentarlayout.setVisibility( View.VISIBLE);
                 final EditText kommentaredit = (EditText)convertView.findViewById(R.id.editkommentar);
+
+
+               /* kommentaredit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    Integer height = kommentaredit.getHeight();
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if(hasFocus){
+                           //kommentaredit.setHeight(200);
+
+                        }else{
+                           // kommentaredit.setHeight(height);
+                        }
+                    }
+                });*/
+
                 ImageButton kommenarsenden = (ImageButton) convertView.findViewById(R.id.kommentarbutton);
                 kommenarsenden.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String kommentar = kommentaredit.getText().toString();
+                        String kommentar = kommentaredit.getText().toString().trim();
                         String beguid = begruendungModel.getUID();
-                        sendKommentarToServer(kommentar, beguid);
+                        String typ = begruendungModel.getTyp();
+                        sendKommentarToServer(kommentar, beguid, typ);
                     }
                 });
             }
@@ -235,13 +296,22 @@ public class ThesenTabFragment extends Fragment {
                 ((TextView) convertView.findViewById(R.id.usernamekommentar)).setText(kommentarModel.getUsername());
                 ((TextView) convertView.findViewById(R.id.kommentartext)).setText(kommentarModel.getKommentartext());
                 final EditText kommentaredit = (EditText)convertView.findViewById(R.id.editkommentar);
+                kommentaredit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+
+
+                    }
+                });
+
                 ImageButton kommenarsenden = (ImageButton) convertView.findViewById(R.id.kommentarbutton);
                 kommenarsenden.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String kommentar = kommentaredit.getText().toString();
+                        String kommentar = kommentaredit.getText().toString().trim();
                         String beguid = begruendungModel.getUID();
-                        sendKommentarToServer(kommentar, beguid);
+                        String typ = begruendungModel.getTyp();
+                        sendKommentarToServer(kommentar, beguid, typ);
                     }
                 });
 
@@ -375,6 +445,11 @@ public class ThesenTabFragment extends Fragment {
             HttpClient.PUT("thesen", json_data, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 
@@ -413,9 +488,8 @@ public class ThesenTabFragment extends Fragment {
 
     }
 
-    public void sendKommentarToServer(String kommentartext, String begruendungsid){
+    public void sendKommentarToServer(String kommentartext, String begruendungsid, String Typ){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-        String Typ = sharedPreferences.getString("typ", "");
         String UID = sharedPreferences.getString("UID", "");
         String username = sharedPreferences.getString("username", "");
         String positionUpperCase = position.toUpperCase();
@@ -438,6 +512,11 @@ public class ThesenTabFragment extends Fragment {
             HttpClient.PUT("thesen/kommentar", json_data, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 
@@ -494,6 +573,11 @@ public class ThesenTabFragment extends Fragment {
             HttpClient.PUT("thesen/likes", json_data, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 
@@ -531,4 +615,5 @@ public class ThesenTabFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 }

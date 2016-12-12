@@ -74,14 +74,14 @@ public class WahlprogrammTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_wahlprogramm_tab, container, false);
         final Button veröffentlichen = (Button) myView.findViewById(R.id.veröffentlichenwahlprogrammid);
-        final Button bearbeiten = (Button) myView.findViewById(R.id.bearbeitenbuttonid2);
+        final Button bearbeiten = (Button) myView.findViewById(R.id.bearbeitenbutton2id);
         final EditText webseiteedit =  (EditText) myView.findViewById(R.id.webseiteeditid);
         final EditText beschreibungedit =  (EditText) myView.findViewById(R.id.beschreibungeditid);
         final EditText linkedit =  (EditText) myView.findViewById(R.id.linkeditid);
         final TextView webseitetext = (TextView) myView.findViewById(R.id.webseitetextid);
         final TextView beschreibungtext = (TextView) myView.findViewById(R.id.beschreibungtextid);
         final TextView linktext = (TextView) myView.findViewById(R.id.linktextid);
-
+        final EditText passwortedit = (EditText) myView.findViewById(R.id.passwortid);
 
         try {
             beschreibungtext.setText(kandidat.getBeschreibung());
@@ -104,7 +104,7 @@ public class WahlprogrammTabFragment extends Fragment {
                 webseiteedit.setText(webseitetext.getText().toString());
                 beschreibungedit.setText(beschreibungtext.getText().toString());
                 linkedit.setText(linktext.getText().toString());
-
+                passwortedit.setVisibility(View.VISIBLE);
                 veröffentlichen.setVisibility(View.VISIBLE);
                 bearbeiten.setVisibility(View.GONE);
 
@@ -116,24 +116,30 @@ public class WahlprogrammTabFragment extends Fragment {
                 String webseitetext2 = webseiteedit.getText().toString();
                 String beschreibungtext2 = beschreibungedit.getText().toString();
                 String linktext2 = linkedit.getText().toString();
-                webseitetext.setText(webseitetext2);
-                beschreibungtext.setText(beschreibungtext2);
-                linktext.setText(linktext2);
-                webseitetext.setVisibility(View.VISIBLE);
-                beschreibungtext.setVisibility(View.VISIBLE);
-                linktext.setVisibility(View.VISIBLE);
-                sendWahlprogrammToServer(webseitetext2, beschreibungtext2, linktext2);
-                webseiteedit.setVisibility(View.GONE);
-                beschreibungedit.setVisibility(View.GONE);
-                linkedit.setVisibility(View.GONE);
-                veröffentlichen.setVisibility(View.GONE);
-                bearbeiten.setVisibility(View.VISIBLE);
+                String passwort = passwortedit.getText().toString();
+                if(passwort.isEmpty()){
+                 Toast.makeText(getContext(), "Bitte Passwort eingeben", Toast.LENGTH_SHORT).show();
+                }else {
+                    sendWahlprogrammToServer(webseitetext2, beschreibungtext2, linktext2, passwort);
+                    webseiteedit.setVisibility(View.GONE);
+                    beschreibungedit.setVisibility(View.GONE);
+                    linkedit.setVisibility(View.GONE);
+                    veröffentlichen.setVisibility(View.GONE);
+                    bearbeiten.setVisibility(View.VISIBLE);
+                    webseitetext.setText(webseitetext2);
+                    beschreibungtext.setText(beschreibungtext2);
+                    linktext.setText(linktext2);
+                    webseitetext.setVisibility(View.VISIBLE);
+                    beschreibungtext.setVisibility(View.VISIBLE);
+                    linktext.setVisibility(View.VISIBLE);
+                    passwortedit.setVisibility(View.GONE);
+                }
             }
         });
         return myView;
     }
 
-    public void sendWahlprogrammToServer(String webseitetext, String beschreibungtext, String linktext){
+    public void sendWahlprogrammToServer(String webseitetext, String beschreibungtext, String linktext, String passwort){
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
@@ -146,6 +152,7 @@ public class WahlprogrammTabFragment extends Fragment {
             wahlprogramm.accumulate("Link", linktext);
             jsonObject.accumulate("Wahlprogramm", wahlprogramm);
             jsonObject.accumulate("token", token);
+            jsonObject.accumulate("passwort", passwort);
             jsonObject.accumulate("typ", "kandidat");
             jsonObject.accumulate("uid", uid);
         } catch (JSONException e) {

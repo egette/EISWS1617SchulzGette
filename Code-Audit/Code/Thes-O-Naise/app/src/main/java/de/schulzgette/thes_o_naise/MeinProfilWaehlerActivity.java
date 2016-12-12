@@ -65,12 +65,17 @@ public class MeinProfilWaehlerActivity extends FragmentActivity {
         final RelativeLayout layoutinfotext = (RelativeLayout) findViewById(R.id.layoutinfotext);
         final ImageButton hide = (ImageButton) findViewById(R.id.hideinfotext);
         hide.setOnClickListener(new View.OnClickListener() {
+            Boolean isExpanded = false;
             public void onClick(View v) {
                 layoutinfotext.setVisibility((layoutinfotext.getVisibility() == View.VISIBLE)
                         ? View.GONE : View.VISIBLE);
 
-                float deg = hide.getRotation() + 180F;
-                hide.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
+                hide.setImageResource(isExpanded?R.drawable.ic_expand_less_black_24dp:R.drawable.ic_expand_more_black_24dp);
+                if(isExpanded){
+                    isExpanded = false;
+                }else{
+                    isExpanded = true;
+                }
             }
         });
 

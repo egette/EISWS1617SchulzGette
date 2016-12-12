@@ -76,7 +76,7 @@
 
     </RelativeLayout>
     <ImageButton
-        android:layout_height="25dp"
+        android:layout_height="20dp"
         android:layout_width="match_parent"
         android:id="@+id/hidethesentext"
         android:src="@drawable/ic_expand_less_black_24dp"

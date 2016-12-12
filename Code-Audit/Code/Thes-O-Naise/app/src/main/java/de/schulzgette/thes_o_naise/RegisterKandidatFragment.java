@@ -52,19 +52,19 @@ public class RegisterKandidatFragment extends Fragment {
                 Log.d("Button  clicked", "Mal sehen");
 
                 EditText user =  (EditText) myView.findViewById(R.id.username);
-                username =  user.getText().toString();
+                username =  user.getText().toString().trim();
                 EditText vornameedit =  (EditText) myView.findViewById(R.id.vornameid);
-                vorname =  vornameedit.getText().toString();
+                vorname =  vornameedit.getText().toString().trim();
                 EditText nachnameedit =  (EditText) myView.findViewById(R.id.nachnameid);
-                nachname =  nachnameedit.getText().toString();
+                nachname =  nachnameedit.getText().toString().trim();
                 EditText usermail =  (EditText) myView.findViewById(R.id.usermail);
-                mail =  usermail.getText().toString();
+                mail =  usermail.getText().toString().trim();
                 EditText pw =  (EditText) myView.findViewById(R.id.userpw);
                 password =  pw.getText().toString();
                 EditText userwahlkreis =  (EditText) myView.findViewById(R.id.userwahlkreis);
-                wahlkreis =  userwahlkreis.getText().toString();
+                wahlkreis =  userwahlkreis.getText().toString().trim();
                 EditText partei2 =  (EditText) myView.findViewById(R.id.parteitext);
-                partei =  partei2.getText().toString();
+                partei =  partei2.getText().toString().trim();
                 if(username.isEmpty() || vorname.isEmpty() || nachname.isEmpty() || mail.isEmpty() || password.isEmpty() || wahlkreis.isEmpty() || partei.isEmpty()){
                     Toast.makeText(getContext(), "Bitte füllen Sie alle Felder aus ", Toast.LENGTH_SHORT).show();
                 }else {
@@ -109,6 +109,11 @@ public class RegisterKandidatFragment extends Fragment {
             HttpClient.POST("register", registerData, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 

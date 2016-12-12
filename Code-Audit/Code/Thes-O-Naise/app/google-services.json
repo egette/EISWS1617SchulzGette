@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "653114509405",
+    "firebase_url": "https://thes-o-naise-b4c19.firebaseio.com",
+    "project_id": "thes-o-naise-b4c19",
+    "storage_bucket": "thes-o-naise-b4c19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653114509405:android:d40f46309598fc49",
+        "android_client_info": {
+          "package_name": "de.schulzgette.thes_o_naise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653114509405-rjud8gfmnmqrrmot7vmpoc6ntm2t5pa3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.schulzgette.thes_o_naise",
+            "certificate_hash": "A66BA8C863CABC54CE01A85CCEE764E5FA55F045"
+          }
+        },
+        {
+          "client_id": "653114509405-uurstgo8oa3s5slui0esprcm8ovpg8p4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.schulzgette.thes_o_naise",
+            "certificate_hash": "6A446443E3A2C467336292B2CBB0B9893A746540"
+          }
+        },
+        {
+          "client_id": "653114509405-3bsi4o7qr568gvh0gvm577ekmoidbs5k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3RNsG3kpm3-8XPXYRwySrEVB6SdOCgUQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653114509405-3bsi4o7qr568gvh0gvm577ekmoidbs5k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

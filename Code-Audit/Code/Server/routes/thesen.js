@@ -1,3 +1,7 @@
+var devicesFunction = require('../functions/devices');
+var sendFunction = require('../functions/send-message');
+var constants = require('../constants/constants.json');
+
 exports.publish = function(db){
 	return function(req, res){
 		console.log('Thesen JSON BODY:  ', req.body);
@@ -23,45 +27,63 @@ exports.publish = function(db){
 		var wahlkreis = req.body.wahlkreis;
 		var kategorie = req.body.kategorie; 
 		var wahlkreis_kategorie = wahlkreis + "_" + kategorie;
-		var thesentexthash = md5(req.body.thesentext);	
-		console.log("HASH", thesentexthash);
-		checkSET(wahlkreis+"-hashlist", thesentexthash).then(function (check) {
-			if (check == 1) {
-				console.log("Diese These ist schon im Wahlkreis vorhanden", req.body.thesentext);
-				res.status(400).end();
-			}else {
-				db.SADD(wahlkreis+"-hashlist", thesentexthash);
-				//Überprüfung welche Thesen-ID die letzte war
-				db.get('last_Thesen_ID', function (err, reply) { 
-					if(err) throw err;
-					var last_Thesen_ID;
-					if (!reply || reply == "TID_NaN") {
-						last_Thesen_ID = "TID_0";
-					} else {
-						last_Thesen_ID = reply.toString();
-					}
-							
-					var old_TID = last_Thesen_ID.substring(4);
-					var old_TID_INT = parseInt(old_TID);
-					var new_TID = old_TID_INT + 1;
-					var new_Thesen_ID = "TID_" + new_TID.toString();
-					These.TID = new_Thesen_ID;
-					console.log("neue Thesenid :  ", new_Thesen_ID);
-					//These wird in Redis gespeichert
-					db.set(new_Thesen_ID, JSON.stringify(These));
-					//Dem Set des Wahlkreises die Thesen_ID hinzufügen
-					db.SADD(wahlkreis, new_Thesen_ID);
-					//Dem Set der Kategorie die Thesen_ID hinzufügen
-					db.SADD(kategorie, new_Thesen_ID);
-					//Dem Set der Kategorie des Wahlkreises die Thesen_ID hinzufügen
-					db.SADD(wahlkreis_kategorie, new_Thesen_ID);
-					
-					//last_Thesen_ID wird aktuallierst
-					db.set('last_Thesen_ID', new_Thesen_ID);        
-					res.send(These).status(201).end();	
-				});
-			}
-		});
+		
+		if ( typeof wahlkreis  == 'undefined' || typeof kategorie  == 'undefined' ) {
+			console.log(constants.error.msg_invalid_param.message);
+			res.status(400).json(constants.error.msg_invalid_param).end();
+ 
+        } else if ( !wahlkreis.trim()  || !kategorie.trim() ) {
+			console.log(constants.error.msg_empty_param.message);
+			res.status(400).json(constants.error.msg_empty_param).end();
+ 
+        } else{
+			var thesentexthash = md5(req.body.thesentext);	
+			console.log("HASH", thesentexthash);
+			checkSET(wahlkreis+"-hashlist", thesentexthash).then(function (check) {
+				if (check == 1) {
+					console.log("Diese These ist schon im Wahlkreis vorhanden", req.body.thesentext);
+					res.status(400).end();
+				}else {
+					db.SADD(wahlkreis+"-hashlist", thesentexthash);
+					//Überprüfung welche Thesen-ID die letzte war
+					db.get('last_Thesen_ID', function (err, reply) { 
+						if(err) throw err;
+						var last_Thesen_ID;
+						if (!reply || reply == "TID_NaN") {
+							last_Thesen_ID = "TID_0";
+						} else {
+							last_Thesen_ID = reply.toString();
+						}
+								
+						var old_TID = last_Thesen_ID.substring(4);
+						var old_TID_INT = parseInt(old_TID);
+						var new_TID = old_TID_INT + 1;
+						var new_Thesen_ID = "TID_" + new_TID.toString();
+						These.TID = new_Thesen_ID;
+						console.log("neue Thesenid :  ", new_Thesen_ID);
+						//These wird in Redis gespeichert
+						db.set(new_Thesen_ID, JSON.stringify(These));
+						//Dem Set des Wahlkreises die Thesen_ID hinzufügen
+						db.SADD(wahlkreis, new_Thesen_ID);
+						//Dem Set der Kategorie die Thesen_ID hinzufügen
+						db.SADD(kategorie, new_Thesen_ID);
+						//Dem Set der Kategorie des Wahlkreises die Thesen_ID hinzufügen
+						db.SADD(wahlkreis_kategorie, new_Thesen_ID);
+						
+						//last_Thesen_ID wird aktuallierst
+						db.set('last_Thesen_ID', new_Thesen_ID);  
+						devicesFunction.listDevices(wahlkreis, db,  function(result) {
+							var registrationIds = result;
+							sendFunction.sendMessage(new_Thesen_ID, registrationIds, function(callback){
+							console.log(callback);
+							});
+						});
+						
+						res.send(These).status(201).end();	
+					});
+				}
+			});
+		}
 	}
 	
 	function checkSET(set, data) {
@@ -74,27 +96,6 @@ exports.publish = function(db){
 		});
 	}	
 }
-
-function makeThesenJSON(anzahl_thesen, Thesen_IDS, db){
-var promises = [];
-var Thesen_JSONOBJECT = { "Thesen" : [], "Anzahl": "0" };
-if(anzahl_thesen > Thesen_IDS.length) anzahl_thesen = Thesen_IDS.length;
-	Thesen_JSONOBJECT.Anzahl = anzahl_thesen;
-
-
-  for (var i = 0; i < anzahl_thesen; i++) {
-    promises.push(db.getAsync(Thesen_IDS[i]));
-  }
-
-   return Promise.all(promises).then(function(arrayOfResults) {
-      
-      for (i = 0; i < arrayOfResults.length; i++) {
-        var thesenjsondata = arrayOfResults[i];
-        Thesen_JSONOBJECT.Thesen.push(thesenjsondata);
-      }
-      return Thesen_JSONOBJECT;
-    });
-}
 		
 exports.putPosition = function(db){
 	return function (req, res){
@@ -105,9 +106,15 @@ exports.putPosition = function(db){
 		var richtung = req.body.richtung;
 		var textdata = req.body.textdata;
 		var username = req.body.username;
-		if(!tid || !typ || !uid || !richtung) res.status(409).end();
-
-		if (tid.substring(0, 4) == "TID_"){
+		if ( typeof tid  == 'undefined' || typeof typ  == 'undefined' || typeof uid  == 'undefined'|| typeof richtung  == 'undefined') {
+			console.log(constants.error.msg_invalid_param.message);
+			res.status(400).json(constants.error.msg_invalid_param).end();
+ 
+        } else if ( !tid.trim()  || !typ.trim() || !uid.trim() || !richtung.trim() ) {
+			console.log(constants.error.msg_empty_param.message);
+			res.status(400).json(constants.error.msg_empty_param).end();
+ 
+        } else if (tid.substring(0, 4) == "TID_"){
 			if(!textdata && typ == "kandidat"){
 				db.get(tid, function(err, reply){
 					if(err) throw err;
@@ -116,6 +123,7 @@ exports.putPosition = function(db){
 					} else {
 						var These = JSON.parse(reply);
 						var kategorie = These.kategorie;
+						var wahlkreis = These.wahlkreis;
 						var Position = {
 							UID: uid,
 							POS: richtung
@@ -132,6 +140,11 @@ exports.putPosition = function(db){
 						if(neu == 1) These.K_POSITION.push(Position);
 						db.set(tid, JSON.stringify(These));
 						updateBeantworteteThesen(tid, uid, richtung, db, kategorie);
+						devicesFunction.listDevices(wahlkreis, db,  function(result) {
+							sendFunction.sendMessage(tid, result, function (callback){
+							console.log(callback);
+							});
+						});
 						res.status(201).send(These).end();
 					}
 					
@@ -144,6 +157,7 @@ exports.putPosition = function(db){
 					} else {
 						
 						var These = JSON.parse(reply);
+						var wahlkreis = These.wahlkreis;
 						var typ2;
 						if( typ == 'waehler') typ2 = "W";
 						if( typ == 'kandidat') typ2 = "K";
@@ -215,6 +229,11 @@ exports.putPosition = function(db){
 						}
 						if(typ == 'kandidat') updateKandidatBegruendungen(position_json, richtung, tid, neu, db);
 						db.set(tid, JSON.stringify(These));
+						devicesFunction.listDevices(wahlkreis, db,  function(result) {
+							sendFunction.sendMessage(tid, result, function (callback){
+								console.log(callback);
+							});
+						});
 						res.status(201).send(These).end();
 					}			
 				});
@@ -250,6 +269,7 @@ function updateKandidatBegruendungen(position, richtung, tid, neu, db){
 }
 
 function updateKandidatBegruendungenKommentare(uid, kommentar, tid, richtung, db){
+	console.log("Kandidat " + uid + "hat den Kommentar bekommen" + kommentar);
 	db.get(uid, function(err, reply){
 		if(err) throw err;
 		var kandidat = JSON.parse(reply);
@@ -273,67 +293,83 @@ exports.postKommentar = function(db){
 		var typ = req.body.typ;
 		var position = req.body.richtung;
 		
-		if(!tid || !begruendungsid  || !uid || !kommentartext || !username || !typ || !position) res.status(401).end();
-		//TODO : wenn die Anfrage fehlerhaft war, den code nicht weiter laufen lassen
-		db.get(tid, function (err, reply) { 
-			if(err) throw err;
-			var These = JSON.parse(reply);
-			var Kommentarobject = {
-				UID: uid,
-				USERNAME: username,
-				Kommentar: kommentartext
-			};
-			
-			if(typ == 'waehler'){
-				if(position == "PRO"){
-					for(i = 0; i < These.W_PRO.length; i++){
-						if(These.W_PRO[i].UID == begruendungsid){
-							These.W_PRO[i].Kommentare.push(Kommentarobject);
-						}
-					}	
+		if ( typeof tid == 'undefined' || typeof typ == 'undefined' || typeof uid == 'undefined'|| typeof position == 'undefined' 
+		|| typeof begruendungsid == 'undefined' || typeof kommentartext == 'undefined' || typeof username  == 'undefined') {
+			console.log(constants.error.msg_invalid_param.message);
+			res.status(400).json(constants.error.msg_invalid_param).end();
+ 
+        } else if ( !tid.trim()  || !typ.trim() || !uid.trim() || !position.trim() || !begruendungsid.trim()  || !kommentartext.trim()  || !username.trim() ) {
+			console.log(constants.error.msg_empty_param.message);
+			res.status(400).json(constants.error.msg_empty_param).end();
+ 
+        } else{
+			db.get(tid, function (err, reply) { 
+				if(err) throw err;
+				var These = JSON.parse(reply);
+				var wahlkreis = These.wahlkreis;
+				var Kommentarobject = {
+					UID: uid,
+					USERNAME: username,
+					Kommentar: kommentartext
+				};
+				
+				if(typ == 'w'){
+					if(position == "PRO"){
+						for(i = 0; i < These.W_PRO.length; i++){
+							if(These.W_PRO[i].UID == begruendungsid){
+								These.W_PRO[i].Kommentare.push(Kommentarobject);
+							}
+						}	
+					}
+					if(position == "NEUTRAL"){
+						for(i = 0; i < These.W_NEUTRAL.length; i++){
+							if(These.W_NEUTRAL[i].UID == begruendungsid){
+								These.W_NEUTRAL[i].Kommentare.push(Kommentarobject);
+							}
+						}	
+					}
+					if(position == "CONTRA"){
+						for(i = 0; i < These.W_CONTRA.length; i++){
+							if(These.W_CONTRA[i].UID == begruendungsid){
+								These.W_CONTRA[i].Kommentare.push(Kommentarobject);
+							}
+						}	
+					}
+				}else if(typ == 'k'){
+					if(position == "PRO"){
+						for(i = 0; i < These.K_PRO.length; i++){
+							if(These.K_PRO[i].UID == begruendungsid){
+								These.K_PRO[i].Kommentare.push(Kommentarobject);
+							}
+						}	
+					}
+					if(position == "NEUTRAL"){
+						for(i = 0; i < These.K_NEUTRAL.length; i++){
+							if(These.K_NEUTRAL[i].UID == begruendungsid){
+								These.K_NEUTRAL[i].Kommentare.push(Kommentarobject);
+							}
+						}	
+					}
+					if(position == "CONTRA"){
+						for(i = 0; i < These.K_CONTRA.length; i++){
+							if(These.K_CONTRA[i].UID == begruendungsid){
+								These.K_CONTRA[i].Kommentare.push(Kommentarobject);
+							}
+						}	
+					}
+					
 				}
-				if(position == "NEUTRAL"){
-					for(i = 0; i < These.W_NEUTRAL.length; i++){
-						if(These.W_NEUTRAL[i].UID == begruendungsid){
-							These.W_NEUTRAL[i].Kommentare.push(Kommentarobject);
-						}
-					}	
-				}
-				if(position == "CONTRA"){
-					for(i = 0; i < These.W_CONTRA.length; i++){
-						if(These.W_CONTRA[i].UID == begruendungsid){
-							These.W_CONTRA[i].Kommentare.push(Kommentarobject);
-						}
-					}	
-				}
-			}else if(typ == 'kandidat'){
-				if(position == "PRO"){
-					for(i = 0; i < These.K_PRO.length; i++){
-						if(These.K_PRO[i].UID == begruendungsid){
-							These.K_PRO[i].Kommentare.push(Kommentarobject);
-						}
-					}	
-				}
-				if(position == "NEUTRAL"){
-					for(i = 0; i < These.K_NEUTRAL.length; i++){
-						if(These.K_NEUTRAL[i].UID == begruendungsid){
-							These.K_NEUTRAL[i].Kommentare.push(Kommentarobject);
-						}
-					}	
-				}
-				if(position == "CONTRA"){
-					for(i = 0; i < These.K_CONTRA.length; i++){
-						if(These.K_CONTRA[i].UID == begruendungsid){
-							These.K_CONTRA[i].Kommentare.push(Kommentarobject);
-						}
-					}	
-				}
-				updateKandidatBegruendungenKommentare(begruendungsid, Kommentarobject, tid, position, db);
-			}
-			db.set(tid, JSON.stringify(These));
-			console.log("THESE :", These);
-			res.status(201).send(These).end();
-		});
+				if(begruendungsid.substring(0,1) == "K") updateKandidatBegruendungenKommentare(begruendungsid, Kommentarobject, tid, position, db);
+				db.set(tid, JSON.stringify(These));
+				devicesFunction.listDevices(wahlkreis, db,  function(result) {
+					sendFunction.sendMessage(tid, result, function (callback){
+						console.log(callback);
+					});
+				});
+				console.log("THESE :", These);
+				res.status(201).send(These).end();
+			});
+		}
 	}
 }
 
@@ -358,6 +394,21 @@ function updateBeantworteteThesen(tid, kid, position, db, kategorie){
 	});
 }
 
+exports.getThese = function(db){
+	return function (req, res){
+		var tid = req.params.tid;
+		db.get(tid, function (err, reply) { 
+			if(err){
+				throw err;
+				res.status(400).end();
+			} else{
+			var These = JSON.parse(reply);
+			res.send(These).status(200).end();
+			}
+		});
+	}
+}
+
 exports.getThesen = function(db){
 	return function (req, res){
 		var kategorie = req.query.kategorie;
@@ -379,7 +430,7 @@ exports.getThesen = function(db){
 				if( !replies || replies.length==0){
 					//KEINE Thesen in der Kategorie des Wahlkreises
 					console.log("KEINE Thesen in der Kategorie des Wahlkreises");
-				   res.status(401).end();
+				   res.status(404).end();
 				}else{
 					Thesen_IDS = replies;
 					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
@@ -394,7 +445,7 @@ exports.getThesen = function(db){
 				if( !replies || replies.length==0){
 					//KEINE Thesen in dem Wahlkreis
 					console.log("KEINE Thesen in dem Wahlkreis");
-				   res.status(401).end();
+				   res.status(404).end();
 				}else{
 					Thesen_IDS = replies;
 					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
@@ -409,7 +460,7 @@ exports.getThesen = function(db){
 				if( !replies || replies.length==0){
 					//KEINE Thesen in der Kategorie
 					console.log("KEINE Thesen in der Kategorie");
-				   res.status(401).end();
+				   res.status(404).end();
 				}else{
 					Thesen_IDS = replies;
 					console.log('Das Thesen_ID_ARRAY :', Thesen_IDS);
@@ -421,10 +472,30 @@ exports.getThesen = function(db){
 		}else{
 		//KEINE KATEGORIE ODER WAHLKREIS
 		 console.log("KEINE KATEGORIE ODER WAHLKREIS");
-		 res.status(401).end();
+		 res.status(400).end();
 		}
 	}
 }	
+
+function makeThesenJSON(anzahl_thesen, Thesen_IDS, db){
+	var promises = [];
+	var Thesen_JSONOBJECT = { "Thesen" : [], "Anzahl": "0" };
+	if(anzahl_thesen > Thesen_IDS.length) anzahl_thesen = Thesen_IDS.length;
+	Thesen_JSONOBJECT.Anzahl = anzahl_thesen;
+
+  for (var i = 0; i < anzahl_thesen; i++) {
+    promises.push(db.getAsync(Thesen_IDS[i]));
+  }
+
+   return Promise.all(promises).then(function(arrayOfResults) {
+      
+      for (i = 0; i < arrayOfResults.length; i++) {
+        var thesenjsondata = arrayOfResults[i];
+        Thesen_JSONOBJECT.Thesen.push(thesenjsondata);
+      }
+      return Thesen_JSONOBJECT;
+    });
+}
 
 function updateKandidatBegruendungenLikes(uid, like, tid, richtung, db){
 	db.get(uid, function(err, reply){

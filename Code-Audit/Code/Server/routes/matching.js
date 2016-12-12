@@ -143,9 +143,7 @@ exports.match = function(db, Promise){
 				if(gesendet == "false") {
 					if(userposition=="PRO"){
 						var pro = parseInt(these.Anzahl_Zustimmung);
-						console.log("PRO VORHER:", pro);
 						pro += 1;
-						console.log("PRO NACHHER:", pro);
 						these.Anzahl_Zustimmung = pro;
 					}
 					if(userposition=="NEUTRAL"){
@@ -160,52 +158,52 @@ exports.match = function(db, Promise){
 					}
 				}else{
 					if(userposition == "PRO" && lastuserpos == "NEUTRAL"){
-					var pro = parseInt(these.Anzahl_Zustimmung);
-					var neutral= parseInt(these.Anzahl_Neutral);
-					pro += 1;
-					neutral -= 1;
-					these.Anzahl_Zustimmung = pro;
-					these.Anzahl_Neutral = neutral;
+						var pro = parseInt(these.Anzahl_Zustimmung);
+						var neutral= parseInt(these.Anzahl_Neutral);
+						pro += 1;
+						neutral -= 1;
+						these.Anzahl_Zustimmung = pro;
+						these.Anzahl_Neutral = neutral;
 					}
 					if(userposition == "PRO" && lastuserpos == "CONTRA"){
-					var pro = parseInt(these.Anzahl_Zustimmung);
-					var contra = parseInt(these.Anzahl_Ablehnung);
-					pro += 1;
-					contra -= 1;
-					these.Anzahl_Zustimmung = pro;
-					these.Anzahl_Ablehnung = contra;
+						var pro = parseInt(these.Anzahl_Zustimmung);
+						var contra = parseInt(these.Anzahl_Ablehnung);
+						pro += 1;
+						contra -= 1;
+						these.Anzahl_Zustimmung = pro;
+						these.Anzahl_Ablehnung = contra;
 					}
 					if(userposition == "NEUTRAL" && lastuserpos == "CONTRA"){
-					var contra = parseInt(these.Anzahl_Ablehnung);
-					var neutral= parseInt(these.Anzahl_Neutral);
-					neutral += 1;
-					contra -= 1;
-					these.Anzahl_Neutral = neutral;
-					these.Anzahl_Ablehnung = contra;
+						var contra = parseInt(these.Anzahl_Ablehnung);
+						var neutral= parseInt(these.Anzahl_Neutral);
+						neutral += 1;
+						contra -= 1;
+						these.Anzahl_Neutral = neutral;
+						these.Anzahl_Ablehnung = contra;
 					}
 					if(userposition == "NEUTRAL" && lastuserpos == "PRO"){
-					var pro = parseInt(these.Anzahl_Zustimmung);
-					var neutral= parseInt(these.Anzahl_Neutral);
-					pro -= 1;
-					neutral += 1;
-					these.Anzahl_Zustimmung = pro;
-					these.Anzahl_Neutral = neutral;
+						var pro = parseInt(these.Anzahl_Zustimmung);
+						var neutral= parseInt(these.Anzahl_Neutral);
+						pro -= 1;
+						neutral += 1;
+						these.Anzahl_Zustimmung = pro;
+						these.Anzahl_Neutral = neutral;
 					}
 					if(userposition == "CONTRA" && lastuserpos == "PRO"){
-					var pro = parseInt(these.Anzahl_Zustimmung);
-					var contra = parseInt(these.Anzahl_Ablehnung);
-					pro -= 1;
-					contra += 1;
-					these.Anzahl_Zustimmung = pro;
-					these.Anzahl_Ablehnung = contra;
+						var pro = parseInt(these.Anzahl_Zustimmung);
+						var contra = parseInt(these.Anzahl_Ablehnung);
+						pro -= 1;
+						contra += 1;
+						these.Anzahl_Zustimmung = pro;
+						these.Anzahl_Ablehnung = contra;
 					}
 					if(userposition == "CONTRA" && lastuserpos == "NEUTRAL"){
-					var contra = parseInt(these.Anzahl_Ablehnung);
-					var neutral= parseInt(these.Anzahl_Neutral);
-					neutral -= 1;
-					contra += 1;
-					these.Anzahl_Neutral = neutral;
-					these.Anzahl_Ablehnung = contra;
+						var contra = parseInt(these.Anzahl_Ablehnung);
+						var neutral= parseInt(these.Anzahl_Neutral);
+						neutral -= 1;
+						contra += 1;
+						these.Anzahl_Neutral = neutral;
+						these.Anzahl_Ablehnung = contra;
 					}
 				}
 				//console.log("THESE   ", these);

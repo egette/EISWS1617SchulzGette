@@ -5,6 +5,11 @@
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <permission
+    android:name="de.schulzgette.thes_o_naise.permission.C2D_MESSAGE"
+    android:protectionLevel="signature" />
+    <uses-permission android:name="de.schulzgette.thes_o_naise.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -27,20 +32,33 @@
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <service
-            android:name=".services.GetThesenFromAPI"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity
             android:name=".ThesenAnsichtActivity"
             android:windowSoftInputMode="stateHidden" />
         <!-- android:windowSoftInputMode="adjustPan" -->
         <activity android:name=".MeinProfilKandidatActivity" />
         <activity android:name=".AuthActivity" />
-        <activity android:name=".KandidatAnsichtActivity"></activity>
-        <activity android:name=".MeinProfilWaehlerActivity"></activity>
+        <activity android:name=".KandidatAnsichtActivity" />
+        <activity android:name=".MeinProfilWaehlerActivity" />
+
+        <service
+            android:name=".services.GetThesenFromAPI"
+            android:enabled="true"
+            android:exported="true" />
+        <service android:name=".services.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".services.RegistrationIntentService"
+            android:exported="false" />
+        <service
+            android:name=".services.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
