@@ -1,6 +1,7 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.services.EventBus;
 import de.schulzgette.thes_o_naise.services.GetThesenFromAPI;
 
+import static android.content.Context.MODE_PRIVATE;
 import static de.schulzgette.thes_o_naise.R.id.spinner_kategorie;
 
 public class getThesenFragment extends Fragment implements EventBus.IEventListner{
@@ -85,7 +87,9 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
 
     @Override
     public void onThesenUpdate(){
-        db = new Database(getContext());
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
+        String UID = sharedPreferences.getString("UID", "");
+        db = new Database(getContext(), UID);
         thesenModels = db.getArraylistThesen(kategorie);
 
         if(thesenModels != null) {

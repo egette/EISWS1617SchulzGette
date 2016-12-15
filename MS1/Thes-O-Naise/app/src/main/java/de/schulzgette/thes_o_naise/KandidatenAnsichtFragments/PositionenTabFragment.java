@@ -1,6 +1,7 @@
 package de.schulzgette.thes_o_naise.KandidatenAnsichtFragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,8 @@ import de.schulzgette.thes_o_naise.R;
 import de.schulzgette.thes_o_naise.adapter.KandidatBeantworteteThesenAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class PositionenTabFragment extends Fragment {
 
@@ -35,6 +38,7 @@ public class PositionenTabFragment extends Fragment {
     ListView lv;
     KandidatBeantworteteThesenAdapter listadapter;
     ArrayList<BeantworteteThesenKandidatenModel> beantworteteThesenKandidatenModels = new ArrayList<>();
+    private String UID;
 
 
     public PositionenTabFragment() {
@@ -57,6 +61,8 @@ public class PositionenTabFragment extends Fragment {
             MODE = getArguments().getString(ARG_MODE);
             kid = getArguments().getString(ARG_KID);
         }
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
+        UID = sharedPreferences.getString("UID", "");
     }
 
     @Override
@@ -74,7 +80,7 @@ public class PositionenTabFragment extends Fragment {
     }
 
     public void updatePositionenNormalView(String KID) {
-        Database db = new Database(getContext());
+        Database db = new Database(getContext(),UID);
         kandidat = db.getKandidat(KID);
         if(kandidat != null){
             JSONArray kandidatthesen = kandidat.getBeantworteteThesen();
@@ -98,7 +104,7 @@ public class PositionenTabFragment extends Fragment {
     }
 
     public void updatePositionenWaehlerView(){
-        Database db = new Database(getContext());
+        Database db = new Database(getContext(), UID);
         JSONObject object = db.getallPositions();
         try {
             JSONArray  positionen = object.getJSONArray("Positionen");
@@ -115,7 +121,7 @@ public class PositionenTabFragment extends Fragment {
         }
     }
     public void updatePositionenKandidatView(String kid){
-        Database db = new Database(getContext());
+        Database db = new Database(getContext(), UID);
         kandidat = db.getKandidat(kid);
         JSONArray kandidatthesen = kandidat.getBeantworteteThesen();
         Log.d("JSONARRAY", kandidatthesen.toString());

@@ -11,10 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,7 +31,7 @@ import okhttp3.Response;
 public class AuthActivity extends AppCompatActivity {
     String username;
     String email;
-    String passwort;
+    private String passwort;
     JSONArray jArray = new JSONArray();
 
     @Override
@@ -102,8 +105,9 @@ public class AuthActivity extends AppCompatActivity {
                                     sharedPreferences.edit().putString("typ", "waehler").apply();
                                 if (typ.equals("K"))
                                     sharedPreferences.edit().putString("typ", "kandidat").apply();
-                                getAllThesenFromWahlkreis(wahlkreis);
-                                getKandidaten(wahlkreis);
+                                getAllThesenFromWahlkreis(wahlkreis, uid);
+                                getKandidaten(wahlkreis, uid);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -133,10 +137,11 @@ public class AuthActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private  void getAllThesenFromWahlkreis (String wahlkreis) {
+
+    private  void getAllThesenFromWahlkreis (String wahlkreis, final String UID) {
 
         try {
-            HttpClient.GET("thesen"+ "?wahlkreis=" + wahlkreis,  new Callback() {
+            HttpClient.GET("thesen"+ "?wahlkreis=" + wahlkreis + "&anzahl=10000",  new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -157,7 +162,7 @@ public class AuthActivity extends AppCompatActivity {
                             //Log.d("THESEN ARRAY: ", jArray.toString());
 
                             JSONObject these_data;
-                            Database db = new Database(getApplicationContext());
+                            Database db = new Database(getApplicationContext(), UID);
                             if (jArray != null) {
 
                                 for (int i = 0; i < jArray.length(); i++) {
@@ -198,7 +203,7 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
-    public  void getKandidaten(String wahlkreis) {
+    public  void getKandidaten(String wahlkreis, final String UID) {
         try {
             HttpClient.GET("kandidaten"+ "?wahlkreis=" + wahlkreis,  new Callback() {
 
@@ -219,7 +224,7 @@ public class AuthActivity extends AppCompatActivity {
                             JSONObject Jobject = new JSONObject(jsonData);
                             JSONArray jArray = Jobject.getJSONArray("Kandidaten");
                             JSONObject kandidaten_data;
-                            Database db = new Database(getApplicationContext());
+                            Database db = new Database(getApplicationContext(), UID);
                             if (jArray != null) {
 
                                 for (int i = 0; i < jArray.length(); i++) {

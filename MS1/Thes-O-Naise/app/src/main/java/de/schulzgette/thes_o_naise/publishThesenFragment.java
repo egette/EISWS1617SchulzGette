@@ -132,7 +132,9 @@ public class publishThesenFragment extends Fragment{
                 public void onResponse(Call call, Response response) throws IOException {
                     Integer statusCode = response.code();
                     if (response.isSuccessful()) {
-                        Database db = new Database(getContext());
+                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
+                        String UID = sharedPreferences.getString("UID", "");
+                        Database db = new Database(getContext(), UID);
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
                         TheseToLokalDatabase.saveTheseInLokalDatabase(jsonData, db);

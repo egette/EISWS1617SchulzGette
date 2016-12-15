@@ -27,7 +27,6 @@ public class KandidatenListAdapter extends ArrayAdapter<KandidatenModel> impleme
 
     private ArrayList<KandidatenModel> dataSet;
     Context mContext;
-    SharedPreferences sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
 
     @Override
     public void onClick(View v) {
@@ -56,7 +55,7 @@ public class KandidatenListAdapter extends ArrayAdapter<KandidatenModel> impleme
         final KandidatenModel kandidatenModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         KandidatenListAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
-        final Database db = new Database(getContext());
+
         final View result;
 
         if (convertView == null) {

@@ -1,5 +1,6 @@
 package de.schulzgette.thes_o_naise;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class MatchingFragment extends Fragment {
@@ -56,7 +59,9 @@ public class MatchingFragment extends Fragment {
     }
     
     public void positionWaehlerToServer() throws JSONException {
-        final Database db = new Database(getContext());
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
+        String UID = sharedPreferences.getString("UID", "");
+        final Database db = new Database(getContext(), UID);
         JSONObject mainObj = db.getallPositions();
         JSONArray Jarray = mainObj.getJSONArray("Positionen");
         for(int i = 0; i<Jarray.length(); i++){

@@ -40,12 +40,14 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
     String MODE;
     KandidatenModel kandidat;
     Database db;
+    SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mein_profil_kandidat);
-        db = new Database(getBaseContext());
+        final String uid = sharedPreferences.getString("UID", "");
+        db = new Database(getBaseContext(), uid);
         Intent intent = getIntent();
         Bundle bd = intent.getExtras();
         if(bd != null)
@@ -183,7 +185,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
-        String uid = sharedPreferences.getString("UID", "");
+        final String uid = sharedPreferences.getString("UID", "");
         JSONObject jsonObject = new JSONObject();
 
         try {
@@ -208,7 +210,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
                 public void onResponse(Call call, Response response) throws IOException {
                     Integer statusCode = response.code();
                     if (response.isSuccessful()) {
-                        Database db = new Database(getBaseContext());
+                        Database db = new Database(getBaseContext(), uid);
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
 

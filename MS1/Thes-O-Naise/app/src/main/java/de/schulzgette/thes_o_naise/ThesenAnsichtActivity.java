@@ -23,7 +23,7 @@ public class ThesenAnsichtActivity extends FragmentActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
     ThesenModel these;
-
+    SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class ThesenAnsichtActivity extends FragmentActivity {
             }
         });
 
-        SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
+
         sharedPreferences.edit().putString("ansicht", tid).apply();
 
     }
@@ -86,7 +86,8 @@ public class ThesenAnsichtActivity extends FragmentActivity {
     }
 
     public void updateThesenView(String TID) {
-        Database db = new Database(getBaseContext());
+        String UID = sharedPreferences.getString("UID", "");
+        Database db = new Database(getBaseContext(), UID);
         these = db.getTheseWithTID(TID);
         TextView tidtext = (TextView) findViewById(R.id.einthesentext);
         TextView waehlerPro = (TextView) findViewById(R.id.wahlerprothese);

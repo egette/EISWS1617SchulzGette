@@ -21,6 +21,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private static final String TAG = "MyFirebaseIIDService";
+    SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -36,7 +37,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     public void updateKandidat(String kid){
-        Database db = new Database(getBaseContext());
+        String UID = sharedPreferences.getString("UID", "");
+        Database db = new Database(getBaseContext(), UID);
         TheseToLokalDatabase.updateKandidatData(kid, db);
     }
 
@@ -53,11 +55,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 public void onResponse(Call call, Response response) throws IOException {
                     Integer statusCode = response.code();
                     if (response.isSuccessful()) {
-                        Database db = new Database(getBaseContext());
+                        String UID = sharedPreferences.getString("UID", "");
+                        Database db = new Database(getBaseContext(), UID);
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
                         TheseToLokalDatabase.saveTheseInLokalDatabase(jsonData, db);
-                        SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
+
                         String ansicht = sharedPreferences.getString("ansicht", "");
                         // if(ansicht.equals(tid))
                         EventBus.fireFirebaseUpdate();

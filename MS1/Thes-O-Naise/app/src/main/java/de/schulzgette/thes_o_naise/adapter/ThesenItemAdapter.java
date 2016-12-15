@@ -40,6 +40,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
     Context mContext;
     SharedPreferences sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
     String typ = "";
+    String UID = sharedPreferences.getString("UID", "");
 
     @Override
     public void onClick(View v) {
@@ -72,7 +73,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         final ThesenModel thesenModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
-        final Database db = new Database(getContext());
+        final Database db = new Database(getContext(), UID);
         final View result;
 
         if (convertView == null) {
