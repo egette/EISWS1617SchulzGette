@@ -47,7 +47,6 @@ public class KandidatenFragment extends Fragment {
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
     String kategorie;
-    String UID;
 
     ArrayList<KandidatenModel> kandidatenModels;
 
@@ -71,7 +70,6 @@ public class KandidatenFragment extends Fragment {
         }
         sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
         wahlkreis = sharedPreferences.getString("wahlkreis", "");
-        UID = sharedPreferences.getString("UID", "");
     }
 
     @Override
@@ -79,8 +77,7 @@ public class KandidatenFragment extends Fragment {
        if(modus.equals("NORMAL")) {
            myView = inflater.inflate(R.layout.fragment_kandidaten, container, false);
            getKandidaten(wahlkreis);
-
-           Database db = new Database(getContext(), UID);
+           Database db = new Database(getContext());
            kandidatenModels = db.getAllKandidaten(wahlkreis);
            if (kandidatenModels != null) {
                lv = (ListView) myView.findViewById(R.id.listviewkandidaten);
@@ -113,8 +110,7 @@ public class KandidatenFragment extends Fragment {
                    if(kategorie.equals("Satire")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE;
                    sharedPreferences =  getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
                    sharedPreferences.edit().putString("ergebniskategorie", kategorie).apply();
-                   String UID = sharedPreferences.getString("UID", "");
-                   Database db = new Database(getContext(), UID);
+                   Database db = new Database(getContext());
                    kandidatenModels = db.sortKandidatenScore(kategorie, wahlkreis);
                    if (kandidatenModels != null) {
 
@@ -157,7 +153,7 @@ public class KandidatenFragment extends Fragment {
                             JSONObject Jobject = new JSONObject(jsonData);
                             JSONArray jArray = Jobject.getJSONArray("Kandidaten");
                             JSONObject kandidaten_data;
-                            Database db = new Database(getContext(), UID);
+                            Database db = new Database(getContext());
                             if (jArray != null) {
 
                                 for (int i = 0; i < jArray.length(); i++) {

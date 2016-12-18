@@ -28,7 +28,6 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
     private ArrayList<KandidatenModel> dataSet;
     Context mContext;
     SharedPreferences sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
-    String UID = sharedPreferences.getString("UID", "");
 
     @Override
     public void onClick(View v) {
@@ -60,7 +59,7 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
         final KandidatenModel kandidatenModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         KandidatenErgebnisListAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
-        final Database db = new Database(getContext(), UID);
+        final Database db = new Database(getContext());
         final View result;
 
         if (convertView == null) {

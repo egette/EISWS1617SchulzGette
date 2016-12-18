@@ -1,7 +1,6 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,9 +46,7 @@ public class KandidatAnsichtActivity extends AppCompatActivity {
     }
 
     public void updateKandidatView(String KID) {
-        SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
-        String UID = sharedPreferences.getString("UID", "");
-        Database db = new Database(getBaseContext(), UID);
+        Database db = new Database(getBaseContext());
         kandidat = db.getKandidat(KID);
         final TextView vorname = (TextView) findViewById(R.id.vornamekandidatansicht);
         final TextView nachname = (TextView) findViewById(R.id.nachnamekandidatansicht);

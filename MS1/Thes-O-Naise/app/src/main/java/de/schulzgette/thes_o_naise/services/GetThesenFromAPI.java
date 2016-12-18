@@ -2,7 +2,6 @@ package de.schulzgette.thes_o_naise.services;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -74,9 +73,7 @@ public class GetThesenFromAPI extends Service {
                             //Log.d("THESEN ARRAY: ", jArray.toString());
 
                             JSONObject these_data;
-                            SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
-                            String UID = sharedPreferences.getString("UID", "");
-                            Database db = new Database(getApplicationContext(), UID);
+                            Database db = new Database(getApplicationContext());
                             if (jArray != null) {
 
                                 for (int i = 0; i < jArray.length(); i++) {

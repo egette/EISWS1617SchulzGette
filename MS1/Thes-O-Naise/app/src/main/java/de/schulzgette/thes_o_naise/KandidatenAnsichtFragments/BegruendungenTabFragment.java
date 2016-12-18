@@ -1,7 +1,6 @@
 package de.schulzgette.thes_o_naise.KandidatenAnsichtFragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,8 +22,6 @@ import de.schulzgette.thes_o_naise.R;
 import de.schulzgette.thes_o_naise.adapter.KandidatBeantworteteThesenAdapter;
 import de.schulzgette.thes_o_naise.adapter.KandidatBegruendungenMeinProfilAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class BegruendungenTabFragment extends Fragment {
@@ -73,9 +70,7 @@ public class BegruendungenTabFragment extends Fragment {
     }
 
     public void updateKandiatBegruendungen(String kid){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-        String UID = sharedPreferences.getString("UID", "");
-        Database db = new Database(getActivity(), UID);
+        Database db = new Database(getContext());
         kandidat = db.getKandidat(kid);
         if(kandidat != null){
             JSONArray begruendungen = kandidat.getBegruendungen();

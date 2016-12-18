@@ -51,7 +51,6 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
     String position;
     EditText begruendungtext;
 
-
     public ThesenTabFragment() {
     }
 
@@ -117,9 +116,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
     }
 
     public ArrayList<BegruendungModel> getBegruendung (String TID, String position) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-        String UID = sharedPreferences.getString("UID", "");
-        Database db = new Database(getActivity(), UID);
+        Database db = new Database(getActivity());
         return db.getBegruendungenWithTIDandPosition(TID, position);
     }
 
@@ -210,10 +207,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
 
             //LikeButton
             final ImageButton likebutton = (ImageButton) convertView.findViewById(R.id.like);
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-            String UID = sharedPreferences.getString("UID", "");
-            final Database db = new Database(getActivity(), UID);
-
+            final Database db = new Database(getActivity());
             Integer likeInt = db.getLikeBegruendung(tid, begruendungModel.getUID(), position);
             if(likeInt==1)likebutton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
@@ -465,9 +459,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     if (response.isSuccessful()) {
 
                         Log.d("Response", response.toString());
-                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-                        String UID = sharedPreferences.getString("UID", "");
-                        Database db = new Database(getActivity(), UID);
+                        Database db = new Database(getContext());
                         String jsonData = response.body().string();
                         TheseToLokalDatabase.saveTheseInLokalDatabase(jsonData, db);
 
@@ -534,9 +526,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     if (response.isSuccessful()) {
 
                         Log.d("Response", response.toString());
-                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-                        String UID = sharedPreferences.getString("UID", "");
-                        Database db = new Database(getActivity(), UID);
+                        Database db = new Database(getContext());
                         String jsonData = response.body().string();
                         TheseToLokalDatabase.saveTheseInLokalDatabase(jsonData, db);
 
@@ -597,9 +587,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     if (response.isSuccessful()) {
 
                         Log.d("Response", response.toString());
-                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-                        String UID = sharedPreferences.getString("UID", "");
-                        Database db = new Database(getActivity(), UID);
+                        Database db = new Database(getContext());
                         String jsonData = response.body().string();
                         TheseToLokalDatabase.saveTheseInLokalDatabase(jsonData, db);
 

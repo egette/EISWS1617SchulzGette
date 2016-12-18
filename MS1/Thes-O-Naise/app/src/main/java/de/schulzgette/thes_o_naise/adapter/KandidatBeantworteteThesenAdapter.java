@@ -43,7 +43,6 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
     SharedPreferences sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
     String typ = "";
     String MODE;
-    String UID = sharedPreferences.getString("UID", "");
 
     @Override
     public void onClick(View v) {
@@ -75,7 +74,7 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
         final BeantworteteThesenKandidatenModel BeantworteteThesenKandidatenModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         KandidatBeantworteteThesenAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
-        final Database db = new Database(getContext(), UID);
+        final Database db = new Database(getContext());
         final View result;
         Log.d("MODUS1235", MODE);
         if(MODE.equals("MEINPROFIL") || MODE.equals("WAEHLER")){

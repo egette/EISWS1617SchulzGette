@@ -38,7 +38,6 @@ public class WahlprogrammTabFragment extends Fragment {
     private String MODE;
     static  KandidatenModel kandidat;
     View myView;
-    private String UID;
 
 
     public WahlprogrammTabFragment() {
@@ -63,14 +62,11 @@ public class WahlprogrammTabFragment extends Fragment {
             MODE = getArguments().getString(ARG_MODE);
             kid = getArguments().getString(ARG_KID);
         }
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-        UID = sharedPreferences.getString("UID", "");
         updateKandidat(kid);
-
     }
 
     public void updateKandidat(String kid){
-        Database db = new Database(getContext(), UID);
+        Database db = new Database(getContext());
         kandidat = db.getKandidat(kid);
     }
 
@@ -174,7 +170,7 @@ public class WahlprogrammTabFragment extends Fragment {
                 public void onResponse(Call call, Response response) throws IOException {
                     Integer statusCode = response.code();
                     if (response.isSuccessful()) {
-                        Database db = new Database(getContext(), UID);
+                        Database db = new Database(getContext());
                         Log.d("Response", response.toString());
                         String jsonData = response.body().string();
 

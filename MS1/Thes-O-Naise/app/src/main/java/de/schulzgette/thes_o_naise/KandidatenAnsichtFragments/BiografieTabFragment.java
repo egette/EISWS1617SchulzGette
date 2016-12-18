@@ -145,9 +145,7 @@ public class BiografieTabFragment extends Fragment {
     }
 
     public void updateKandidat(String kid){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-        String UID = sharedPreferences.getString("UID", "");
-        Database db = new Database(getActivity(), UID);
+        Database db = new Database(getContext());
         kandidat = db.getKandidat(kid);
     }
         public void sendBiografieToServer(String geburtsdatum, String bildungeswegtext, String berufetext, String mitgliedschaftentext, String passwort){
@@ -182,9 +180,7 @@ public class BiografieTabFragment extends Fragment {
                     public void onResponse(Call call, Response response) throws IOException {
                         Integer statusCode = response.code();
                         if (response.isSuccessful()) {
-                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
-                            String UID = sharedPreferences.getString("UID", "");
-                            Database db = new Database(getActivity(), UID);
+                            Database db = new Database(getContext());
                             Log.d("Response", response.toString());
                             String jsonData = response.body().string();
 
