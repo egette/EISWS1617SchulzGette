@@ -38,6 +38,10 @@ public class Database {
     public static abstract class MeineThesenTable implements BaseColumns{
         public static final String TABLE_NAME = "meinethesen";
         public static final String COLUMN_NAME_TID = "tid";
+        public static final String COLUMN_NAME_KPROLÄNGE = "kpro";
+        public static final String COLUMN_NAME_KNEUTRALLÄNGE = "kneutral";
+        public static final String COLUMN_NAME_KCONTRALÄNGE = "kcontra";
+        public static final String COLUMN_NAME_KPOSITIONLÄNGE = "kposition";
     }
 
     //TODO MEHR KATEGORIEN ?
@@ -99,7 +103,11 @@ public class Database {
             " )";
     public static final String SQL_CREATE_MEINETHESENTABLE =
             "CREATE TABLE " + MeineThesenTable.TABLE_NAME + " (" +
-                    MeineThesenTable.COLUMN_NAME_TID + " STRING PRIMARY KEY" +
+                    MeineThesenTable.COLUMN_NAME_TID + " STRING PRIMARY KEY," +
+                    MeineThesenTable.COLUMN_NAME_KPROLÄNGE + " INTEGER," +
+                    MeineThesenTable.COLUMN_NAME_KNEUTRALLÄNGE + " INTEGER," +
+                    MeineThesenTable.COLUMN_NAME_KCONTRALÄNGE + " INTEGER," +
+                    MeineThesenTable.COLUMN_NAME_KPOSITIONLÄNGE + " INTEGER" +
                     " )";
 
     //TODO MEHR KATEGORIEN ?
@@ -164,7 +172,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 6;
+        public static final int DATABASE_VERSION = 7;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -176,7 +184,7 @@ public class Database {
             db.execSQL(SQL_CREATE_THESENTABLE);
             db.execSQL(SQL_CREATE_KANDIDATENTABLE);
             db.execSQL(SQL_CREATE_BEGRUENDUNGDATATABLE);
-//            db.execSQL(SQL_CREATE_MEINETHESENTABLE);
+            db.execSQL(SQL_CREATE_MEINETHESENTABLE);
 
         }
 
@@ -186,7 +194,7 @@ public class Database {
             db.execSQL(SQL_DELETE_THESENTABLE);
             db.execSQL(SQL_DELETE_KANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
-   //         db.execSQL(SQL_CREATE_MEINETHESENTABLE);
+            db.execSQL(SQL_DELETE_MEINETHESENTABLE);
 
             onCreate(db);
         }
@@ -196,6 +204,7 @@ public class Database {
             db.execSQL(SQL_DELETE_THESENTABLE);
             db.execSQL(SQL_DELETE_KANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
+            db.execSQL(SQL_DELETE_MEINETHESENTABLE);
             onCreate(db);
         }
     }
@@ -212,6 +221,11 @@ public class Database {
                 try {
                     ContentValues values = new ContentValues();
                     values.put(MeineThesenTable.COLUMN_NAME_TID, tid);
+                    values.put(MeineThesenTable.COLUMN_NAME_KPROLÄNGE, 0);
+                    values.put(MeineThesenTable.COLUMN_NAME_KNEUTRALLÄNGE, 0);
+                    values.put(MeineThesenTable.COLUMN_NAME_KCONTRALÄNGE, 0);
+                    values.put(MeineThesenTable.COLUMN_NAME_KPOSITIONLÄNGE, 0);
+
                     dbwrite.insert(MeineThesenTable.TABLE_NAME, null, values);
                 } finally {
                     dbwrite.close();
@@ -233,6 +247,62 @@ public class Database {
         }
         return result;
     }
+
+
+    public ArrayList<ThesenModel> getArraylistMeineThesen (){
+        ArrayList<ThesenModel> thesenModels = new ArrayList<>();
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
+        ArrayList<String> thesenliste = getMeineThesen();
+
+        try{
+            if(thesenliste != null) {
+                for(int i = 0; i < thesenliste.size(); i++) {
+                    String TID = thesenliste.get(i);
+
+                    Cursor c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT, ThesenTable.COLUMN_NAME_KATEGORIE, ThesenTable.COLUMN_NAME_WAHLKREIS, ThesenTable.COLUMN_NAME_LIKES, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA, ThesenTable.COLUMN_NAME_W_PRO, ThesenTable.COLUMN_NAME_W_NEUTRAL, ThesenTable.COLUMN_NAME_W_CONTRA, ThesenTable.COLUMN_NAME_K_POSITION}, "tid = ?", new String[]{TID}, null, null, null);
+
+                    try {
+                        while (c.moveToNext()) {
+                            String tid = c.getString(0);
+                            Log.d("TID DATA get", tid);
+                            String thesentext = c.getString(1);
+                            String kategorie2 = c.getString(2);
+                            String wahlkreis = c.getString(3);
+                            Integer likes = c.getInt(4);
+                            Integer anzahl_pro = c.getInt(5);
+                            Integer anzahl_neutral = c.getInt(6);
+                            Integer anzahl_contra = c.getInt(7);
+                            String k_pro = c.getString(8);
+                            String k_neutral = c.getString(9);
+                            String k_contra = c.getString(10);
+                            String w_pro = c.getString(11);
+                            String w_neutral = c.getString(12);
+                            String w_contra = c.getString(13);
+                            String k_positionen = c.getString(14);
+                            JSONArray k_pro_Array = new JSONArray(k_pro);
+                            JSONArray k_neutral_Array = new JSONArray(k_neutral);
+                            JSONArray k_contra_Array = new JSONArray(k_contra);
+                            JSONArray w_pro_Array = new JSONArray(w_pro);
+                            JSONArray w_neutral_Array = new JSONArray(w_neutral);
+                            JSONArray w_contra_Array = new JSONArray(w_contra);
+                            JSONArray k_positionen_Array = new JSONArray(k_positionen);
+                            thesenModels.add(new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
+                        c.close();
+                    }
+                }
+            }
+        } finally {
+            db.close();
+        }
+        return thesenModels;
+    }
+
     //schreibt eine Position zu einer tid in die Datenbank und ändert die Positon falls die TID schon vorhanden war
     public void insertposition(String position, String tid) {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
@@ -353,7 +423,10 @@ public class Database {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
         SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
-
+        ArrayList<String> meineThesenliste = getMeineThesen();
+        if(meineThesenliste.contains(TID)){
+            //TODO Vergleich ob eine neue Benachrichtigung erzeugt wird
+        }
         try {
                 Log.d("TID DATA save", TID);
                 Integer likes = likesINT;

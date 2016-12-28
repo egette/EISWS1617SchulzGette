@@ -90,7 +90,7 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
 
         if(thesenModels != null) {
             lv = (ListView) myView.findViewById(R.id.listviewthesen);
-            listadapter = new ThesenItemAdapter(thesenModels, this.getActivity());
+            listadapter = new ThesenItemAdapter(thesenModels, this.getActivity(), "NORMAL");
             lv.setAdapter(listadapter);
 
 

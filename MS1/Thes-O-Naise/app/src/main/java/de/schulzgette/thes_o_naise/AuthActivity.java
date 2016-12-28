@@ -1,5 +1,7 @@
 package de.schulzgette.thes_o_naise;
 
+import android.accounts.AccountAuthenticatorActivity;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.session.MediaSession;
@@ -25,16 +27,28 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class AuthActivity extends AppCompatActivity {
-    String username;
-    String email;
-    String passwort;
+public class AuthActivity extends AccountAuthenticatorActivity {
+    private String username;
+    private String email;
+    private String passwort;
     JSONArray jArray = new JSONArray();
+    public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
+    public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
+    public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
+    public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
+
+    public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
+
+    public final static String PARAM_USER_PASS = "USER_PASS";
+    private AccountManager mAccountManager;
+    private String mAuthTokenType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        mAccountManager = AccountManager.get(getBaseContext());
+
         Button authbutton = (Button) findViewById(R.id.auth_button);
 
         authbutton.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +150,7 @@ public class AuthActivity extends AppCompatActivity {
     private  void getAllThesenFromWahlkreis (String wahlkreis) {
 
         try {
-            HttpClient.GET("thesen"+ "?wahlkreis=" + wahlkreis,  new Callback() {
+            HttpClient.GET("thesen"+ "?wahlkreis=" + wahlkreis+"&anzahl=10000",  new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
