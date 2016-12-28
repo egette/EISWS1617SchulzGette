@@ -10,9 +10,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import de.schulzgette.thes_o_naise.Models.ThesenModel;
+import de.schulzgette.thes_o_naise.Models.BenachrichtigungModel;
 import de.schulzgette.thes_o_naise.R;
-import de.schulzgette.thes_o_naise.adapter.ThesenItemAdapter;
+import de.schulzgette.thes_o_naise.adapter.BenachrichtigungsAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
 
 /**
@@ -21,7 +21,7 @@ import de.schulzgette.thes_o_naise.database.Database;
 public class MeineThesenTabFragment extends Fragment {
     View myView;
     ListView lv;
-    ThesenItemAdapter listadapter;
+    BenachrichtigungsAdapter listadapter;
 
     public MeineThesenTabFragment() {
         // Required empty public constructor
@@ -33,10 +33,10 @@ public class MeineThesenTabFragment extends Fragment {
         myView =inflater.inflate(R.layout.fragment_meine_thesen, container, false);
 
         Database db = new Database(getContext());
-        ArrayList<ThesenModel> thesenModels = db.getArraylistMeineThesen();
+        ArrayList<BenachrichtigungModel> benachrichtungsmodels = db.getArraylistMeineThesen();
 
         lv = (ListView) myView.findViewById(R.id.meinethesenliste);
-        listadapter = new ThesenItemAdapter(thesenModels, this.getActivity(), "Benachrichtigung");
+        listadapter = new BenachrichtigungsAdapter(benachrichtungsmodels, this.getActivity());
         lv.setAdapter(listadapter);
 
         return myView;

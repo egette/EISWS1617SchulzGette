@@ -7,13 +7,13 @@ package de.schulzgette.thes_o_naise.Models;
 public class BenachrichtigungModel {
     String TID;
     String Thesentext;
-    String Username;
+    String UID;
     String Benachrichtungstext;
 
-    public BenachrichtigungModel(String TID, String thesentext, String username, String benachrichtungstext) {
+    public BenachrichtigungModel(String TID, String thesentext, String UID, String benachrichtungstext) {
         this.TID = TID;
         this.Thesentext = thesentext;
-        this.Username = username;
+        this.UID = UID;
         this.Benachrichtungstext = benachrichtungstext;
     }
 
@@ -21,8 +21,8 @@ public class BenachrichtigungModel {
         return TID;
     }
 
-    public String getUsername() {
-        return Username;
+    public String getUID() {
+        return UID;
     }
 
     public String getThesentext() {
