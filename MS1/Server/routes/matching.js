@@ -6,6 +6,7 @@ exports.match = function(db, Promise){
 		var GESENDET = [];
 		var LASTUSERPOS = [];
 		
+		//Das JSONOBJECT einer Position wird auf vier Arrays aufgeteilt
 		var Positionen = req.body.Positionen;
 		for(i = 0; i < Positionen.length; i++){
 			var tid = Positionen[i].TID;
@@ -31,23 +32,27 @@ exports.match = function(db, Promise){
 			Anzahl: 0
 		};
 	
+		//Jede ThesenID wird Asynchron aus der Datenbank geholt
 		return Promise.map(ThesenIDS, function(ID){
 			return Promise.resolve()
 				.then(function(){
 					return db.getAsync(ID);
 				})
 				.then(function(JSONSTRING) {
+					//und zurück zu einem JSONOBJECT geparsed
 					var JSONOBJECT = JSON.parse(JSONSTRING);
 					return JSONOBJECT;
 				})
 		})
 		.then(function(ThesenJSONArray){
 			var KandidatenIDS = [];
+			//Die Arrays für die Zähler der Punkte
 		    var KandidatenZaehler = [];
 			var KategorieLokal = [];
 			var KategorieUmwelt = [];
 			var KategorieAussenpolitik = [];
 			var KategorieSatire = [];
+			//Das ThesenJSONArray wird durchiteriert 
 			for (i = 0; i < ThesenJSONArray.length; i++) {
 				var thesenJSONOBJECT = ThesenJSONArray[i];
 				var kategorie = thesenJSONOBJECT.kategorie;
@@ -55,16 +60,21 @@ exports.match = function(db, Promise){
 				var UPOS = USERPOS[i];
 				var gesendet2 = GESENDET[i];
 				var lastUSERPOS2 = LASTUSERPOS[i];
+				//Überprüfung ob sich die Position geändert hat oder ob diese Position schon erfasst wurde
 				if(UPOS != lastUSERPOS2 && gesendet2 == "true" || gesendet2 == "false" ){
 					addUserPositionToThese(UPOS, tid, gesendet2, lastUSERPOS2);
 				}
+				//Es werden alle Positionen der Kandidaten zur jeweiligen These durchlaufen
 				for(j = 0; j < thesenJSONOBJECT.K_POSITION.length; j++){
 					var KID = thesenJSONOBJECT.K_POSITION[j].UID;
 					var KPOS = thesenJSONOBJECT.K_POSITION[j].POS;
 					
+					//Überprüfung ob die KID schon im KandidatenIDS Array ist
 					if (_.indexOf(KandidatenIDS, KID) == -1){
+						//falls nicht wird die KID hinzugefügt
 						KandidatenIDS.push(KID);
 						var index = _.indexOf(KandidatenIDS, KID);
+						//und die Zehler an der Stelle des Index auf null gesetzt
 						if(KandidatenZaehler[index] == null){
 							KandidatenZaehler[index] = 0;
 							KategorieLokal[index]= 0;
@@ -74,6 +84,7 @@ exports.match = function(db, Promise){
 						}
 					} 
 					var index = _.indexOf(KandidatenIDS, KID);
+					//Vergleich zwischen der Position des Wählers und des Kandidaten
 					if( UPOS == "PRO" && KPOS == "NEUTRAL"){
 						KandidatenZaehler[index] += 1;
 						if(kategorie=="Lokal") KategorieLokal[index] +=1;
@@ -119,6 +130,7 @@ exports.match = function(db, Promise){
 				}
 			}
 			
+			//Für jeden Kandidaten wird ein JSONOBJECT mit seinen Zählern angelegt
 			for (k = 0; k < KandidatenIDS.length; k++){
 				var KandidatenErgebnis = {
 					KID: KandidatenIDS[k],
@@ -140,6 +152,7 @@ exports.match = function(db, Promise){
 		db.get(tid, function (err, reply) { 
 				if(err) throw err;
 				var these = JSON.parse(reply);
+				//Die Position des Wählers zur These wurde noch nicht erfasst
 				if(gesendet == "false") {
 					if(userposition=="PRO"){
 						var pro = parseInt(these.Anzahl_Zustimmung);
@@ -156,6 +169,7 @@ exports.match = function(db, Promise){
 						contra += 1;
 						these.Anzahl_Ablehnung = contra;
 					}
+					//Die Position des Wähler hat sich geändert
 				}else{
 					if(userposition == "PRO" && lastuserpos == "NEUTRAL"){
 						var pro = parseInt(these.Anzahl_Zustimmung);

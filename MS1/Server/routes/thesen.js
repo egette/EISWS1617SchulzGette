@@ -1,7 +1,7 @@
 var devicesFunction = require('../functions/devices');
 var sendFunction = require('../functions/send-message');
 var constants = require('../constants/constants.json');
-
+//Funktion zum Veröffentlichen einer These
 exports.publish = function(db){
 	return function(req, res){
 		console.log('Thesen JSON BODY:  ', req.body);
@@ -37,6 +37,7 @@ exports.publish = function(db){
 			res.status(400).json(constants.error.msg_empty_param).end();
  
         } else{
+			//Überprüfung ob der Hash des Thesentextes schon im Wahlkreis vorhanden ist
 			var thesentexthash = md5(req.body.thesentext);	
 			console.log("HASH", thesentexthash);
 			checkSET(wahlkreis+"-hashlist", thesentexthash).then(function (check) {
@@ -71,7 +72,8 @@ exports.publish = function(db){
 						db.SADD(wahlkreis_kategorie, new_Thesen_ID);
 						
 						//last_Thesen_ID wird aktuallierst
-						db.set('last_Thesen_ID', new_Thesen_ID);  
+						db.set('last_Thesen_ID', new_Thesen_ID);
+						//Alle angemeldeten Geräte des Wahlkreises benachrichtigen das eine neue These veröffentlicht wurde
 						devicesFunction.listDevices(wahlkreis, db,  function(result) {
 							var registrationIds = result;
 							sendFunction.sendMessage(new_Thesen_ID, registrationIds, function(callback){
@@ -97,6 +99,7 @@ exports.publish = function(db){
 	}	
 }
 		
+//Funktion um die Position der Kandidaten und alle Begründungen zur These abzuspeichern		
 exports.putPosition = function(db){
 	return function (req, res){
 		console.log("BODY", req.body);
@@ -115,6 +118,7 @@ exports.putPosition = function(db){
 			res.status(400).json(constants.error.msg_empty_param).end();
  
         } else if (tid.substring(0, 4) == "TID_"){
+			//Kandidat positioniert sich zur These
 			if(!textdata && typ == "kandidat"){
 				db.get(tid, function(err, reply){
 					if(err) throw err;
@@ -139,7 +143,9 @@ exports.putPosition = function(db){
 						console.log("Position hinzufuegen ohne Text");
 						if(neu == 1) These.K_POSITION.push(Position);
 						db.set(tid, JSON.stringify(These));
+						//Dem JSONOBJEKT des Kandidaten wird die neue Position hinzugefügt
 						updateBeantworteteThesen(tid, uid, richtung, db, kategorie);
+						//Alle angemeldeten Geräte des Wahlkreises benachrichtigen
 						devicesFunction.listDevices(wahlkreis, db,  function(result) {
 							sendFunction.sendMessage(tid, result, function (callback){
 							console.log(callback);
@@ -150,6 +156,7 @@ exports.putPosition = function(db){
 					
 				});
 			}else {
+				//Eine neue Begruendung wird hinzugefügt
 				db.get(tid, function(err, reply){
 					if(err) throw err;
 					if (!reply ) {
@@ -229,6 +236,7 @@ exports.putPosition = function(db){
 						}
 						if(typ == 'kandidat') updateKandidatBegruendungen(position_json, richtung, tid, neu, db);
 						db.set(tid, JSON.stringify(These));
+						//Alle Geräte des Wahlkreises benachrichtigen
 						devicesFunction.listDevices(wahlkreis, db,  function(result) {
 							sendFunction.sendMessage(tid, result, function (callback){
 								console.log(callback);
@@ -243,6 +251,7 @@ exports.putPosition = function(db){
 	
 };
 
+//Aktuallisiert das Kandidaten JsonObjekt
 function updateKandidatBegruendungen(position, richtung, tid, neu, db){
 	var uid = position.UID;
 	var begruendung = {
@@ -268,6 +277,7 @@ function updateKandidatBegruendungen(position, richtung, tid, neu, db){
 	});
 }
 
+//Aktuallisiert das Kandidaten JsonObjekt 
 function updateKandidatBegruendungenKommentare(uid, kommentar, tid, richtung, db){
 	console.log("Kandidat " + uid + "hat den Kommentar bekommen" + kommentar);
 	db.get(uid, function(err, reply){
@@ -282,6 +292,7 @@ function updateKandidatBegruendungenKommentare(uid, kommentar, tid, richtung, db
 	});
 }
 
+//Ein Kommentar zur einer Begründung hinzugefügt
 exports.postKommentar = function(db){
 	return function (req, res){
 		console.log("BODY", req.body);
@@ -312,7 +323,7 @@ exports.postKommentar = function(db){
 					USERNAME: username,
 					Kommentar: kommentartext
 				};
-				
+				//Eine Begruendung eines Wählers wird kommentiert
 				if(typ == 'w'){
 					if(position == "PRO"){
 						for(i = 0; i < These.W_PRO.length; i++){
@@ -335,6 +346,7 @@ exports.postKommentar = function(db){
 							}
 						}	
 					}
+				//Eine Begründung eines Kandidaten wird kommentiert
 				}else if(typ == 'k'){
 					if(position == "PRO"){
 						for(i = 0; i < These.K_PRO.length; i++){
@@ -361,6 +373,7 @@ exports.postKommentar = function(db){
 				}
 				if(begruendungsid.substring(0,1) == "K") updateKandidatBegruendungenKommentare(begruendungsid, Kommentarobject, tid, position, db);
 				db.set(tid, JSON.stringify(These));
+				//Alle Geräte des Wahlkreies benachrichtigen
 				devicesFunction.listDevices(wahlkreis, db,  function(result) {
 					sendFunction.sendMessage(tid, result, function (callback){
 						console.log(callback);
@@ -373,6 +386,7 @@ exports.postKommentar = function(db){
 	}
 }
 
+//Aktuallisiert das Kandidaten JsonObjekt
 function updateBeantworteteThesen(tid, kid, position, db, kategorie){
 	db.get(kid, function (err, reply) {
 		if (err) throw err;
@@ -394,6 +408,7 @@ function updateBeantworteteThesen(tid, kid, position, db, kategorie){
 	});
 }
 
+//Funktion um genau eine These zu bekommen
 exports.getThese = function(db){
 	return function (req, res){
 		var tid = req.params.tid;
@@ -409,6 +424,7 @@ exports.getThese = function(db){
 	}
 }
 
+//Funktion um mehrere Thesen aus einer Kategorie oder eines Wahlkreises zu bekommen
 exports.getThesen = function(db){
 	return function (req, res){
 		var kategorie = req.query.kategorie;
@@ -477,6 +493,7 @@ exports.getThesen = function(db){
 	}
 }	
 
+//Erzeugt aus einem Array von ThesenIDs ein JSONArray mit alles Thesen als JSONOBJEKT
 function makeThesenJSON(anzahl_thesen, Thesen_IDS, db){
 	var promises = [];
 	var Thesen_JSONOBJECT = { "Thesen" : [], "Anzahl": "0" };
@@ -497,6 +514,7 @@ function makeThesenJSON(anzahl_thesen, Thesen_IDS, db){
     });
 }
 
+//Aktuallisiert das Kandidaten JsonObjekt
 function updateKandidatBegruendungenLikes(uid, like, tid, richtung, db){
 	db.get(uid, function(err, reply){
 		if(err) throw err;
@@ -510,6 +528,7 @@ function updateKandidatBegruendungenLikes(uid, like, tid, richtung, db){
 	});
 }
 
+//Funktion um eine Begründung zu liken
 exports.putLikes = function(db){
 	return function (req, res){
 		console.log("BODY", req.body);
@@ -518,60 +537,70 @@ exports.putLikes = function(db){
 		var position = req.body.richtung;
 		var typ = req.body.typ;
 		var like = req.body.like;
-		if(!tid || !begruendungsid || !typ || !position || !like) res.status(401).end();
-		
-		db.get(tid, function (err, reply) { 
-			if(err) throw err;
-			var These = JSON.parse(reply);
-			if(typ == 'w'){
-				if(position == "PRO"){
-					for(i = 0; i < These.W_PRO.length; i++){
-						if(These.W_PRO[i].UID == begruendungsid){
-							These.W_PRO[i].likes += like;
-						}
-					}	
+		if ( typeof tid == 'undefined' || typeof typ == 'undefined' || typeof position == 'undefined' || typeof begruendungsid == 'undefined' ) {
+			console.log(constants.error.msg_invalid_param.message);
+			res.status(400).json(constants.error.msg_invalid_param).end();
+ 
+        } else if ( !tid.trim()  || !typ.trim()  || !position.trim() || !begruendungsid.trim() ) {
+			console.log(constants.error.msg_empty_param.message);
+			res.status(400).json(constants.error.msg_empty_param).end();
+
+        } else{
+			db.get(tid, function (err, reply) { 
+				if(err) throw err;
+				var These = JSON.parse(reply);
+				//Begruendung eines Wählers wird geliked
+				if(typ == 'w'){
+					if(position == "PRO"){
+						for(i = 0; i < These.W_PRO.length; i++){
+							if(These.W_PRO[i].UID == begruendungsid){
+								These.W_PRO[i].likes += like;
+							}
+						}	
+					}
+					if(position == "NEUTRAL"){
+						for(i = 0; i < These.W_NEUTRAL.length; i++){
+							if(These.W_NEUTRAL[i].UID == begruendungsid){
+								These.W_NEUTRAL[i].likes += like;
+							}
+						}	
+					}
+					if(position == "CONTRA"){
+						for(i = 0; i < These.W_CONTRA.length; i++){
+							if(These.W_CONTRA[i].UID == begruendungsid){
+								These.W_CONTRA[i].likes += like;
+							}
+						}	
+					}
+				//Begründung eines Kandidaten wird geliked
+				}else if(typ == 'k'){
+					if(position == "PRO"){
+						for(i = 0; i < These.K_PRO.length; i++){
+							if(These.K_PRO[i].UID == begruendungsid){
+								These.K_PRO[i].likes += like;
+							}
+						}	
+					}
+					if(position == "NEUTRAL"){
+						for(i = 0; i < These.K_NEUTRAL.length; i++){
+							if(These.K_NEUTRAL[i].UID == begruendungsid){
+								These.K_NEUTRAL[i].likes += like;
+							}
+						}	
+					}
+					if(position == "CONTRA"){
+						for(i = 0; i < These.K_CONTRA.length; i++){
+							if(These.K_CONTRA[i].UID == begruendungsid){
+								These.K_CONTRA[i].likes += like;
+							}
+						}	
+					}
+					updateKandidatBegruendungenLikes(begruendungsid, like, tid, position, db);
 				}
-				if(position == "NEUTRAL"){
-					for(i = 0; i < These.W_NEUTRAL.length; i++){
-						if(These.W_NEUTRAL[i].UID == begruendungsid){
-							These.W_NEUTRAL[i].likes += like;
-						}
-					}	
-				}
-				if(position == "CONTRA"){
-					for(i = 0; i < These.W_CONTRA.length; i++){
-						if(These.W_CONTRA[i].UID == begruendungsid){
-							These.W_CONTRA[i].likes += like;
-						}
-					}	
-				}
-			}else if(typ == 'k'){
-				if(position == "PRO"){
-					for(i = 0; i < These.K_PRO.length; i++){
-						if(These.K_PRO[i].UID == begruendungsid){
-							These.K_PRO[i].likes += like;
-						}
-					}	
-				}
-				if(position == "NEUTRAL"){
-					for(i = 0; i < These.K_NEUTRAL.length; i++){
-						if(These.K_NEUTRAL[i].UID == begruendungsid){
-							These.K_NEUTRAL[i].likes += like;
-						}
-					}	
-				}
-				if(position == "CONTRA"){
-					for(i = 0; i < These.K_CONTRA.length; i++){
-						if(These.K_CONTRA[i].UID == begruendungsid){
-							These.K_CONTRA[i].likes += like;
-						}
-					}	
-				}
-				updateKandidatBegruendungenLikes(begruendungsid, like, tid, position, db);
-			}
-			db.set(tid, JSON.stringify(These));
-			console.log("THESE :", These);
-			res.status(201).send(These).end();
-		});
+				db.set(tid, JSON.stringify(These));
+				console.log("THESE :", These);
+				res.status(201).send(These).end();
+			});
+		}
 	}
 }

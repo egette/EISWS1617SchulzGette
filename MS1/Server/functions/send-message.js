@@ -1,6 +1,8 @@
 var gcm = require('node-gcm');
 var constants = require('../constants/constants.json');
  
+//Sendet für jede RegistrationsID aus dem Array RegistrationsIDs eine Benachrichtigung
+//wobei in Message die ThesenID oder KandidatenID steht welche neue Informationen hat 
 exports.sendMessage = function(message, registrationIds, callback){
  
     var message = new gcm.Message({data: {message: message}});
