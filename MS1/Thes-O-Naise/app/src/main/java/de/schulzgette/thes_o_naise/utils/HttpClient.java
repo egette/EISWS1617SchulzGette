@@ -17,11 +17,14 @@ import okhttp3.RequestBody;
  * Statischer HTTP Client
  */
 public class HttpClient extends Application {
-    private static final String BASE_URL ="http://192.168.188.35:3000/";
+    //private static final String BASE_URL ="http://192.168.188.35:3000/";
+
     //SERVER URL für GENYMOTION
-    //private static final String BASE_URL ="http://10.0.3.2:3000/";
+    private static final String BASE_URL ="http://10.0.3.2:3000/";
+
     //SERVER URL für Android Studio VD
     //private static final String BASE_URL ="http://10.0.2.2:3000/";
+
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static OkHttpClient client = new OkHttpClient();

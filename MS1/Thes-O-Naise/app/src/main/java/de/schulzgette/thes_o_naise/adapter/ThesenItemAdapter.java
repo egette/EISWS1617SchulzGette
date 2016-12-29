@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +25,7 @@ import de.schulzgette.thes_o_naise.R;
 import de.schulzgette.thes_o_naise.ThesenAnsichtActivity;
 import de.schulzgette.thes_o_naise.Models.ThesenModel;
 import de.schulzgette.thes_o_naise.database.Database;
+import de.schulzgette.thes_o_naise.services.RegistrationIntentService;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,8 +57,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         RadioButton neutralButton;
         RadioButton contraButton;
         Button mehrButton;
-        TextView txtbenachrichtigung;
-        TextView txtusername;
+        ToggleButton abonnieren;
     }
 
     public ThesenItemAdapter(ArrayList<ThesenModel> data, Context context, String MODE) {
@@ -73,120 +75,115 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         final Database db = new Database(getContext());
-        final View result;
-        if(MODE.equals("NORMAL")) {
-            if (convertView == null) {
+        View result;
 
-                viewHolder = new ViewHolder();
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.row_item_these, parent, false);
-                viewHolder.txtThesentext = (TextView) convertView.findViewById(R.id.thesentext_item);
-                viewHolder.proButton = (RadioButton) convertView.findViewById(R.id.pro_button);
-                viewHolder.neutralButton = (RadioButton) convertView.findViewById(R.id.neutral_button);
-                viewHolder.contraButton = (RadioButton) convertView.findViewById(R.id.contra_button);
+        if (convertView == null) {
 
-                viewHolder.mehrButton = (Button) convertView.findViewById(R.id.einethesebutton);
-//            viewHolder.txtPro = (TextView) convertView.findViewById(R.id.pro_id);
-//            viewHolder.txtNeutral = (TextView) convertView.findViewById(R.id.neutral_id);
-//            viewHolder.txtContra = (TextView) convertView.findViewById(R.id.contra_id);
+            viewHolder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(R.layout.row_item_these, parent, false);
+            viewHolder.txtThesentext = (TextView) convertView.findViewById(R.id.thesentext_item);
+            viewHolder.proButton = (RadioButton) convertView.findViewById(R.id.pro_button);
+            viewHolder.neutralButton = (RadioButton) convertView.findViewById(R.id.neutral_button);
+            viewHolder.contraButton = (RadioButton) convertView.findViewById(R.id.contra_button);
 
-                result = convertView;
-                convertView.setTag(viewHolder);
+            viewHolder.mehrButton = (Button) convertView.findViewById(R.id.einethesebutton);
+            viewHolder.abonnieren = (ToggleButton) convertView.findViewById(R.id.abonnierenbutton);
 
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-                result = convertView;
-            }
+            result = convertView;
+            convertView.setTag(viewHolder);
 
-            viewHolder.txtThesentext.setText(thesenModel.getThesentext());
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+            result = convertView;
+        }
 
-            //User Position aus der Datenbank holen und den richtigen Radiobutton checken
-            String userposition = db.getUserPositionWithTID(thesenModel.getTID());
-            if (!userposition.isEmpty()) {
-                if (userposition.equals("PRO")) {
-                    viewHolder.proButton.setChecked(true);
-                    viewHolder.neutralButton.setChecked(false);
-                    viewHolder.contraButton.setChecked(false);
-                }
-                if (userposition.equals("NEUTRAL")) {
-                    viewHolder.proButton.setChecked(false);
-                    viewHolder.neutralButton.setChecked(true);
-                    viewHolder.contraButton.setChecked(false);
-                }
-                if (userposition.equals("CONTRA")) {
-                    viewHolder.proButton.setChecked(false);
-                    viewHolder.neutralButton.setChecked(false);
-                    viewHolder.contraButton.setChecked(true);
-                }
-            } else {
-                viewHolder.proButton.setChecked(false);
+        viewHolder.txtThesentext.setText(thesenModel.getThesentext());
+        typ = sharedPreferences.getString("typ", "");
+
+
+        //User Position aus der Datenbank holen und den richtigen Radiobutton checken
+        String userposition = db.getUserPositionWithTID(thesenModel.getTID());
+        if (userposition.isEmpty()) {
+            viewHolder.proButton.setChecked(false);
+            viewHolder.neutralButton.setChecked(false);
+            viewHolder.contraButton.setChecked(false);
+        } else {
+            if (userposition.equals("PRO")) {
+                viewHolder.proButton.setChecked(true);
                 viewHolder.neutralButton.setChecked(false);
                 viewHolder.contraButton.setChecked(false);
             }
-            typ = sharedPreferences.getString("typ", "");
-
-            viewHolder.proButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (typ.equals("kandidat")) kandidatPosToServer("PRO", thesenModel.getTID());
-                    db.insertposition("PRO", thesenModel.getTID());
-                    Toast.makeText(getContext(), "Pro Button von These " + thesenModel.getTID(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            viewHolder.neutralButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (typ.equals("kandidat"))
-                        kandidatPosToServer("NEUTRAL", thesenModel.getTID());
-                    db.insertposition("NEUTRAL", thesenModel.getTID());
-                    Toast.makeText(getContext(), "Neutral", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            viewHolder.contraButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (typ.equals("kandidat")) kandidatPosToServer("CONTRA", thesenModel.getTID());
-                    db.insertposition("CONTRA", thesenModel.getTID());
-                    Toast.makeText(getContext(), "Contra", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), ThesenAnsichtActivity.class);
-                    intent.putExtra("TID", thesenModel.getTID());
-                    getContext().startActivity(intent);
-
-                }
-            });
-        } else if(MODE.equals("Benachrichtigung")){
-            if (convertView == null) {
-
-                viewHolder = new ViewHolder();
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.row_item_these, parent, false);
-                viewHolder.txtThesentext = (TextView) convertView.findViewById(R.id.thesentext_item);
-                viewHolder.txtbenachrichtigung = (TextView) convertView.findViewById(R.id.benachrichtigungid);
-                viewHolder.txtusername = (TextView) convertView.findViewById(R.id.usernameid);
-
-                viewHolder.mehrButton = (Button) convertView.findViewById(R.id.einethesebutton);
-
-                result = convertView;
-                convertView.setTag(viewHolder);
-
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-                result = convertView;
+            if (userposition.equals("NEUTRAL")) {
+                viewHolder.proButton.setChecked(false);
+                viewHolder.neutralButton.setChecked(true);
+                viewHolder.contraButton.setChecked(false);
             }
-
-            viewHolder.txtThesentext.setText(thesenModel.getThesentext());
-
+            if (userposition.equals("CONTRA")) {
+                viewHolder.proButton.setChecked(false);
+                viewHolder.neutralButton.setChecked(false);
+                viewHolder.contraButton.setChecked(true);
+            }
         }
+
+        viewHolder.proButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (typ.equals("kandidat")) kandidatPosToServer("PRO", thesenModel.getTID());
+                db.insertposition("PRO", thesenModel.getTID());
+                Toast.makeText(getContext(), "Pro Button von These " + thesenModel.getTID(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewHolder.neutralButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (typ.equals("kandidat")) kandidatPosToServer("NEUTRAL", thesenModel.getTID());
+                db.insertposition("NEUTRAL", thesenModel.getTID());
+                Toast.makeText(getContext(), "Neutral", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewHolder.contraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (typ.equals("kandidat")) kandidatPosToServer("CONTRA", thesenModel.getTID());
+                db.insertposition("CONTRA", thesenModel.getTID());
+                Toast.makeText(getContext(), "Contra", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ThesenAnsichtActivity.class);
+                intent.putExtra("TID", thesenModel.getTID());
+                getContext().startActivity(intent);
+
+            }
+        });
+
+        boolean abocheck = db.istTheseAbonniert(thesenModel.getTID());
+        viewHolder.abonnieren.setChecked(abocheck);
+        viewHolder.abonnieren.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    db.thesenAbonnieren(thesenModel.getTID());
+                } else {
+                    // The toggle is disabled
+                    db.thesenDeAbonnieren(thesenModel.getTID());
+                }
+            }
+        });
+
         // Return the completed view to render on screen
-        return convertView;
+        return result;
+    }
+
+    public void radiogroupcheck(Database db, ViewHolder viewHolder){
+
     }
 
     public void kandidatPosToServer (String position, String tid){

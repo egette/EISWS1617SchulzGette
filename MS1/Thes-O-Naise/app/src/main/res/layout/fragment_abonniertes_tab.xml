@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     tools:context="de.schulzgette.thes_o_naise.WaehlerProfilFragments.AbonniertesTabFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/meineaboliste"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="5.0sp"/>
 
 </FrameLayout>
