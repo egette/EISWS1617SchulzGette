@@ -24,9 +24,11 @@ public class ThesenModel {
     String TID;
     String Kategorie;
     String Wahlkreis;
+    Boolean Abo;
+    String Position;
 
 
-    public ThesenModel(String TID, String thesentext, String Kategorie, String Wahlkreis, Integer likes, Integer Pro, Integer Neutral, Integer Contra, JSONArray KPro, JSONArray KNeutral, JSONArray KContra, JSONArray WPro, JSONArray WNeutral, JSONArray WContra, JSONArray KPosition) {
+    public ThesenModel(String TID, String thesentext, String Kategorie, String Wahlkreis, Integer likes, Integer Pro, Integer Neutral, Integer Contra, JSONArray KPro, JSONArray KNeutral, JSONArray KContra, JSONArray WPro, JSONArray WNeutral, JSONArray WContra, JSONArray KPosition, Boolean Abo, String Position) {
         this.TID = TID;
         this.thesentext = thesentext;
         this.likes = likes;
@@ -42,6 +44,24 @@ public class ThesenModel {
         this.WNeutral = WNeutral;
         this.WContra = WContra;
         this.KPosition = KPosition;
+        this.Abo = Abo;
+        this.Position = Position;
+    }
+
+    public String getPosition() {
+        return Position;
+    }
+
+    public void setPosition(String position) {
+        Position = position;
+    }
+
+    public Boolean getAbo() {
+        return Abo;
+    }
+
+    public void setAbo(Boolean abo) {
+        Abo = abo;
     }
 
     public String getThesentext() {

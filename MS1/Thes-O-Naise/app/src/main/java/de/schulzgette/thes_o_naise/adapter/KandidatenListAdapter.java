@@ -3,12 +3,14 @@ package de.schulzgette.thes_o_naise.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,7 @@ public class KandidatenListAdapter extends ArrayAdapter<KandidatenModel> impleme
         TextView txtnachname;
         TextView txtpartei;
         Button mehrButton;
+        ToggleButton abonnieren;
     }
 
     public KandidatenListAdapter(ArrayList<KandidatenModel> data, Context context) {
@@ -68,6 +71,7 @@ public class KandidatenListAdapter extends ArrayAdapter<KandidatenModel> impleme
             viewHolder.txtnachname = (TextView) convertView.findViewById(R.id.nachnamekandidat);
             viewHolder.txtpartei = (TextView) convertView.findViewById(R.id.parteikandidat);
             viewHolder.mehrButton = (Button) convertView.findViewById(R.id.einkandidatbutton);
+            viewHolder.abonnieren = (ToggleButton) convertView.findViewById(R.id.abonnierenbutton);
 
             result=convertView;
             convertView.setTag(viewHolder);
@@ -88,6 +92,23 @@ public class KandidatenListAdapter extends ArrayAdapter<KandidatenModel> impleme
                intent.putExtra("KID", kandidatenModel.getKid());
                 intent.putExtra("MODE", "NORMAL");
                getContext().startActivity(intent);
+            }
+        });
+
+        viewHolder.abonnieren.setChecked(kandidatenModel.getAbo());
+        viewHolder.abonnieren.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(kandidatenModel.getAbo()){
+                    db.kandidatDeAbonnieren(kandidatenModel.getKid());
+                    kandidatenModel.setAbo(false);
+                    Log.d("ABONNIEREN",  "FALSE!!!! " + kandidatenModel.getKid());
+                }else {
+                    db.kandidatAbonnieren(kandidatenModel.getKid());
+                    kandidatenModel.setAbo(true);
+                    Log.d("ABONNIEREN",  "TRUE!!!! "+ kandidatenModel.getKid());
+                }
             }
         });
 

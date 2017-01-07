@@ -1,6 +1,7 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,19 +13,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
+import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.Models.ThesenModel;
 import de.schulzgette.thes_o_naise.adapter.ThesenItemAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.services.EventBus;
 import de.schulzgette.thes_o_naise.services.GetThesenFromAPI;
 
+import static android.content.Context.MODE_PRIVATE;
 import static de.schulzgette.thes_o_naise.R.id.spinner_kategorie;
 
 public class getThesenFragment extends Fragment implements EventBus.IEventListner{
-    private static final String BASE_URL = "http://10.0.3.2:3000/";
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
     ThesenItemAdapter listadapter;
@@ -33,6 +36,9 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     ListView lv;
     Database db;
     ArrayList<ThesenModel> thesenModels = new ArrayList<>();
+    Boolean neueThesen;
+    Boolean beliebteThesen;
+    Boolean unbeantworteteThesen;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.layout_get_thesen, container, false);
 
+        lv = (ListView) myView.findViewById(R.id.listviewthesen);
         spinner = (Spinner) myView.findViewById(spinner_kategorie);
         adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.kategorien, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -67,6 +74,52 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
 
         });
 
+        ToggleButton neuethesenbutton = (ToggleButton) myView.findViewById(R.id.neuethesenbutton);
+        ToggleButton beliebtethesenbutton = (ToggleButton) myView.findViewById(R.id.beliebtethesenbutton);
+        ToggleButton unbeantwortetethesenbutton = (ToggleButton) myView.findViewById(R.id.unbeantwortetethesenbutton);
+        neueThesen = false;
+        unbeantworteteThesen = false;
+        beliebteThesen = false;
+        neuethesenbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(neueThesen){
+                    neueThesen = false;
+                    sortiereThesen();
+                }
+                else{
+                    neueThesen = true;
+                    sortiereThesen();
+                }
+            }
+        });
+        beliebtethesenbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(beliebteThesen){
+                    beliebteThesen = false;
+                    sortiereThesen();
+                }else{
+                    beliebteThesen = true;
+                    sortiereThesen();
+                }
+            }
+        });
+        unbeantwortetethesenbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(unbeantworteteThesen){
+                    unbeantworteteThesen = false;
+                    sortiereThesen();
+                }else{
+                    unbeantworteteThesen = true;
+                    sortiereThesen();
+                }
+            }
+        });
+
+
+
         return myView;
     }
 
@@ -86,10 +139,9 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     @Override
     public void onThesenUpdate(){
         db = new Database(getContext());
-        thesenModels = db.getArraylistThesen(kategorie);
-
+        thesenModels = db.getArraylistThesen(kategorie, null, false);
         if(thesenModels != null) {
-            lv = (ListView) myView.findViewById(R.id.listviewthesen);
+
             listadapter = new ThesenItemAdapter(thesenModels, this.getActivity(), "NORMAL");
             lv.setAdapter(listadapter);
 
@@ -97,7 +149,52 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
             Log.d("Thesenmodels aus Db", "nicht null");
             listadapter.notifyDataSetChanged();
         }
+    }
 
+    private void sortiereThesen(){
+        db = new Database(getContext());
+        if(unbeantworteteThesen && beliebteThesen && neueThesen){
+            String order = "tid DESC, likes DESC";
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, true);
+            loadHosts(neuethesenModels);
+        }else if(unbeantworteteThesen && beliebteThesen){
+            String order = "likes DESC";
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, true);
+            loadHosts(neuethesenModels);
+        }else if(unbeantworteteThesen && neueThesen){
+            String order = "tid DESC";
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, true);
+            loadHosts(neuethesenModels);
+        }else if(beliebteThesen && neueThesen){
+            String order = "tid DESC, likes DESC";
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, false);
+            loadHosts(neuethesenModels);
+        }else if(unbeantworteteThesen){
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, null, true);
+            loadHosts(neuethesenModels);
+        }else if(beliebteThesen){
+            String order = "likes DESC";
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, false);
+            loadHosts(neuethesenModels);
+        }else if(neueThesen){
+            String order = "tid DESC";
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, false);
+            loadHosts(neuethesenModels);
+        }else{
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, null, false);
+            loadHosts(neuethesenModels);
+        }
+    }
+
+    private void loadHosts(ArrayList<ThesenModel> neuethesenModels) {
+        if(neuethesenModels != null) {
+            thesenModels = neuethesenModels;
+            Log.d("listadapter", "notidyDATASETCHANGED");
+            listadapter = new ThesenItemAdapter(thesenModels, this.getActivity(), "NORMAL");
+            lv.setAdapter(listadapter);
+            listadapter.notifyDataSetChanged();
+            listadapter.notifyDataSetChanged();
+        }
     }
 
 }

@@ -25,9 +25,10 @@ public class KandidatenModel {
     JSONArray Begruendungen;
     JSONObject Biografie;
     JSONObject Wahlprogramm;
+    Boolean abo;
 
 
-    public KandidatenModel(String kid, String vorname, String nachname,  String partei, String email,  String wahlkreis,  JSONArray beantworteteThesen, Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire, JSONArray Begruendungen, JSONObject Biografie, JSONObject Wahlprogramm) {
+    public KandidatenModel(String kid, String vorname, String nachname,  String partei, String email,  String wahlkreis,  JSONArray beantworteteThesen, Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire, JSONArray Begruendungen, JSONObject Biografie, JSONObject Wahlprogramm, Boolean abo) {
         this.vorname = vorname;
         this.nachname = nachname;
         this.kid = kid;
@@ -43,7 +44,17 @@ public class KandidatenModel {
         this.Begruendungen = Begruendungen;
         this.Biografie = Biografie;
         this.Wahlprogramm = Wahlprogramm;
+        this.abo = abo;
     }
+
+    public Boolean getAbo() {
+        return abo;
+    }
+
+    public void setAbo(Boolean abo) {
+        this.abo = abo;
+    }
+
     public String getGeburtsdatum() throws JSONException {
         String geburtsdatum = Biografie.getString("Geburtsdatum");
         return geburtsdatum;

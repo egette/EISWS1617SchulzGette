@@ -75,7 +75,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         final Database db = new Database(getContext());
-        View result;
+
 
         if (convertView == null) {
 
@@ -90,25 +90,18 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             viewHolder.mehrButton = (Button) convertView.findViewById(R.id.einethesebutton);
             viewHolder.abonnieren = (ToggleButton) convertView.findViewById(R.id.abonnierenbutton);
 
-            result = convertView;
+
             convertView.setTag(viewHolder);
+
 
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            result = convertView;
+
         }
 
-        viewHolder.txtThesentext.setText(thesenModel.getThesentext());
-        typ = sharedPreferences.getString("typ", "");
-
-
         //User Position aus der Datenbank holen und den richtigen Radiobutton checken
-        String userposition = db.getUserPositionWithTID(thesenModel.getTID());
-        if (userposition.isEmpty()) {
-            viewHolder.proButton.setChecked(false);
-            viewHolder.neutralButton.setChecked(false);
-            viewHolder.contraButton.setChecked(false);
-        } else {
+        String userposition = thesenModel.getPosition();
+        if (!userposition.isEmpty()) {
             if (userposition.equals("PRO")) {
                 viewHolder.proButton.setChecked(true);
                 viewHolder.neutralButton.setChecked(false);
@@ -124,13 +117,22 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
                 viewHolder.neutralButton.setChecked(false);
                 viewHolder.contraButton.setChecked(true);
             }
+        }else{
+            viewHolder.proButton.setChecked(false);
+            viewHolder.neutralButton.setChecked(false);
+            viewHolder.contraButton.setChecked(false);
         }
+        String test = thesenModel.getThesentext()+ "    " +thesenModel.getTID();
+        viewHolder.txtThesentext.setText(test);
+        typ = sharedPreferences.getString("typ", "");
+
 
         viewHolder.proButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (typ.equals("kandidat")) kandidatPosToServer("PRO", thesenModel.getTID());
                 db.insertposition("PRO", thesenModel.getTID());
+                thesenModel.setPosition("PRO");
                 Toast.makeText(getContext(), "Pro Button von These " + thesenModel.getTID(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -140,6 +142,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             public void onClick(View v) {
                 if (typ.equals("kandidat")) kandidatPosToServer("NEUTRAL", thesenModel.getTID());
                 db.insertposition("NEUTRAL", thesenModel.getTID());
+                thesenModel.setPosition("NEUTRAL");
                 Toast.makeText(getContext(), "Neutral", Toast.LENGTH_SHORT).show();
             }
         });
@@ -149,6 +152,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             public void onClick(View v) {
                 if (typ.equals("kandidat")) kandidatPosToServer("CONTRA", thesenModel.getTID());
                 db.insertposition("CONTRA", thesenModel.getTID());
+                thesenModel.setPosition("CONTRA");
                 Toast.makeText(getContext(), "Contra", Toast.LENGTH_SHORT).show();
             }
         });
@@ -163,28 +167,28 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             }
         });
 
-        boolean abocheck = db.istTheseAbonniert(thesenModel.getTID());
-        viewHolder.abonnieren.setChecked(abocheck);
-        viewHolder.abonnieren.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        viewHolder.abonnieren.setChecked(thesenModel.getAbo());
+        viewHolder.abonnieren.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                    db.thesenAbonnieren(thesenModel.getTID());
-                } else {
-                    // The toggle is disabled
+            public void onClick(View v) {
+                if(thesenModel.getAbo()){
                     db.thesenDeAbonnieren(thesenModel.getTID());
+                    thesenModel.setAbo(false);
+                    Log.d("ABONNIEREN",  "FALSE!!!! " + thesenModel.getTID());
+                }else {
+                    db.thesenAbonnieren(thesenModel.getTID());
+                    thesenModel.setAbo(true);
+                    Log.d("ABONNIEREN",  "TRUE!!!! "+ thesenModel.getTID());
                 }
             }
         });
 
         // Return the completed view to render on screen
-        return result;
+        return convertView;
     }
 
-    public void radiogroupcheck(Database db, ViewHolder viewHolder){
 
-    }
 
     public void kandidatPosToServer (String position, String tid){
 

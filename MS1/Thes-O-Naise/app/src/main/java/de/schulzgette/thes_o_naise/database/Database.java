@@ -53,6 +53,13 @@ public class Database {
         public static final String COLUMN_NAME_KPOSITIONLÄNGE = "kposition";
     }
 
+    public static abstract class AbonnierteKandidatenTable implements BaseColumns{
+        public static final String TABLE_NAME = "abokandidaten";
+        public static final String COLUMN_NAME_KID = "kid";
+        public static final String COLUMN_NAME_BEGRUENDUNGENLÄNGE = "kbegruendung";
+        public static final String COLUMN_NAME_KPOSITIONLÄNGE = "kposition";
+    }
+
     //TODO MEHR KATEGORIEN ?
     public static abstract  class KandidatenTable implements BaseColumns{
         public static final String TABLE_NAME = "kandidaten";
@@ -147,6 +154,13 @@ public class Database {
                     AbonnierteThesenTable.COLUMN_NAME_KPOSITIONLÄNGE + " INTEGER" +
                     " )";
 
+    public static final String SQL_CREATE_ABONNIERTEKANDIDATENTABLE =
+            "CREATE TABLE " + AbonnierteKandidatenTable.TABLE_NAME + " (" +
+                    AbonnierteKandidatenTable.COLUMN_NAME_KID + " STRING PRIMARY KEY," +
+                    AbonnierteKandidatenTable.COLUMN_NAME_BEGRUENDUNGENLÄNGE + " INTEGER," +
+                    AbonnierteKandidatenTable.COLUMN_NAME_KPOSITIONLÄNGE + " INTEGER" +
+                    " )";
+
     //TODO MEHR KATEGORIEN ?
 
     public static final String SQL_CREATE_KANDIDATENTABLE =
@@ -210,10 +224,12 @@ public class Database {
             "DROP TABLE IF EXISTS " + AbonnierteThesenTable.TABLE_NAME;
     public static final String SQL_DELETE_BENACHRICHTIGUNGSTABLE =
             "DROP TABLE IF EXISTS " + BenachrichtigungsTable.TABLE_NAME;
+    public static final String SQL_DELETE_ABONNIERTEKANDIDATENTABLE =
+            "DROP TABLE IF EXISTS " + AbonnierteKandidatenTable.TABLE_NAME;
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 10;
+        public static final int DATABASE_VERSION = 11;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -227,6 +243,7 @@ public class Database {
             db.execSQL(SQL_CREATE_BEGRUENDUNGDATATABLE);
             db.execSQL(SQL_CREATE_MEINETHESENTABLE);
             db.execSQL(SQL_CREATE_ABONNIERTETHESENTABLE);
+            db.execSQL(SQL_CREATE_ABONNIERTEKANDIDATENTABLE);
             db.execSQL(SQL_CREATE_BENACHRICHTIGUNGSTABLE);
 
         }
@@ -239,6 +256,7 @@ public class Database {
             db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
             db.execSQL(SQL_DELETE_MEINETHESENTABLE);
             db.execSQL(SQL_DELETE_ABONNIERTETHESENTABLE);
+            db.execSQL(SQL_DELETE_ABONNIERTEKANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BENACHRICHTIGUNGSTABLE);
 
             onCreate(db);
@@ -251,8 +269,15 @@ public class Database {
             db.execSQL(SQL_DELETE_BEGRUENDUNGDATATABLE);
             db.execSQL(SQL_DELETE_MEINETHESENTABLE);
             db.execSQL(SQL_DELETE_ABONNIERTETHESENTABLE);
+            db.execSQL(SQL_DELETE_ABONNIERTEKANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BENACHRICHTIGUNGSTABLE);
             onCreate(db);
+        }
+
+        @Override
+        protected void finalize() throws Throwable {
+            this.close();
+            super.finalize();
         }
     }
 
@@ -299,6 +324,7 @@ public class Database {
                 values.put(AbonnierteThesenTable.COLUMN_NAME_KPOSITIONLÄNGE, kpositionlänge);
 
                 dbwrite.insert(AbonnierteThesenTable.TABLE_NAME, null, values);
+                Log.d("THESE ABONNIERT", "DIESE THESE: " + tid);
             } finally {
                 dbwrite.close();
             }
@@ -311,6 +337,7 @@ public class Database {
         if(tid != null){
             try {
                 dbwrite.delete(AbonnierteThesenTable.TABLE_NAME, "tid=?", new String[]{tid});
+                Log.d("THESE DEABONNIERT", "DIESE THESE: " + tid);
             } finally {
                 dbwrite.close();
             }
@@ -329,6 +356,7 @@ public class Database {
             }
         }finally{
             cursor.close();
+            dbread.close();
         }
         return result;
     }
@@ -337,6 +365,67 @@ public class Database {
         ArrayList<String> thesenliste = getAbonnierteThesen();
         boolean result = false;
         if(thesenliste.contains(TID)) {
+            result = true;
+        }
+        return result;
+    }
+
+    public void kandidatAbonnieren(String kid){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+        if(kid != null){
+            try {
+                KandidatenModel kandidat = getKandidat(kid);
+                Integer kbgründungenlänge = kandidat.getBegruendungen().length();
+                Integer kpositionlänge = kandidat.getBeantworteteThesen().length();
+
+                ContentValues values = new ContentValues();
+                values.put(AbonnierteKandidatenTable.COLUMN_NAME_KID, kid);
+                values.put(AbonnierteKandidatenTable.COLUMN_NAME_BEGRUENDUNGENLÄNGE, kbgründungenlänge);
+                values.put(AbonnierteKandidatenTable.COLUMN_NAME_KPOSITIONLÄNGE, kpositionlänge);
+
+                dbwrite.insert(AbonnierteKandidatenTable.TABLE_NAME, null, values);
+                Log.d("Kandidat ABONNIERT", "KID: " + kid);
+            } finally {
+                dbwrite.close();
+            }
+        }
+    }
+
+    public void kandidatDeAbonnieren(String kid){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+        if(kid != null){
+            try {
+                dbwrite.delete(AbonnierteKandidatenTable.TABLE_NAME, "kid=?", new String[]{kid});
+                Log.d("KANDIDAT DEABONNIERT", "KID: " + kid);
+            } finally {
+                dbwrite.close();
+            }
+        }
+    }
+
+    public ArrayList<String> getAbonnierteKandidaten(){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
+        Cursor cursor;
+        ArrayList<String> result = new ArrayList<>();
+        cursor = dbread.query(AbonnierteKandidatenTable.TABLE_NAME, new String[]{AbonnierteKandidatenTable.COLUMN_NAME_KID}, null, null, null, null, null);
+        try {
+            while(cursor.moveToNext()){
+                result.add(cursor.getString(0));
+            }
+        }finally{
+            cursor.close();
+            dbread.close();
+        }
+        return result;
+    }
+
+    public boolean istKandidatAbonniert(String KID){
+        ArrayList<String> kandidatenliste = getAbonnierteKandidaten();
+        boolean result = false;
+        if(kandidatenliste.contains(KID)) {
             result = true;
         }
         return result;
@@ -354,6 +443,7 @@ public class Database {
             }
         }finally{
             cursor.close();
+            dbread.close();
         }
         return result;
     }
@@ -519,7 +609,7 @@ public class Database {
     public String getUserPositionWithTID(String tid) {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
-        String result= "nichts";
+        String result= "";
         try {
             if(tid != null) {
                 Cursor c = db.query(UserpositiondataTable.TABLE_NAME, new String[]{UserpositiondataTable.COLUMN_NAME_TID, UserpositiondataTable.COLUMN_NAME_POSITION}, "tid = ?", new String[]{tid}, null, null, null);
@@ -716,7 +806,7 @@ public class Database {
 
     }
 
-    public ArrayList<ThesenModel> getArraylistThesen (String kategorie){
+    public ArrayList<ThesenModel> getArraylistThesen (String kategorie, String order, Boolean unbeantwortet){
         ArrayList<ThesenModel> thesenModels = new ArrayList<>();
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
@@ -724,7 +814,7 @@ public class Database {
 
         try{
             if(kategorie != null) {
-                Cursor  c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT, ThesenTable.COLUMN_NAME_KATEGORIE, ThesenTable.COLUMN_NAME_WAHLKREIS, ThesenTable.COLUMN_NAME_LIKES, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA, ThesenTable.COLUMN_NAME_W_PRO, ThesenTable.COLUMN_NAME_W_NEUTRAL, ThesenTable.COLUMN_NAME_W_CONTRA, ThesenTable.COLUMN_NAME_K_POSITION}, "kategorie = ?", new String[]{kategorie}, null, null, null);
+                Cursor  c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT, ThesenTable.COLUMN_NAME_KATEGORIE, ThesenTable.COLUMN_NAME_WAHLKREIS, ThesenTable.COLUMN_NAME_LIKES, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA, ThesenTable.COLUMN_NAME_W_PRO, ThesenTable.COLUMN_NAME_W_NEUTRAL, ThesenTable.COLUMN_NAME_W_CONTRA, ThesenTable.COLUMN_NAME_K_POSITION}, "kategorie = ?", new String[]{kategorie}, null, null, order);
 
                 try {
                     while (c.moveToNext()) {
@@ -751,7 +841,17 @@ public class Database {
                         JSONArray w_neutral_Array = new JSONArray(w_neutral);
                         JSONArray w_contra_Array = new JSONArray(w_contra);
                         JSONArray k_positionen_Array = new JSONArray(k_positionen);
-                        thesenModels.add(new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array));
+                        Boolean abo = istTheseAbonniert(tid);
+                        String position = getUserPositionWithTID(tid);
+
+                        Boolean check = false;
+                        if(unbeantwortet){
+                            Log.d("position:  ", position + " " + tid);
+                            if(position.isEmpty()) check = true;
+                        }else{
+                            check = true;
+                        }
+                        if(check) thesenModels.add(new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array, abo, position));
                     }
 
                 } catch (JSONException e) {
@@ -801,7 +901,10 @@ public class Database {
                         JSONArray w_neutral_Array = new JSONArray(w_neutral);
                         JSONArray w_contra_Array = new JSONArray(w_contra);
                         JSONArray k_positionen_Array = new JSONArray(k_positionen);
-                        result = new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array);
+                        Boolean abo = istTheseAbonniert(tid);
+                        String position = getUserPositionWithTID(tid);
+
+                        result = new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array, abo, position);
                     }
                 }
             }
@@ -949,11 +1052,84 @@ public class Database {
         return  result;
     }
 
+    public void vergleichJsonArrayBenachrichtigungKandidat(Integer altelänge, JSONArray neu, String typ, String KID,  String benachrichtungstyp) throws JSONException {
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+        try{
+            if(neu.length() > altelänge){
+                Log.d("NEUES", "Alte Länge ist kleiner als neue");
+                Log.d("Bei dem : ", KID);
+                Integer anzahl = neu.length() - altelänge;
+                for(int i = 0; i < anzahl; i++){
+                    if(typ.equals("position")){
+                        JSONObject jsonObject = null;
+                        if(altelänge == 0 && neu.length() == 1){
+                            jsonObject = neu.getJSONObject(0);
+                        }else{
+                            jsonObject = neu.getJSONObject(neu.length()-i);
+                        }
+                        String TID = jsonObject.getString("TID");
+                        String position = jsonObject.getString("POS");
+                        String name = getKandidatUsername(KID);
+                        String satz = "Der Kandidat "+name +" hat sich zur These "+ position+" positioniert.";
+
+
+                        ContentValues values = new ContentValues();
+                        values.put(BenachrichtigungsTable.COLUMN_NAME_TID, TID);
+                        values.put(BenachrichtigungsTable.COLUMN_NAME_TYP, benachrichtungstyp);
+                        values.put(BenachrichtigungsTable.COLUMN_NAME_SATZ, satz);
+                        values.put(BenachrichtigungsTable.COLUMN_NAME_UID, KID);
+                        dbwrite.insert(BenachrichtigungsTable.TABLE_NAME, null, values);
+                    }else {
+                        JSONObject begruendung = null;
+                        if(altelänge == 0 && neu.length() == 1){
+                            begruendung = neu.getJSONObject(0);
+                        }else{
+                            begruendung = neu.getJSONObject(neu.length()-i);
+                        }
+                        String TID = begruendung.getString("TID");
+                        String name = getKandidatUsername(KID);
+                        String richtung = begruendung.getString("Richtung");
+                        String satz = "Der Kandidat "+name +" hat eine Begründung "+ richtung+" hinzugefügt.";
+
+                        ContentValues values = new ContentValues();
+                        values.put(BenachrichtigungsTable.COLUMN_NAME_TID, TID);
+                        values.put(BenachrichtigungsTable.COLUMN_NAME_TYP, benachrichtungstyp);
+                        values.put(BenachrichtigungsTable.COLUMN_NAME_SATZ, satz);
+                        values.put(BenachrichtigungsTable.COLUMN_NAME_UID, KID);
+                        dbwrite.insert(BenachrichtigungsTable.TABLE_NAME, null, values);
+                    }
+                }
+            }
+        }finally {
+            dbwrite.close();
+        }
+    }
+
     public void insertKandidat(String KID, String vorname, String nachname, String partei, String email, String wahlkreis, JSONArray beantworteteThesen, JSONArray begruendungen, JSONObject biografie, JSONObject wahlprogramm){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
         SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
+        if (istKandidatAbonniert(KID)){
+            Cursor cursor = dbread.query(AbonnierteKandidatenTable.TABLE_NAME, new String[]{AbonnierteKandidatenTable.COLUMN_NAME_KID, AbonnierteKandidatenTable.COLUMN_NAME_BEGRUENDUNGENLÄNGE, AbonnierteKandidatenTable.COLUMN_NAME_KPOSITIONLÄNGE},"kid = ?", new String[]{KID}, null, null, null );
+            while(cursor.moveToNext()){
+                Integer kbegründgenlänge = cursor.getInt(1);
+                Integer kposition = cursor.getInt(2);
+                try{
+                    vergleichJsonArrayBenachrichtigungKandidat(kbegründgenlänge, begruendungen, "begründung", KID, "Abonniertes");
+                    vergleichJsonArrayBenachrichtigungKandidat(kposition, beantworteteThesen, "position", KID, "Abonniertes");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            cursor.close();
 
+            ContentValues values2 = new ContentValues();
+            values2.put(AbonnierteKandidatenTable.COLUMN_NAME_KID, KID);
+            values2.put(AbonnierteKandidatenTable.COLUMN_NAME_BEGRUENDUNGENLÄNGE, begruendungen.length());
+            values2.put(AbonnierteKandidatenTable.COLUMN_NAME_KPOSITIONLÄNGE, beantworteteThesen.length());
+            dbwrite.update(AbonnierteKandidatenTable.TABLE_NAME, values2, "kid=?", new String[]{KID});
+        }
         try {
             Log.d("KID save", KID);
 
@@ -1063,7 +1239,8 @@ public class Database {
                         JSONArray begruendungen = new JSONArray(begruendungen2);
                         JSONObject biografie = new JSONObject(biografie2);
                         JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
-                        kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm));
+                        Boolean abo = istKandidatAbonniert(kid);
+                        kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm, abo));
                     }
 
                 } catch (JSONException e) {
@@ -1128,8 +1305,8 @@ public class Database {
                             String objectKategorie = object.getString("KATEGORIE");
                             if(objectKategorie.equals(kategorie2))check = 1;
                         }
-
-                        if (check == 1) kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm));
+                        Boolean abo = istKandidatAbonniert(kid);
+                        if (check == 1) kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm, abo));
                     }
 
                 } catch (JSONException e) {
@@ -1177,7 +1354,8 @@ public class Database {
                         Integer Punkte_Umwelt = c.getInt(9);
                         Integer Punkte_AP = c.getInt(10);
                         Integer Punkte_Satire = c.getInt(11);
-                        kandidatenModel = new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm);
+                        Boolean abo = istKandidatAbonniert(kid);
+                        kandidatenModel = new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm, abo);
                     }
 
                 } catch (JSONException e) {
