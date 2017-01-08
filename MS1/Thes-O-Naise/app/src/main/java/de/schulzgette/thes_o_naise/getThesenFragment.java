@@ -1,7 +1,6 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,14 +16,12 @@ import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
-import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.Models.ThesenModel;
 import de.schulzgette.thes_o_naise.adapter.ThesenItemAdapter;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.services.EventBus;
 import de.schulzgette.thes_o_naise.services.GetThesenFromAPI;
 
-import static android.content.Context.MODE_PRIVATE;
 import static de.schulzgette.thes_o_naise.R.id.spinner_kategorie;
 
 public class getThesenFragment extends Fragment implements EventBus.IEventListner{
@@ -139,7 +136,7 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     @Override
     public void onThesenUpdate(){
         db = new Database(getContext());
-        thesenModels = db.getArraylistThesen(kategorie, null, false);
+        thesenModels = db.getArraylistThesen(kategorie, "time ASC", false);
         if(thesenModels != null) {
 
             listadapter = new ThesenItemAdapter(thesenModels, this.getActivity(), "NORMAL");
@@ -154,7 +151,7 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     private void sortiereThesen(){
         db = new Database(getContext());
         if(unbeantworteteThesen && beliebteThesen && neueThesen){
-            String order = "tid DESC, likes DESC";
+            String order = "likes DESC, time DESC";
             ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, true);
             loadHosts(neuethesenModels);
         }else if(unbeantworteteThesen && beliebteThesen){
@@ -162,26 +159,26 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
             ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, true);
             loadHosts(neuethesenModels);
         }else if(unbeantworteteThesen && neueThesen){
-            String order = "tid DESC";
+            String order = "time DESC";
             ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, true);
             loadHosts(neuethesenModels);
         }else if(beliebteThesen && neueThesen){
-            String order = "tid DESC, likes DESC";
+            String order = "likes DESC, time DESC";
             ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, false);
             loadHosts(neuethesenModels);
         }else if(unbeantworteteThesen){
-            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, null, true);
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, "time ASC", true);
             loadHosts(neuethesenModels);
         }else if(beliebteThesen){
             String order = "likes DESC";
             ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, false);
             loadHosts(neuethesenModels);
         }else if(neueThesen){
-            String order = "tid DESC";
+            String order = "time DESC";
             ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, order, false);
             loadHosts(neuethesenModels);
         }else{
-            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, null, false);
+            ArrayList<ThesenModel> neuethesenModels = db.getArraylistThesen(kategorie, "time ASC", false);
             loadHosts(neuethesenModels);
         }
     }

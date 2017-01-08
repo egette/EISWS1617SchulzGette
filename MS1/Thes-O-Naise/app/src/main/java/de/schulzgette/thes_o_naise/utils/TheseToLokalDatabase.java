@@ -38,7 +38,8 @@ public class TheseToLokalDatabase extends Application {
             String kategorie = (String) these_data.get("kategorie");
             String wahlkreis = (String) these_data.get("wahlkreis");
             Integer likesINT = (Integer) these_data.get("Likes");
-            db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA, W_PRO, W_NEUTRAL, W_CONTRA, K_POSITION);
+            Long time = (Long) these_data.get("time");
+            db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA, W_PRO, W_NEUTRAL, W_CONTRA, K_POSITION, time);
 
         } catch (JSONException e) {
             e.printStackTrace();

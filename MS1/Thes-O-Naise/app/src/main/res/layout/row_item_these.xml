@@ -48,10 +48,32 @@
         android:layout_below="@+id/thesentext22"
         android:orientation="horizontal"
         android:id="@+id/abolayout">
-        <Space
+        <LinearLayout
+            android:padding="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:orientation="horizontal">
+            <ImageButton
+                android:layout_height="25dp"
+                android:layout_width="match_parent"
+                android:id="@+id/like"
+                android:src="@drawable/ic_thumb_up_black_24dp"
+                android:focusable="false"
+                android:background="@color/colorPrimary"/>
+            <TextView
+                android:id="@+id/likestext"
+                android:text="1000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginRight="3dp"
+                android:layout_marginEnd="3dp"/>
+
+        </LinearLayout>
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
         <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

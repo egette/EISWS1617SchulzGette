@@ -4,9 +4,7 @@ import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.session.MediaSession;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import de.schulzgette.thes_o_naise.Models.BegruendungModel;
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
@@ -191,7 +187,8 @@ public class AuthActivity extends AccountAuthenticatorActivity {
                                     String kategorie = (String) these_data.get("kategorie");
                                     String wahlkreis = (String) these_data.get("wahlkreis");
                                     Integer likesINT = (Integer) these_data.get("Likes");
-                                    db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA, W_PRO, W_NEUTRAL, W_CONTRA, K_POSITION);
+                                    Long time = (Long) these_data.get("time");
+                                    db.insertThese(TID, thesentext, kategorie, wahlkreis, likesINT, proINT, neutralINT, contraINT, K_PRO, K_NEUTRAL, K_CONTRA, W_PRO, W_NEUTRAL, W_CONTRA, K_POSITION, time);
                                 }
                             }
                             Log.d("Thesen", "In der Datenbank");

@@ -44,8 +44,8 @@
             android:id="@+id/neuethesenbutton"
             android:textSize="11sp"
             android:textColor="@color/colorPrimaryDark"
-            android:textOff="Neue Thesen"
-            android:textOn="Neue Thesen" />
+            android:textOff="Alt > Neu"
+            android:textOn="Neu > Alt" />
         <ToggleButton
             android:layout_width="0dp"
             android:layout_weight="1"

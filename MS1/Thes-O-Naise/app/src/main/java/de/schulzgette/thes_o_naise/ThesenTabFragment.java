@@ -1,7 +1,6 @@
 package de.schulzgette.thes_o_naise;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -570,7 +569,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         String json_data = jsonObject.toString();
 
         try {
-            HttpClient.PUT("thesen/likes", json_data, new Callback() {
+            HttpClient.PUT("thesen/begruendungen/likes", json_data, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     getActivity().runOnUiThread(new Runnable() {
@@ -595,7 +594,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                         response.body().close();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(getActivity(), "Ihr Like wurde hinzugefügt", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Ihr Like wurde verarbeitet", Toast.LENGTH_SHORT).show();
                                 ArrayList<BegruendungModel> neu = getBegruendung(tid, position);
                                 loadHosts(neu);
                             }

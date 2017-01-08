@@ -61,6 +61,7 @@ module.exports = function(app,io, db, redis, jwt, Promise, apiRoutes) {
 	app.put('/thesen', thesen.putPosition(db));
 	app.put('/thesen/kommentar', thesen.postKommentar(db));
 	app.put('/thesen/likes', thesen.putLikes(db));
+	app.put('/thesen/begruendungen/likes', thesen.putLikesbegruendungen(db));
 	app.put('/user', userroute.updateUserdata(db));
 	app.delete('/user', userroute.deleteUserdata(db));
 		

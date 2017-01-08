@@ -97,6 +97,7 @@ public class Database {
         public static final String COLUMN_NAME_W_NEUTRAL = "w_neutral";
         public static final String COLUMN_NAME_W_CONTRA = "w_contra";
         public static final String COLUMN_NAME_K_POSITION = "k_position";
+        public static final String COLUMN_NAME_TIME = "time";
 
     }
 
@@ -108,6 +109,13 @@ public class Database {
         public static final String COLUMN_NAME_BID = "bid";
         public static final String COLUMN_NAME_LIKE = "like";
     }
+
+    public static abstract  class ThesenLikesTable implements BaseColumns{
+        public static final String TABLE_NAME = "thesenlikes";
+        public static final String COLUMN_NAME_TID = "tid";
+        public static final String COLUMN_NAME_LIKE = "like";
+    }
+
     public static abstract  class BenachrichtigungsTable implements BaseColumns{
         public static final String TABLE_NAME = "benachrichtigung";
         public static final String COLUMN_NAME_PRIMARYKEY = "pk";
@@ -188,7 +196,7 @@ public class Database {
                     ThesenTable.COLUMN_NAME_THESENTEXT + " TEXT," +
                     ThesenTable.COLUMN_NAME_KATEGORIE + " TEXT," +
                     ThesenTable.COLUMN_NAME_WAHLKREIS + " TEXT," +
-                    ThesenTable.COLUMN_NAME_LIKES + " TEXT," +
+                    ThesenTable.COLUMN_NAME_LIKES + " INTEGER," +
                     ThesenTable.COLUMN_NAME_ANZAHL_PRO + " TEXT," +
                     ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL + " TEXT," +
                     ThesenTable.COLUMN_NAME_ANZAHL_CONTRA + " TEXT," +
@@ -198,7 +206,14 @@ public class Database {
                     ThesenTable.COLUMN_NAME_W_PRO + " TEXT," +
                     ThesenTable.COLUMN_NAME_W_NEUTRAL + " TEXT," +
                     ThesenTable.COLUMN_NAME_W_CONTRA + " TEXT," +
-                    ThesenTable.COLUMN_NAME_K_POSITION + " TEXT" +
+                    ThesenTable.COLUMN_NAME_K_POSITION + " TEXT," +
+                    ThesenTable.COLUMN_NAME_TIME + " INTEGER" +
+                    " )";
+
+    public static final String SQL_CREATE_THESENLIKESTABLE =
+            "CREATE TABLE " + ThesenLikesTable.TABLE_NAME + " (" +
+                    ThesenLikesTable.COLUMN_NAME_TID + " STRING PRIMARY KEY," +
+                    ThesenLikesTable.COLUMN_NAME_LIKE + " INTEGER" +
                     " )";
 
     public static final String SQL_CREATE_BEGRUENDUNGDATATABLE =
@@ -226,10 +241,12 @@ public class Database {
             "DROP TABLE IF EXISTS " + BenachrichtigungsTable.TABLE_NAME;
     public static final String SQL_DELETE_ABONNIERTEKANDIDATENTABLE =
             "DROP TABLE IF EXISTS " + AbonnierteKandidatenTable.TABLE_NAME;
+    public static final String SQL_DELETE_THESENLIKESTABLE =
+            "DROP TABLE IF EXISTS " + ThesenLikesTable.TABLE_NAME;
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 11;
+        public static final int DATABASE_VERSION = 14;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -245,6 +262,7 @@ public class Database {
             db.execSQL(SQL_CREATE_ABONNIERTETHESENTABLE);
             db.execSQL(SQL_CREATE_ABONNIERTEKANDIDATENTABLE);
             db.execSQL(SQL_CREATE_BENACHRICHTIGUNGSTABLE);
+            db.execSQL(SQL_CREATE_THESENLIKESTABLE);
 
         }
 
@@ -258,6 +276,7 @@ public class Database {
             db.execSQL(SQL_DELETE_ABONNIERTETHESENTABLE);
             db.execSQL(SQL_DELETE_ABONNIERTEKANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BENACHRICHTIGUNGSTABLE);
+            db.execSQL(SQL_DELETE_THESENLIKESTABLE);
 
             onCreate(db);
         }
@@ -271,6 +290,7 @@ public class Database {
             db.execSQL(SQL_DELETE_ABONNIERTETHESENTABLE);
             db.execSQL(SQL_DELETE_ABONNIERTEKANDIDATENTABLE);
             db.execSQL(SQL_DELETE_BENACHRICHTIGUNGSTABLE);
+            db.execSQL(SQL_DELETE_THESENLIKESTABLE);
             onCreate(db);
         }
 
@@ -609,15 +629,14 @@ public class Database {
     public String getUserPositionWithTID(String tid) {
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
-        String result= "";
+        String result= "keine";
         try {
             if(tid != null) {
                 Cursor c = db.query(UserpositiondataTable.TABLE_NAME, new String[]{UserpositiondataTable.COLUMN_NAME_TID, UserpositiondataTable.COLUMN_NAME_POSITION}, "tid = ?", new String[]{tid}, null, null, null);
                 try {
                     while (c.moveToNext()) {
                         result = c.getString(1);
-                        Log.d("TID:", c.getString(0));
-                        Log.d("position:", c.getString(1));
+                        Log.d("TID:", c.getString(0) + "position: "+  c.getString(1) );
                     }
 
                 } finally {
@@ -683,7 +702,7 @@ public class Database {
         }
     }
 
-    public void insertThese (String TID, String thesentext, String kategorie, String wahlkreis, Integer likesINT, Integer proINT, Integer neutralINT, Integer contraINT, JSONArray K_PRO, JSONArray  K_NEUTRAL, JSONArray K_CONTRA, JSONArray W_PRO, JSONArray W_NEUTRAL, JSONArray W_CONTRA, JSONArray K_POSITION ){
+    public void insertThese (String TID, String thesentext, String kategorie, String wahlkreis, Integer likesINT, Integer proINT, Integer neutralINT, Integer contraINT, JSONArray K_PRO, JSONArray  K_NEUTRAL, JSONArray K_CONTRA, JSONArray W_PRO, JSONArray W_NEUTRAL, JSONArray W_CONTRA, JSONArray K_POSITION, Long Time ){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
         SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
@@ -771,6 +790,7 @@ public class Database {
                             values.put(ThesenTable.COLUMN_NAME_W_NEUTRAL, w_neutral);
                             values.put(ThesenTable.COLUMN_NAME_W_CONTRA, w_contra);
                             values.put(ThesenTable.COLUMN_NAME_K_POSITION, k_positionen);
+                            values.put(ThesenTable.COLUMN_NAME_TIME, Time);
                             dbwrite.insert(ThesenTable.TABLE_NAME, null, values);
                         } finally {
                             cursor.close();
@@ -793,6 +813,7 @@ public class Database {
                             values.put(ThesenTable.COLUMN_NAME_W_NEUTRAL, w_neutral);
                             values.put(ThesenTable.COLUMN_NAME_W_CONTRA, w_contra);
                             values.put(ThesenTable.COLUMN_NAME_K_POSITION, k_positionen);
+                            values.put(ThesenTable.COLUMN_NAME_TIME, Time);
                             dbwrite.update(ThesenTable.TABLE_NAME, values, "tid=?", new String[]{TID});
                         }finally {
                             cursor.close();
@@ -814,7 +835,7 @@ public class Database {
 
         try{
             if(kategorie != null) {
-                Cursor  c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT, ThesenTable.COLUMN_NAME_KATEGORIE, ThesenTable.COLUMN_NAME_WAHLKREIS, ThesenTable.COLUMN_NAME_LIKES, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA, ThesenTable.COLUMN_NAME_W_PRO, ThesenTable.COLUMN_NAME_W_NEUTRAL, ThesenTable.COLUMN_NAME_W_CONTRA, ThesenTable.COLUMN_NAME_K_POSITION}, "kategorie = ?", new String[]{kategorie}, null, null, order);
+                Cursor  c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT, ThesenTable.COLUMN_NAME_KATEGORIE, ThesenTable.COLUMN_NAME_WAHLKREIS, ThesenTable.COLUMN_NAME_LIKES, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA, ThesenTable.COLUMN_NAME_W_PRO, ThesenTable.COLUMN_NAME_W_NEUTRAL, ThesenTable.COLUMN_NAME_W_CONTRA, ThesenTable.COLUMN_NAME_K_POSITION, ThesenTable.COLUMN_NAME_TIME}, "kategorie = ?", new String[]{kategorie}, null, null, order);
 
                 try {
                     while (c.moveToNext()) {
@@ -834,6 +855,7 @@ public class Database {
                         String w_neutral = c.getString(12);
                         String w_contra = c.getString(13);
                         String k_positionen = c.getString(14);
+                        Integer time = c.getInt(15);
                         JSONArray k_pro_Array = new JSONArray(k_pro);
                         JSONArray k_neutral_Array = new JSONArray(k_neutral);
                         JSONArray k_contra_Array = new JSONArray(k_contra);
@@ -846,12 +868,12 @@ public class Database {
 
                         Boolean check = false;
                         if(unbeantwortet){
-                            Log.d("position:  ", position + " " + tid);
-                            if(position.isEmpty()) check = true;
+                            //Log.d("position:  ", position + " " + tid);
+                            if(position.equals("keine")) check = true;
                         }else{
                             check = true;
                         }
-                        if(check) thesenModels.add(new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array, abo, position));
+                        if(check) thesenModels.add(new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, time, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array, abo, position));
                     }
 
                 } catch (JSONException e) {
@@ -873,7 +895,7 @@ public class Database {
         ThesenModel result = null;
         try{
             if(TID != null){
-                c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT, ThesenTable.COLUMN_NAME_KATEGORIE, ThesenTable.COLUMN_NAME_WAHLKREIS, ThesenTable.COLUMN_NAME_LIKES, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA, ThesenTable.COLUMN_NAME_W_PRO, ThesenTable.COLUMN_NAME_W_NEUTRAL, ThesenTable.COLUMN_NAME_W_CONTRA, ThesenTable.COLUMN_NAME_K_POSITION}, "tid = ?", new String[]{TID}, null, null, null);
+                c = db.query(ThesenTable.TABLE_NAME, new String[]{ThesenTable.COLUMN_NAME_TID, ThesenTable.COLUMN_NAME_THESENTEXT, ThesenTable.COLUMN_NAME_KATEGORIE, ThesenTable.COLUMN_NAME_WAHLKREIS, ThesenTable.COLUMN_NAME_LIKES, ThesenTable.COLUMN_NAME_ANZAHL_PRO, ThesenTable.COLUMN_NAME_ANZAHL_NEUTRAL, ThesenTable.COLUMN_NAME_ANZAHL_CONTRA, ThesenTable.COLUMN_NAME_K_PRO, ThesenTable.COLUMN_NAME_K_NEUTRAL, ThesenTable.COLUMN_NAME_K_CONTRA, ThesenTable.COLUMN_NAME_W_PRO, ThesenTable.COLUMN_NAME_W_NEUTRAL, ThesenTable.COLUMN_NAME_W_CONTRA, ThesenTable.COLUMN_NAME_K_POSITION, ThesenTable.COLUMN_NAME_TIME}, "tid = ?", new String[]{TID}, null, null, null);
                 if (c.getCount() < 1){
                     return null;
                 }else {
@@ -894,6 +916,7 @@ public class Database {
                         String w_neutral = c.getString(12);
                         String w_contra = c.getString(13);
                         String k_positionen = c.getString(14);
+                        Integer time = c.getInt(15);
                         JSONArray k_pro_Array = new JSONArray(k_pro);
                         JSONArray k_neutral_Array = new JSONArray(k_neutral);
                         JSONArray k_contra_Array = new JSONArray(k_contra);
@@ -904,7 +927,7 @@ public class Database {
                         Boolean abo = istTheseAbonniert(tid);
                         String position = getUserPositionWithTID(tid);
 
-                        result = new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array, abo, position);
+                        result = new ThesenModel(tid, thesentext, kategorie2, wahlkreis, likes, anzahl_pro, anzahl_neutral, anzahl_contra, time, k_pro_Array, k_neutral_Array, k_contra_Array, w_pro_Array, w_neutral_Array, w_contra_Array, k_positionen_Array, abo, position);
                     }
                 }
             }
@@ -1452,6 +1475,57 @@ public class Database {
             }
 
         }
+        return result;
+    }
+    public void insertLikeThese(String TID, Integer Like){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
+        Cursor cursor;
+        if (TID != null && Like != null) {
+            cursor = dbread.query(ThesenLikesTable.TABLE_NAME, new String[]{ThesenLikesTable.COLUMN_NAME_TID}, "tid=?", new String[]{TID}, null, null, null);
+
+            SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
+
+            if (cursor.getCount() < 1) {
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(ThesenLikesTable.COLUMN_NAME_TID, TID);
+                    values.put(ThesenLikesTable.COLUMN_NAME_LIKE, Like);
+                    dbwrite.insert(ThesenLikesTable.TABLE_NAME, null, values);
+                } finally {
+                    dbread.close();
+                    dbwrite.close();
+                }
+            } else {
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(ThesenLikesTable.COLUMN_NAME_TID, TID);
+                    values.put(ThesenLikesTable.COLUMN_NAME_LIKE, Like);
+                    dbwrite.update(ThesenLikesTable.TABLE_NAME, values, "tid=?", new String[]{TID});
+                } finally {
+                    dbread.close();
+                    dbwrite.close();
+                }
+            }
+        }
+    }
+    public Integer getLikeThese(String TID){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase dbread = thesenDbHelper.getReadableDatabase();
+        Cursor cursor;
+        Integer result = 0;
+        if (TID != null) {
+            try{
+                cursor = dbread.query(ThesenLikesTable.TABLE_NAME, new String[]{ThesenLikesTable.COLUMN_NAME_TID, ThesenLikesTable.COLUMN_NAME_LIKE}, "tid=?", new String[]{TID}, null, null, null);
+                while(cursor.moveToNext()){
+                    result = cursor.getInt(1);
+                }
+            } finally {
+                dbread.close();
+            }
+
+        }
+//        Log.d("LIKE TEST",  TID + " LIKE: "+ result);
         return result;
     }
 }

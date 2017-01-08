@@ -15,6 +15,7 @@ exports.publish = function(db){
 			Anzahl_Neutral: 0,
 			Likes: 0,
 			TID: "",
+			time: Math.floor(Date.now()),
 			K_PRO: [], 
 			K_NEUTRAL: [],
 			K_CONTRA: [],
@@ -81,6 +82,7 @@ exports.publish = function(db){
 							});
 						});
 						
+						console.log("These:  ", These);
 						res.send(These).status(201).end();	
 					});
 				}
@@ -529,7 +531,7 @@ function updateKandidatBegruendungenLikes(uid, like, tid, richtung, db){
 }
 
 //Funktion um eine Begründung zu liken
-exports.putLikes = function(db){
+exports.putLikesbegruendungen = function(db){
 	return function (req, res){
 		console.log("BODY", req.body);
 		var begruendungsid = req.body.beguid;
@@ -537,7 +539,7 @@ exports.putLikes = function(db){
 		var position = req.body.richtung;
 		var typ = req.body.typ;
 		var like = req.body.like;
-		if ( typeof tid == 'undefined' || typeof typ == 'undefined' || typeof position == 'undefined' || typeof begruendungsid == 'undefined' ) {
+		if ( typeof tid == 'undefined' || typeof typ == 'undefined' || typeof position == 'undefined' || typeof begruendungsid == 'undefined' || typeof like == 'undefined' ) {
 			console.log(constants.error.msg_invalid_param.message);
 			res.status(400).json(constants.error.msg_invalid_param).end();
  
@@ -598,6 +600,38 @@ exports.putLikes = function(db){
 					updateKandidatBegruendungenLikes(begruendungsid, like, tid, position, db);
 				}
 				db.set(tid, JSON.stringify(These));
+				console.log("THESE :", These);
+				res.status(201).send(These).end();
+			});
+		}
+	}
+}
+exports.putLikes = function(db){
+	return function (req, res){
+		console.log("BODY", req.body);
+		var tid = req.body.tid;
+		var like = req.body.like;
+		if ( typeof tid == 'undefined' || typeof like == 'undefined') {
+			console.log(constants.error.msg_invalid_param.message);
+			res.status(400).json(constants.error.msg_invalid_param).end();
+ 
+        } else if ( !tid.trim() ) {
+			console.log(constants.error.msg_empty_param.message);
+			res.status(400).json(constants.error.msg_empty_param).end();
+
+        } else{
+			db.get(tid, function (err, reply) { 
+				if(err) throw err;
+				var These = JSON.parse(reply);
+				These.Likes += like;
+				var wahlkreis = These.wahlkreis;
+				db.set(tid, JSON.stringify(These));
+				devicesFunction.listDevices(wahlkreis, db,  function(result) {
+							var registrationIds = result;
+							sendFunction.sendMessage(tid, registrationIds, function(callback){
+							console.log(callback);
+							});
+						});
 				console.log("THESE :", These);
 				res.status(201).send(These).end();
 			});
