@@ -1,5 +1,6 @@
 package de.schulzgette.thes_o_naise;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,9 +25,12 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class MatchingFragment extends Fragment {
     View myView;
+    Boolean prognose2= false;
 
     public MatchingFragment() {
         // Required empty public constructor
@@ -42,6 +48,17 @@ public class MatchingFragment extends Fragment {
         myView = inflater.inflate(R.layout.fragment_matching, container, false);
 
         Button matching = (Button) myView.findViewById(R.id.matching_button);
+        ToggleButton prognose = (ToggleButton) myView.findViewById(R.id.prognosebutton);
+        prognose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    prognose2 = true;
+                }else{
+                    prognose2 = false;
+                }
+            }
+        });
 
         matching.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -57,6 +74,7 @@ public class MatchingFragment extends Fragment {
     
     public void positionWaehlerToServer() throws JSONException {
         final Database db = new Database(getContext());
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("einstellungen", MODE_PRIVATE);
         JSONObject mainObj = db.getallPositions();
         JSONArray Jarray = mainObj.getJSONArray("Positionen");
         for(int i = 0; i<Jarray.length(); i++){
@@ -65,6 +83,14 @@ public class MatchingFragment extends Fragment {
             String position = object.getString("POSITION");
             db.updatepositionwithServerdata(position, tid);
         }
+        if(prognose2){
+            String UID = sharedPreferences.getString("UID", "");
+            mainObj.accumulate("UID", UID);
+        }else{
+            mainObj.accumulate("UID", "null");
+        }
+        String wahlkreis = sharedPreferences.getString("wahlkreis", "");
+        mainObj.accumulate("wahlkreis", wahlkreis);
         String positiondata = mainObj.toString();
         Log.d("Jobject:", positiondata);
         try {
@@ -97,7 +123,13 @@ public class MatchingFragment extends Fragment {
                                     Integer Punkte_Umwelt = (Integer) kandidat_result.get("Umwelt");
                                     Integer Punkte_AP = (Integer) kandidat_result.get("Aussenpolitik");
                                     Integer Punkte_Satire = (Integer) kandidat_result.get("Satire");
-                                    db.updateKandidatScore(KID,Punkte_Ingesamt,Punkte_Lokal,Punkte_Umwelt,Punkte_AP,Punkte_Satire);
+                                    Integer verarbeitete_pos = (Integer) kandidat_result.get("AnzahlPOS");
+                                    Integer anzahlLokal = (Integer) kandidat_result.get("AnzahlLokal");
+                                    Integer anzahlUmwelt = (Integer) kandidat_result.get("AnzahlUmwelt");
+                                    Integer anzahlAP = (Integer) kandidat_result.get("AnzahlAussenpolitik");
+                                    Integer anzahlSatire = (Integer) kandidat_result.get("AnzahlSatire");
+
+                                    db.updateKandidatScore(KID,Punkte_Ingesamt,Punkte_Lokal,Punkte_Umwelt,Punkte_AP,Punkte_Satire, verarbeitete_pos, anzahlLokal, anzahlUmwelt, anzahlAP, anzahlSatire);
                                 }
                             }
                             toErgebnisFragment();

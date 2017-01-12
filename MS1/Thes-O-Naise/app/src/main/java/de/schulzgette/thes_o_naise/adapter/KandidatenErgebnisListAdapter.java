@@ -41,6 +41,7 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
         TextView txtpartei;
         TextView txtscore;
         TextView txtanzahlthesenpositionen;
+        TextView txtanzahlPOSinsgesammt;
         Button mehrButton;
         TextView txtdurchschnitt;
     }
@@ -74,6 +75,7 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
             viewHolder.txtscore = (TextView) convertView.findViewById(R.id.score);
             viewHolder.txtanzahlthesenpositionen = (TextView) convertView.findViewById(R.id.anzahlpositionen);
             viewHolder.txtdurchschnitt = (TextView) convertView.findViewById(R.id.durchschnittpunte);
+            viewHolder.txtanzahlPOSinsgesammt = (TextView) convertView.findViewById(R.id.anzahlpositioneninsgesammt);
             result=convertView;
             convertView.setTag(viewHolder);
 
@@ -89,32 +91,39 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
         String Score = "000";
         String anzahlpositionen = "000";
         String durchschnittpunkte = "000";
+        String anzahlinsgesammt = "000";
         //TODO MEHR KATEGORIEN ?
         if(ergebnisKategorie.equals("punkte_insgesamt")){
             Score = kandidatenModel.getPunkte_Insgesamt().toString() + " Punkte";
-            anzahlpositionen = kandidatenModel.getAnzahlThesenPositionen().toString();
-            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen(ergebnisKategorie).toString();
+            anzahlinsgesammt = kandidatenModel.getAnzahlThesenPositionen().toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_VERARBEITE_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen(ergebnisKategorie, getContext()).toString();
         }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL)){
             Score = kandidatenModel.getPunkte_Lokal().toString() + " Punkte";
-            anzahlpositionen = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Lokal").toString();
-            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Lokal").toString();
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Lokal").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLLOKAL_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Lokal",  getContext()).toString();
         }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT)){
             Score = kandidatenModel.getPunkte_Umwelt().toString() + " Punkte";
-            anzahlpositionen = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Umwelt").toString();
-            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Umwelt").toString();
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Umwelt").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLUMWELT_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Umwelt", getContext()).toString();
         }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_AP)){
             Score = kandidatenModel.getPunkte_AP().toString() + " Punkte";
-            anzahlpositionen = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Aussenpolitik").toString();
-            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Aussenpolitik").toString();
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Aussenpolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLAP_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Aussenpolitik", getContext()).toString();
         }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE)){
             Score = kandidatenModel.getPunkte_Satire().toString() + " Punkte";
-            anzahlpositionen = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Satire").toString();
-            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Satire").toString();
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Satire").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Satire", getContext()).toString();
         }
 
         viewHolder.txtscore.setText(Score);
         viewHolder.txtanzahlthesenpositionen.setText(anzahlpositionen);
         viewHolder.txtdurchschnitt.setText(durchschnittpunkte);
+        viewHolder.txtanzahlPOSinsgesammt.setText(anzahlinsgesammt);
 
         viewHolder.mehrButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,8 +1,12 @@
 package de.schulzgette.thes_o_naise.Models;
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import de.schulzgette.thes_o_naise.database.Database;
 
 /**
  * Created by Jessica on 19.11.2016.
@@ -148,6 +152,11 @@ public class KandidatenModel {
         return beantworteteThesen.length();
     }
 
+    public Integer getVerarbeitePositionen(Context mcontext, String Column){
+        Database db = new Database(mcontext);
+        return db.getVerarbeitetePositionen(getKid(), Column);
+    }
+
     public Integer getAnzahlPositionenZuThesenMitKategorie(String kategorie) {
         Integer result= 0;
         for (int i = 0; i<beantworteteThesen.length(); i++) {
@@ -165,22 +174,22 @@ public class KandidatenModel {
         return result;
     }
 
-    public Double durchschnittlichePunkteProThesen(String kategorie){
+    public Double durchschnittlichePunkteProThesen(String kategorie, Context mcontext ){
         Double result = 0.0;
         if(kategorie.equals("punkte_insgesamt")){
-            result = (double) getPunkte_Insgesamt()/getAnzahlThesenPositionen();
+            result = (double) getPunkte_Insgesamt()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_VERARBEITE_POS);
             result = Math.round(1000.0 * result) / 1000.0;
         }else if(kategorie.equals("Lokal")){
-            result = (double) getPunkte_Lokal()/getAnzahlPositionenZuThesenMitKategorie("Lokal");
+            result = (double) getPunkte_Lokal()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLLOKAL_POS);
             result = Math.round(1000.0 * result) / 1000.0;
         }else if(kategorie.equals("Umwelt")){
-            result = (double) getPunkte_Umwelt()/getAnzahlPositionenZuThesenMitKategorie("Umwelt");
+            result = (double) getPunkte_Umwelt()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLUMWELT_POS);
             result = Math.round(1000.0 * result) / 1000.0;
         }else if(kategorie.equals("Aussenpolitik")){
-            result = (double) getPunkte_AP()/getAnzahlPositionenZuThesenMitKategorie("Aussenpolitik");
+            result = (double) getPunkte_AP()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLAP_POS);
             result = Math.round(1000.0 * result) / 1000.0;
         }else if(kategorie.equals("Satire")){
-            result = (double) getPunkte_Satire()/getAnzahlPositionenZuThesenMitKategorie("Satire");
+            result = (double) getPunkte_Satire()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS);
             result = Math.round(1000.0 * result) / 1000.0;
         }
         return result;

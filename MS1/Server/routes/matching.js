@@ -5,6 +5,8 @@ exports.match = function(db, Promise){
 		var USERPOS = [];
 		var GESENDET = [];
 		var LASTUSERPOS = [];
+		var UID = req.body.UID;
+		var wahlkreis = req.body.wahlkreis;
 		
 		//Das JSONOBJECT einer Position wird auf vier Arrays aufgeteilt
 		var Positionen = req.body.Positionen;
@@ -18,13 +20,13 @@ exports.match = function(db, Promise){
 			GESENDET.push(gesendet);
 			LASTUSERPOS.push(lastuserpos);
 		}
-		vergleichKandidaten(ThesenIDS, USERPOS, GESENDET, LASTUSERPOS).then(function(result){
+		vergleichKandidaten(ThesenIDS, USERPOS, GESENDET, LASTUSERPOS, UID, wahlkreis).then(function(result){
 			console.log("RESULT2", result);
 			res.status(200).send(result).end();
 		});	
 	}
 	
-	function vergleichKandidaten(ThesenIDS, USERPOS, GESENDET, LASTUSERPOS){
+	function vergleichKandidaten(ThesenIDS, USERPOS, GESENDET, LASTUSERPOS, UID, wahlkreis){
 		var _ = require('lodash');
 		
 		var result = {
@@ -52,6 +54,11 @@ exports.match = function(db, Promise){
 			var KategorieUmwelt = [];
 			var KategorieAussenpolitik = [];
 			var KategorieSatire = [];
+			var AnzahlPositionen = [];
+			var AnzahlLokal = [];
+			var AnzahlUmwelt = [];
+			var AnzahlAussenpolitik= [];
+			var AnzahlSatire = [];
 			//Das ThesenJSONArray wird durchiteriert 
 			for (i = 0; i < ThesenJSONArray.length; i++) {
 				var thesenJSONOBJECT = ThesenJSONArray[i];
@@ -74,16 +81,28 @@ exports.match = function(db, Promise){
 						//falls nicht wird die KID hinzugefügt
 						KandidatenIDS.push(KID);
 						var index = _.indexOf(KandidatenIDS, KID);
-						//und die Zehler an der Stelle des Index auf null gesetzt
+						//und die Zaehler an der Stelle des Index auf 0 gesetzt
 						if(KandidatenZaehler[index] == null){
 							KandidatenZaehler[index] = 0;
 							KategorieLokal[index]= 0;
 							KategorieUmwelt[index]= 0;
 							KategorieAussenpolitik[index]= 0;
 							KategorieSatire[index]= 0;
+							AnzahlPositionen[index] = 0;
+							AnzahlLokal[index] = 0;
+							AnzahlUmwelt[index]  = 0;
+							AnzahlAussenpolitik[index]  = 0;
+							AnzahlSatire[index]  = 0;
 						}
 					} 
 					var index = _.indexOf(KandidatenIDS, KID);
+					if(KPOS == "NEUTRAL" || KPOS == "CONTRA" || KPOS == "PRO"){
+						AnzahlPositionen[index] += 1;
+						if(kategorie=="Lokal") AnzahlLokal[index] +=1;
+						if(kategorie=="Umwelt") AnzahlUmwelt[index] +=1;
+						if(kategorie=="Aussenpolitik") AnzahlAussenpolitik[index] +=1;
+						if(kategorie=="Satire") AnzahlSatire[index] +=1;
+					}
 					//Vergleich zwischen der Position des Wählers und des Kandidaten
 					if( UPOS == "PRO" && KPOS == "NEUTRAL"){
 						KandidatenZaehler[index] += 1;
@@ -138,15 +157,89 @@ exports.match = function(db, Promise){
 					Lokal: KategorieLokal[k],
 					Umwelt: KategorieUmwelt[k],
 					Aussenpolitik: KategorieAussenpolitik[k],
-					Satire: KategorieSatire[k]
+					Satire: KategorieSatire[k],
+					AnzahlPOS: AnzahlPositionen[k],
+					AnzahlLokal: AnzahlLokal[k],
+					AnzahlUmwelt: AnzahlUmwelt[k],
+					AnzahlAussenpolitik: AnzahlAussenpolitik[k],
+					AnzahlSatire: AnzahlSatire[k]
 				};
 				result.Kandidaten.push(KandidatenErgebnis);
+				result.Anzahl = k+1;
 			}
+			var sortedResult = _.sortBy(result.Kandidaten, ['Zaehler', 'KID']);
+			//Prognose wird überarbeitet, falls UID vorhanden
+			if(UID != null){
+				updatePrognose(wahlkreis, UID, sortedResult, _);
+			}
+			result.Kandidaten = sortedResult;
 			return result;
 		}).catch(function(err) {
           console.log("ERROR:", err);
         });
 	};
+	
+	function updatePrognose(wahlkreis, UID, sortedResult, _){
+		db.get(wahlkreis+"_Prognose", function(err, reply){
+			var prognose = [];
+			if(!reply){
+				//Erste Prognose wird erstellt
+				for (u=0; u<sortedResult.length; u++){
+					var kandidatP={
+						KID: sortedResult[u].KID,
+						Platz: [0,0,0,0,0,0,0,0,0,0,0]
+					};
+					if(u<11) kandidatP.Platz[u+1] += 1;
+					prognose.push(kandidatP);
+				}
+			}else{
+				//Prognose aus der DB
+				prognose = JSON.parse(reply);
+			}
+			console.log("PrognoseALT", prognose);
+			//altes Matching Ergebnis des Nutzers
+			db.get(UID+"_matchingResult", function(err, reply){
+				if(err) throw err;
+				if(!reply){
+					var oldResult = null;
+				}else{
+					var oldResult = JSON.parse(reply);
+				}
+				if(oldResult !=null){
+					//alte Ergebnisse werden aus der Prognose entfernt
+					for(p=0; p<oldResult.length; p++){
+						var KID = oldResult[p].KID;
+						for(q=0; q<prognose.length; q++){
+							if(prognose[q].KID == oldResult[p].KID){
+								if(p<11) prognose[q].Platz[p+1] -= 1;
+							}
+						}
+					}
+				}
+				//neue Ergebnisse werden zur Prognose hinzugefügt
+				for (u=0; u<sortedResult.length; u++){
+					var kandidatP={
+						KID: sortedResult[u].KID,
+						Platz: [0,0,0,0,0,0,0,0,0,0,0]
+					};
+					for(q=0; q<prognose.length; q++){
+						if(prognose[q].KID == sortedResult[u].KID){
+							if(u<11) prognose[q].Platz[u+1] += 1;
+						//Kandidat wird zur Prognose hinzugefügt, falls er noch nicht da war 
+						}else if(!_.some(prognose,  { KID: sortedResult[u].KID})){
+							if(u<11){
+								prognose.push(kandidatP);
+							}
+						}
+					}
+				}
+				prognose = _.sortBy(prognose, ['Platz']);
+				console.log("PrognoseNEU", prognose);
+				db.set(wahlkreis+"_Prognose", JSON.stringify(prognose));
+				db.set(UID+"_matchingResult", JSON.stringify(sortedResult));
+			});
+		});
+	}
 	
 	function addUserPositionToThese(userposition, tid, gesendet, lastuserpos){
 		db.get(tid, function (err, reply) { 

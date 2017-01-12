@@ -59,5 +59,6 @@ exports.updateUserdata = function(db){
 exports.deleteUserdata = function(db){
 	return function(req, res){
 	//TODO
+	
 	}
 }

@@ -3,6 +3,7 @@ var registerFunction = require('../functions/register');
 var devicesFunction = require('../functions/devices');
 var deleteFunction = require('../functions/delete');
 var sendFunction = require('../functions/send-message');
+var fs = require('fs');
 
 //Setting up Routes
 var register	= require('./register');
@@ -11,6 +12,7 @@ var login       = require('./login');
 var userroute   = require('./user');
 var kandidatenroute = require('./kandidaten');
 var matching	= require('./matching');
+var statistik   = require('./statistik');
 
 
 
@@ -33,6 +35,7 @@ module.exports = function(app,io, db, redis, jwt, Promise, apiRoutes) {
 	app.get('/thesen', thesen.getThesen(db));
 	app.get('/thesen/:tid', thesen.getThese(db));
 	app.get('/kandidaten', kandidatenroute.getKandidaten(db));
+	app.get('/statistik/:wahlkreis', statistik.getStatistik(db));
 
 	apiRoutes.use(function(req, res, next) {
 	  var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -101,4 +104,20 @@ module.exports = function(app,io, db, redis, jwt, Promise, apiRoutes) {
         });
  
     });
+	
+	//Upload eines Profilbildes
+	app.post('/upload/:wahlkreis:uid', function(req, res) {
+		var wahlkreis = req.params.wahlkreis;
+		var uid = req.params.uid;
+		var path = "../uploads/" + wahlkreis + "/" +uid + "/" +req.files.image.originalFilename ;
+		fs.readFile(req.files.image.path, function (err, data){
+			fs.writeFile(path, data, function (err) {
+				if(err){
+					res.json({'response':"Error"});
+				}else {
+					res.json({'response':"Saved"});
+				}
+			});
+		});
+	});
 }

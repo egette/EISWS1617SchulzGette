@@ -80,7 +80,11 @@ var sendFunction = require('../functions/send-message');
 									//last_Wahler_ID wird aktuallierst
 									db.set('last_Waehler_ID', new_Waehler_ID);
 									Client_JSON.Client_ID = new_Waehler_ID;
+									db.incr(wahlkreis+"_anzahlwähler", function(err, reply){
+										console.log("Anzahl Wähler in Wahlkreis " + wahlkreis +" :", reply);
+									});
 									res.status(201).send(Client_JSON).end();
+									
 								});
 
 							}
@@ -143,6 +147,9 @@ var sendFunction = require('../functions/send-message');
 									db.set('last_Kandidat_ID', new_Kandidat_ID); 						
 									Client_JSON.Client_ID = new_Kandidat_ID;
 									res.status(201).send(Client_JSON).end();
+									db.incr(wahlkreis+"_anzahlkandidaten", function(err, reply){
+										console.log("Anzahl Kandidaten in Wahlkreis " + wahlkreis+ " :", reply);
+									});
 									devicesFunction.listDevices(wahlkreis, db,  function(result) {
 										sendFunction.sendMessage(new_Kandidat_ID, result, function (callback){
 											console.log(callback);

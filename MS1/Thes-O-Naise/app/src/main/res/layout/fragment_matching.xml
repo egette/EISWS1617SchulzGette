@@ -23,7 +23,7 @@
         app:srcCompat="@mipmap/punktetabelle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="186dp"
+        android:layout_marginTop="200dp"
         android:layout_marginStart="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
@@ -36,9 +36,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/imageView3"
+        android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="65dp"
         android:id="@+id/textView3" />
+    <TextView
+        android:text="Persönliche UserID zum Server senden, damit eine Prognose berechnet werden kann:"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/agreement" />
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/agreement"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textOff="nein"
+        android:textOn="ja"
+        android:id="@+id/prognosebutton" />
 
 
 </RelativeLayout>

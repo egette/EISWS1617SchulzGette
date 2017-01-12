@@ -75,6 +75,11 @@ public class Database {
         public static final String COLUMN_NAME_PUNKTE_UMWELT = "punkte_umwelt";
         public static final String COLUMN_NAME_PUNKTE_AP = "punkte_ap";
         public static final String COLUMN_NAME_PUNKTE_SATIRE = "punkte_satire";
+        public static final String COLUMN_NAME_VERARBEITE_POS = "verarbeite_pos";
+        public static final String COLUMN_NAME_ANZAHLLOKAL_POS = "anzahllokal_pos";
+        public static final String COLUMN_NAME_ANZAHLUMWELT_POS = "anzahlumwelt_pos";
+        public static final String COLUMN_NAME_ANZAHLAP_POS = "anzahlap_pos";
+        public static final String COLUMN_NAME_ANZAHLSATIRE_POS = "anzahlsatire_pos";
         public static final String COLUMN_NAME_BIOGRAPHIE = "biographie";
         public static final String COLUMN_NAME_WAHLPROGRAMM = "wahlprogramm";
         public static final String COLUMN_NAME_BEGRUENDUNGEN = "begruendungen";
@@ -185,6 +190,11 @@ public class Database {
                     KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_AP + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_VERARBEITE_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLLOKAL_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLUMWELT_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLAP_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN + " TEXT," +
                     KandidatenTable.COLUMN_NAME_BIOGRAPHIE + " TEXT," +
                     KandidatenTable.COLUMN_NAME_WAHLPROGRAMM + " TEXT" +
@@ -246,7 +256,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 14;
+        public static final int DATABASE_VERSION = 16;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -1209,7 +1219,7 @@ public class Database {
         }
     }
 
-    public void updateKandidatScore(String KID, Integer Insgesamt, Integer Lokal, Integer Umwelt, Integer AP, Integer Satire){
+    public void updateKandidatScore(String KID, Integer Insgesamt, Integer Lokal, Integer Umwelt, Integer AP, Integer Satire, Integer verarbeitete_pos, Integer anzahlLokal, Integer anzahlumwelt, Integer anzahlap, Integer anzahlsatire){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
         try {
@@ -1223,11 +1233,31 @@ public class Database {
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, Umwelt);
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_AP, AP);
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, Satire);
+                    values.put(KandidatenTable.COLUMN_NAME_VERARBEITE_POS, verarbeitete_pos);
+                    values.put(KandidatenTable.COLUMN_NAME_ANZAHLLOKAL_POS, anzahlLokal);
+                    values.put(KandidatenTable.COLUMN_NAME_ANZAHLUMWELT_POS, anzahlumwelt);
+                    values.put(KandidatenTable.COLUMN_NAME_ANZAHLAP_POS, anzahlap);
+                    values.put(KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS, anzahlsatire);
                     dbwrite.update(KandidatenTable.TABLE_NAME, values, "kid=?", new String[]{KID});
                 }
         } finally {
             dbwrite.close();
         }
+    }
+
+    public Integer getVerarbeitetePositionen(String KID, String Column){
+        ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
+        SQLiteDatabase db = thesenDbHelper.getReadableDatabase();
+        Integer result = 0;
+        try{
+            Cursor cursor = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, Column}, "kid = ?", new String[]{KID}, null, null, null);
+            while (cursor.moveToNext()){
+                result = cursor.getInt(1);
+            }
+        }finally {
+            db.close();
+        }
+        return result;
     }
 
     public ArrayList<KandidatenModel> getAllKandidaten (String wahlkreis){
