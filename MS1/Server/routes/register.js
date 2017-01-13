@@ -80,7 +80,7 @@ var sendFunction = require('../functions/send-message');
 									//last_Wahler_ID wird aktuallierst
 									db.set('last_Waehler_ID', new_Waehler_ID);
 									Client_JSON.Client_ID = new_Waehler_ID;
-									db.incr(wahlkreis+"_anzahlwähler", function(err, reply){
+									db.incr(wahlkreis+"_anzahlwaehler", function(err, reply){
 										console.log("Anzahl Wähler in Wahlkreis " + wahlkreis +" :", reply);
 									});
 									res.status(201).send(Client_JSON).end();

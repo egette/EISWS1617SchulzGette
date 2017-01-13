@@ -54,11 +54,39 @@ exports.match = function(db, Promise){
 			var KategorieUmwelt = [];
 			var KategorieAussenpolitik = [];
 			var KategorieSatire = [];
+			var KategorieDrogenP = [];
+			var KategorieBildungsP = [];
+			var KategorieInnenP = [];
+			var KategorieWirtschaftsP = [];
+			var KategorieEnergieP = [];
+			var KategorieDemokratie = [];
+			var KategorieJustiz = [];
+			var KategorieSozialP = [];
+			var KategorieLandwirtschaftsP = [];
+			var KategorieFamilienP = [];
+			var KategorieRentenP = [];
+			var KategorieGesundheitsP = [];
+			var KategorieVerkehrsP = [];
+			var KategorieDigitalP = [];
 			var AnzahlPositionen = [];
 			var AnzahlLokal = [];
 			var AnzahlUmwelt = [];
 			var AnzahlAussenpolitik= [];
 			var AnzahlSatire = [];
+			var AnzahlDrogenP = [];
+			var AnzahlBildungsP = [];
+			var AnzahlInnenP = [];
+			var AnzahlWirtschaftsP = [];
+			var AnzahlEnergieP = [];
+			var AnzahlDemokratieP = [];
+			var AnzahlJustiz = [];
+			var AnzahlSozialP = [];
+			var AnzahlLandwirtschaftsP = [];
+			var AnzahlFamilienP = [];
+			var AnzahlRentenP = [];
+			var AnzahlGesundheitsP = [];
+			var AnzahlVerkehrsP = [];
+			var AnzahlDigitalP = [];
 			//Das ThesenJSONArray wird durchiteriert 
 			for (i = 0; i < ThesenJSONArray.length; i++) {
 				var thesenJSONOBJECT = ThesenJSONArray[i];
@@ -88,11 +116,39 @@ exports.match = function(db, Promise){
 							KategorieUmwelt[index]= 0;
 							KategorieAussenpolitik[index]= 0;
 							KategorieSatire[index]= 0;
+							KategorieDrogenP[index]= 0;
+							KategorieBildungsP[index]= 0;
+							KategorieInnenP[index]= 0;
+							KategorieWirtschaftsP[index]= 0;
+							KategorieEnergieP[index]= 0;
+							KategorieDemokratie[index]= 0;
+							KategorieJustiz[index]= 0;
+							KategorieSozialP[index]= 0;
+							KategorieLandwirtschaftsP[index]= 0;
+							KategorieFamilienP[index]= 0;
+							KategorieRentenP[index]= 0;
+							KategorieGesundheitsP[index]= 0;
+							KategorieVerkehrsP[index]= 0;
+							KategorieDigitalP[index]= 0;
 							AnzahlPositionen[index] = 0;
 							AnzahlLokal[index] = 0;
 							AnzahlUmwelt[index]  = 0;
 							AnzahlAussenpolitik[index]  = 0;
 							AnzahlSatire[index]  = 0;
+							AnzahlDrogenP[index]  = 0;
+							AnzahlBildungsP[index]  = 0;
+							AnzahlInnenP[index]  = 0;
+							AnzahlWirtschaftsP[index]  = 0;
+							AnzahlEnergieP[index]  = 0;
+							AnzahlDemokratieP[index]  = 0;
+							AnzahlJustiz[index]  = 0;
+							AnzahlSozialP[index]  = 0;
+							AnzahlLandwirtschaftsP[index]  = 0;
+							AnzahlFamilienP[index]  = 0;
+							AnzahlRentenP[index]  = 0;
+							AnzahlGesundheitsP[index]  = 0;
+							AnzahlVerkehrsP[index]  = 0;
+							AnzahlDigitalP[index]  = 0;
 						}
 					} 
 					var index = _.indexOf(KandidatenIDS, KID);
@@ -102,6 +158,20 @@ exports.match = function(db, Promise){
 						if(kategorie=="Umwelt") AnzahlUmwelt[index] +=1;
 						if(kategorie=="Aussenpolitik") AnzahlAussenpolitik[index] +=1;
 						if(kategorie=="Satire") AnzahlSatire[index] +=1;
+						if(kategorie=="Drogenpolitik")	AnzahlDrogenP[index] +=1;
+						if(kategorie=="Bildungspolitik")	AnzahlBildungsP[index] +=1;
+						if(kategorie=="Innenpolitik")	AnzahlInnenP[index] +=1;
+						if(kategorie=="Wirtschaftspolitik")	AnzahlWirtschaftsP[index] +=1;
+						if(kategorie=="Energiepolitik")	AnzahlEnergieP[index] +=1;
+						if(kategorie=="Demokratie")	AnzahlDemokratieP[index]  +=1;
+						if(kategorie=="Justiz")	AnzahlJustiz[index] +=1;
+						if(kategorie=="Sozialpolitik")	AnzahlSozialP[index]  +=1;
+						if(kategorie=="Landwirtschaftspolitik")	AnzahlLandwirtschaftsP[index]  +=1;
+						if(kategorie=="Familienpolitik")	AnzahlFamilienP[index]  +=1;
+						if(kategorie=="Rentenpolitik")	AnzahlRentenP[index]  +=1;
+						if(kategorie=="Gesundheitspolitik")	AnzahlGesundheitsP[index]  +=1;
+						if(kategorie=="Verkehrspolitik")	AnzahlVerkehrsP[index]   +=1;
+						if(kategorie=="Digitalpolitik")	AnzahlDigitalP[index]   +=1;
 					}
 					//Vergleich zwischen der Position des Wählers und des Kandidaten
 					if( UPOS == "PRO" && KPOS == "NEUTRAL"){
@@ -110,6 +180,20 @@ exports.match = function(db, Promise){
 						if(kategorie=="Umwelt") KategorieUmwelt[index] +=1;
 						if(kategorie=="Aussenpolitik") KategorieAussenpolitik[index] +=1;
 						if(kategorie=="Satire") KategorieSatire[index] +=1;
+						if(kategorie=="Drogenpolitik")	KategorieDrogenP[index] +=1;
+						if(kategorie=="Bildungspolitik")	KategorieBildungsP[index] +=1;
+						if(kategorie=="Innenpolitik")	KategorieInnenP[index] +=1;
+						if(kategorie=="Wirtschaftspolitik")	KategorieWirtschaftsP[index] +=1;
+						if(kategorie=="Energiepolitik")	KategorieEnergieP[index] +=1;
+						if(kategorie=="Demokratie")	KategorieDemokratie[index]  +=1;
+						if(kategorie=="Justiz")	KategorieJustiz[index] +=1;
+						if(kategorie=="Sozialpolitik")	KategorieSozialP[index]  +=1;
+						if(kategorie=="Landwirtschaftspolitik")	KategorieLandwirtschaftsP[index]  +=1;
+						if(kategorie=="Familienpolitik")	KategorieFamilienP[index]  +=1;
+						if(kategorie=="Rentenpolitik")	KategorieRentenP[index]  +=1;
+						if(kategorie=="Gesundheitspolitik")	KategorieGesundheitsP[index]  +=1;
+						if(kategorie=="Verkehrspolitik")	KategorieVerkehrsP[index]   +=1;
+						if(kategorie=="Digitalpolitik")	KategorieDigitalP[index]   +=1;
 					}
 					if( UPOS == "PRO" && KPOS == "CONTRA"){
 						KandidatenZaehler[index] += 2;
@@ -117,6 +201,20 @@ exports.match = function(db, Promise){
 						if(kategorie=="Umwelt") KategorieUmwelt[index] +=2;
 						if(kategorie=="Aussenpolitik") KategorieAussenpolitik[index] +=2;
 						if(kategorie=="Satire") KategorieSatire[index] +=2;
+						if(kategorie=="Drogenpolitik")	KategorieDrogenP[index] +=2;
+						if(kategorie=="Bildungspolitik")	KategorieBildungsP[index] +=2;
+						if(kategorie=="Innenpolitik")	KategorieInnenP[index] +=2;
+						if(kategorie=="Wirtschaftspolitik")	KategorieWirtschaftsP[index] +=2;
+						if(kategorie=="Energiepolitik")	KategorieEnergieP[index] +=2;
+						if(kategorie=="Demokratie")	KategorieDemokratie[index]  +=2;
+						if(kategorie=="Justiz")	KategorieJustiz[index] +=2;
+						if(kategorie=="Sozialpolitik")	KategorieSozialP[index]  +=2;
+						if(kategorie=="Landwirtschaftspolitik")	KategorieLandwirtschaftsP[index]  +=2;
+						if(kategorie=="Familienpolitik")	KategorieFamilienP[index]  +=2;
+						if(kategorie=="Rentenpolitik")	KategorieRentenP[index]  +=2;
+						if(kategorie=="Gesundheitspolitik")	KategorieGesundheitsP[index]  +=2;
+						if(kategorie=="Verkehrspolitik")	KategorieVerkehrsP[index]   +=2;
+						if(kategorie=="Digitalpolitik")	KategorieDigitalP[index]   +=2;
 					}
 					if( UPOS == "NEUTRAL" && KPOS == "PRO"){
 						KandidatenZaehler[index] += 1;
@@ -124,6 +222,20 @@ exports.match = function(db, Promise){
 						if(kategorie=="Umwelt") KategorieUmwelt[index] +=1;
 						if(kategorie=="Aussenpolitik") KategorieAussenpolitik[index] +=1;
 						if(kategorie=="Satire") KategorieSatire[index] +=1;
+						if(kategorie=="Drogenpolitik")	KategorieDrogenP[index] +=1;
+						if(kategorie=="Bildungspolitik")	KategorieBildungsP[index] +=1;
+						if(kategorie=="Innenpolitik")	KategorieInnenP[index] +=1;
+						if(kategorie=="Wirtschaftspolitik")	KategorieWirtschaftsP[index] +=1;
+						if(kategorie=="Energiepolitik")	KategorieEnergieP[index] +=1;
+						if(kategorie=="Demokratie")	KategorieDemokratie[index]  +=1;
+						if(kategorie=="Justiz")	KategorieJustiz[index] +=1;
+						if(kategorie=="Sozialpolitik")	KategorieSozialP[index]  +=1;
+						if(kategorie=="Landwirtschaftspolitik")	KategorieLandwirtschaftsP[index]  +=1;
+						if(kategorie=="Familienpolitik")	KategorieFamilienP[index]  +=1;
+						if(kategorie=="Rentenpolitik")	KategorieRentenP[index]  +=1;
+						if(kategorie=="Gesundheitspolitik")	KategorieGesundheitsP[index]  +=1;
+						if(kategorie=="Verkehrspolitik")	KategorieVerkehrsP[index]   +=1;
+						if(kategorie=="Digitalpolitik")	KategorieDigitalP[index]   +=1;
 					}
 					if( UPOS == "NEUTRAL" && KPOS == "CONTRA"){
 						KandidatenZaehler[index] += 1;
@@ -131,6 +243,20 @@ exports.match = function(db, Promise){
 						if(kategorie=="Umwelt") KategorieUmwelt[index] +=1;
 						if(kategorie=="Aussenpolitik") KategorieAussenpolitik[index] +=1;
 						if(kategorie=="Satire") KategorieSatire[index] +=1;
+						if(kategorie=="Drogenpolitik")	KategorieDrogenP[index] +=1;
+						if(kategorie=="Bildungspolitik")	KategorieBildungsP[index] +=1;
+						if(kategorie=="Innenpolitik")	KategorieInnenP[index] +=1;
+						if(kategorie=="Wirtschaftspolitik")	KategorieWirtschaftsP[index] +=1;
+						if(kategorie=="Energiepolitik")	KategorieEnergieP[index] +=1;
+						if(kategorie=="Demokratie")	KategorieDemokratie[index]  +=1;
+						if(kategorie=="Justiz")	KategorieJustiz[index] +=1;
+						if(kategorie=="Sozialpolitik")	KategorieSozialP[index]  +=1;
+						if(kategorie=="Landwirtschaftspolitik")	KategorieLandwirtschaftsP[index]  +=1;
+						if(kategorie=="Familienpolitik")	KategorieFamilienP[index]  +=1;
+						if(kategorie=="Rentenpolitik")	KategorieRentenP[index]  +=1;
+						if(kategorie=="Gesundheitspolitik")	KategorieGesundheitsP[index]  +=1;
+						if(kategorie=="Verkehrspolitik")	KategorieVerkehrsP[index]   +=1;
+						if(kategorie=="Digitalpolitik")	KategorieDigitalP[index]   +=1;
 					}
 					if( UPOS == "CONTRA" && KPOS == "NEUTRAL"){
 						KandidatenZaehler[index] += 1;
@@ -138,6 +264,20 @@ exports.match = function(db, Promise){
 						if(kategorie=="Umwelt") KategorieUmwelt[index] +=1;
 						if(kategorie=="Aussenpolitik") KategorieAussenpolitik[index] +=1;
 						if(kategorie=="Satire") KategorieSatire[index] +=1;
+						if(kategorie=="Drogenpolitik")	KategorieDrogenP[index] +=1;
+						if(kategorie=="Bildungspolitik")	KategorieBildungsP[index] +=1;
+						if(kategorie=="Innenpolitik")	KategorieInnenP[index] +=1;
+						if(kategorie=="Wirtschaftspolitik")	KategorieWirtschaftsP[index] +=1;
+						if(kategorie=="Energiepolitik")	KategorieEnergieP[index] +=1;
+						if(kategorie=="Demokratie")	KategorieDemokratie[index]  +=1;
+						if(kategorie=="Justiz")	KategorieJustiz[index] +=1;
+						if(kategorie=="Sozialpolitik")	KategorieSozialP[index]  +=1;
+						if(kategorie=="Landwirtschaftspolitik")	KategorieLandwirtschaftsP[index]  +=1;
+						if(kategorie=="Familienpolitik")	KategorieFamilienP[index]  +=1;
+						if(kategorie=="Rentenpolitik")	KategorieRentenP[index]  +=1;
+						if(kategorie=="Gesundheitspolitik")	KategorieGesundheitsP[index]  +=1;
+						if(kategorie=="Verkehrspolitik")	KategorieVerkehrsP[index]   +=1;
+						if(kategorie=="Digitalpolitik")	KategorieDigitalP[index]   +=1;
 					}
 					if( UPOS == "CONTRA" && KPOS == "PRO"){
 						KandidatenZaehler[index] += 2;
@@ -145,6 +285,20 @@ exports.match = function(db, Promise){
 						if(kategorie=="Umwelt") KategorieUmwelt[index] +=2;
 						if(kategorie=="Aussenpolitik") KategorieAussenpolitik[index] +=2;
 						if(kategorie=="Satire") KategorieSatire[index] +=2;
+						if(kategorie=="Drogenpolitik")	KategorieDrogenP[index] +=2;
+						if(kategorie=="Bildungspolitik")	KategorieBildungsP[index] +=2;
+						if(kategorie=="Innenpolitik")	KategorieInnenP[index] +=2;
+						if(kategorie=="Wirtschaftspolitik")	KategorieWirtschaftsP[index] +=2;
+						if(kategorie=="Energiepolitik")	KategorieEnergieP[index] +=2;
+						if(kategorie=="Demokratie")	KategorieDemokratie[index]  +=2;
+						if(kategorie=="Justiz")	KategorieJustiz[index] +=2;
+						if(kategorie=="Sozialpolitik")	KategorieSozialP[index]  +=2;
+						if(kategorie=="Landwirtschaftspolitik")	KategorieLandwirtschaftsP[index]  +=2;
+						if(kategorie=="Familienpolitik")	KategorieFamilienP[index]  +=2;
+						if(kategorie=="Rentenpolitik")	KategorieRentenP[index]  +=2;
+						if(kategorie=="Gesundheitspolitik")	KategorieGesundheitsP[index]  +=2;
+						if(kategorie=="Verkehrspolitik")	KategorieVerkehrsP[index]   +=2;
+						if(kategorie=="Digitalpolitik")	KategorieDigitalP[index]   +=2;
 					}
 				}
 			}
@@ -158,11 +312,39 @@ exports.match = function(db, Promise){
 					Umwelt: KategorieUmwelt[k],
 					Aussenpolitik: KategorieAussenpolitik[k],
 					Satire: KategorieSatire[k],
+					DrogenP: KategorieDrogenP[k],
+					BildungsP: KategorieBildungsP[k],
+					InnenP: KategorieInnenP[k],
+					WirtschaftsP: KategorieWirtschaftsP[k],
+					EnergieP: KategorieEnergieP[k],
+					Demokratie: KategorieDemokratie[k],
+					Justiz: KategorieJustiz[k],
+					SozialP: KategorieSozialP[k],
+					LandwirtschaftsP: KategorieLandwirtschaftsP[k],
+					FamilienP: KategorieFamilienP[k],
+					RentenP: KategorieRentenP[k],
+					GesundheitsP: 	KategorieGesundheitsP[k],
+					VerkehrsP: KategorieVerkehrsP[k],
+					DigitalP: KategorieDigitalP[k],
 					AnzahlPOS: AnzahlPositionen[k],
 					AnzahlLokal: AnzahlLokal[k],
 					AnzahlUmwelt: AnzahlUmwelt[k],
 					AnzahlAussenpolitik: AnzahlAussenpolitik[k],
-					AnzahlSatire: AnzahlSatire[k]
+					AnzahlSatire: AnzahlSatire[k],
+					AnzahlDrogenP: AnzahlDrogenP[k],
+					AnzahlBildungsP: AnzahlBildungsP[k],
+					AnzahlInnenP: AnzahlInnenP[k],
+					AnzahlWirtschatsP: AnzahlWirtschaftsP[k],
+					AnzahlEnergieP: AnzahlEnergieP[k],
+					AnzahlDemokratie: AnzahlDemokratieP[k],
+					AnzahlJustiz: AnzahlJustiz[k],
+					AnzahlSozialP: AnzahlSozialP[k],
+					AnzahlLandwirtschaftsP: AnzahlLandwirtschaftsP[k],
+					AnzahlFamilienP: AnzahlFamilienP[k],
+					AnzahlRentenP: AnzahlRentenP[k],
+					AnzahlGesundheitsP: AnzahlGesundheitsP[k],
+					AnzahlVerkehrsP: AnzahlVerkehrsP[k],
+					AnzahlDigitalP: AnzahlDigitalP[k]
 				};
 				result.Kandidaten.push(KandidatenErgebnis);
 				result.Anzahl = k+1;

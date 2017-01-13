@@ -22,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button navbutton = (Button) findViewById(R.id.navbutton);
+        /*Button navbutton = (Button) findViewById(R.id.navbutton);
         navbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent (MainActivity.this, NavigationActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
 
         Button authbutton = (Button) findViewById(R.id.authentifizierenbutton);
         authbutton.setOnClickListener(new View.OnClickListener() {

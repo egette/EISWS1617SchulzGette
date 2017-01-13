@@ -19,16 +19,43 @@
     <string name="deabonnierten">Deabonnieren</string>
     <string-array name="kategorien">
         <item>Lokale Thesen</item>
+        <item>Demokratie</item>
         <item>Umwelt</item>
         <item>Aussenpolitik</item>
+        <item>Innenpolitik</item>
+        <item>Bildungspolitik</item>
+        <item>Wirtschaftspolitik</item>
+        <item>Energiepolitik</item>
+        <item>Sozialpolitik</item>
+        <item>Familienpolitik</item>
+        <item>Rentenpolitik</item>
+        <item>Gesundheitspolitik</item>
+        <item>Landwirtschaftspolitik</item>
+        <item>Drogenpolitik</item>
+        <item>Digitalpolitik</item>
+        <item>Verkehrspolitik</item>
+        <item>Justiz</item>
         <item>Satire</item>
     </string-array>
-    <!--//TODO MEHR KATEGORIEN ?-->
     <string-array name="kategorien_ergebnis">
         <item>Insgesamt</item>
         <item>Lokale Thesen</item>
+        <item>Demokratie</item>
         <item>Umwelt</item>
         <item>Aussenpolitik</item>
+        <item>Innenpolitik</item>
+        <item>Bildungspolitik</item>
+        <item>Wirtschaftspolitik</item>
+        <item>Energiepolitik</item>
+        <item>Sozialpolitik</item>
+        <item>Familienpolitik</item>
+        <item>Rentenpolitik</item>
+        <item>Gesundheitspolitik</item>
+        <item>Landwirtschaftspolitik</item>
+        <item>Drogenpolitik</item>
+        <item>Digitalpolitik</item>
+        <item>Verkehrspolitik</item>
+        <item>Justiz</item>
         <item>Satire</item>
     </string-array>
     <string name="title_activity_thesen">ThesenActivity</string>

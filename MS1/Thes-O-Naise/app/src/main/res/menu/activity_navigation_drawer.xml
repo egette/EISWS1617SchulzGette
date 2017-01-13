@@ -23,7 +23,10 @@
             android:id="@+id/nav_kandidaten"
             android:icon="@android:drawable/ic_menu_myplaces"
             android:title="Kandidaten" />
-
+        <item
+        android:id="@+id/nav_statistik"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="Statistik" />
         <item
             android:id="@+id/nav_ausloggen"
             android:icon="@android:drawable/ic_lock_power_off"

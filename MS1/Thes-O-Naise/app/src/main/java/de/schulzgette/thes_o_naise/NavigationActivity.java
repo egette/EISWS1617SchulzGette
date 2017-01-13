@@ -123,15 +123,19 @@ public class NavigationActivity extends AppCompatActivity
             SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
             String uid = sharedPreferences.getString("UID", "");
             String typ = sharedPreferences.getString("typ", "");
-            if(typ.equals("waehler")) {
+            if (typ.equals("waehler")) {
                 Intent j = new Intent(this, MeinProfilWaehlerActivity.class);
                 startActivity(j);
-            }else {
+            } else {
                 Intent i = new Intent(this, MeinProfilKandidatActivity.class);
                 i.putExtra("KID", uid);
                 i.putExtra("MODE", "MEINPROFIL");
                 startActivity(i);
             }
+        }else if(id == R.id.nav_statistik){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame_nav, new StatistikFragment())
+                    .commit();
         } else if (id == R.id.nav_ausloggen) {
             SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
             sharedPreferences.edit().putString("token", "").apply();

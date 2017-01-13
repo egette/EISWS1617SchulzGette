@@ -12,7 +12,7 @@ import de.schulzgette.thes_o_naise.database.Database;
  * Created by Jessica on 19.11.2016.
  */
 
-//TODO MEHR KATEGORIEN ?
+
 public class KandidatenModel {
     String vorname;
     String nachname;
@@ -26,13 +26,31 @@ public class KandidatenModel {
     Integer Punkte_Umwelt;
     Integer Punkte_AP;
     Integer Punkte_Satire;
+    Integer Punkte_Drogen;
+    Integer Punkte_Bildung;
+    Integer Punkte_InnenP;
+    Integer Punkte_Wirtschaft;
+    Integer Punkte_Energie;
+    Integer Punkte_Demokratie;
+    Integer Punkte_Justiz;
+    Integer Punkte_Sozial;
+    Integer Punkte_Landwirtschaft;
+    Integer Punkte_Familien;
+    Integer Punkte_Renten;
+    Integer Punkte_Gesundheit;
+    Integer Punkte_Verkehr;
+    Integer Punkte_Digital;
     JSONArray Begruendungen;
     JSONObject Biografie;
     JSONObject Wahlprogramm;
     Boolean abo;
 
 
-    public KandidatenModel(String kid, String vorname, String nachname,  String partei, String email,  String wahlkreis,  JSONArray beantworteteThesen, Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire, JSONArray Begruendungen, JSONObject Biografie, JSONObject Wahlprogramm, Boolean abo) {
+    public KandidatenModel(String kid, String vorname, String nachname,  String partei, String email,  String wahlkreis,  JSONArray beantworteteThesen,
+                           Integer punkte_Insgesamt,Integer punkte_Lokal, Integer punkte_Umwelt, Integer punkte_AP, Integer punkte_Satire,
+                           JSONArray Begruendungen, JSONObject Biografie, JSONObject Wahlprogramm, Boolean abo, Integer Punkte_Drogen, Integer Punkte_Bildung, Integer Punkte_InnenP,
+                           Integer Punkte_Wirtschaft, Integer Punkte_Energie, Integer Punkte_Demokratie, Integer Punkte_Justiz, Integer Punkte_Sozial,
+                           Integer Punkte_Landwirtschaft, Integer Punkte_Familien, Integer Punkte_Renten, Integer Punkte_Gesundheit, Integer Punkte_Verkehr, Integer Punkte_Digital) {
         this.vorname = vorname;
         this.nachname = nachname;
         this.kid = kid;
@@ -49,6 +67,21 @@ public class KandidatenModel {
         this.Biografie = Biografie;
         this.Wahlprogramm = Wahlprogramm;
         this.abo = abo;
+
+        this.Punkte_Drogen = Punkte_Drogen;
+        this.Punkte_Bildung = Punkte_Bildung;
+        this.Punkte_InnenP = Punkte_InnenP ;
+        this.Punkte_Wirtschaft = Punkte_Wirtschaft;
+        this.Punkte_Energie = Punkte_Energie;
+        this.Punkte_Demokratie = Punkte_Demokratie;
+        this.Punkte_Justiz = Punkte_Justiz;
+        this.Punkte_Sozial = Punkte_Sozial;
+        this.Punkte_Landwirtschaft = Punkte_Landwirtschaft;
+        this.Punkte_Familien = Punkte_Familien;
+        this.Punkte_Renten = Punkte_Renten;
+        this.Punkte_Gesundheit = Punkte_Gesundheit;
+        this.Punkte_Verkehr = Punkte_Verkehr ;
+        this.Punkte_Digital = Punkte_Digital;
     }
 
     public Boolean getAbo() {
@@ -148,6 +181,62 @@ public class KandidatenModel {
         return Punkte_Satire;
     }
 
+    public Integer getPunkte_Drogen() {
+        return Punkte_Drogen;
+    }
+
+    public Integer getPunkte_Wirtschaft() {
+        return Punkte_Wirtschaft;
+    }
+
+    public Integer getPunkte_Bildung() {
+        return Punkte_Bildung;
+    }
+
+    public Integer getPunkte_Energie() {
+        return Punkte_Energie;
+    }
+
+    public Integer getPunkte_Demokratie() {
+        return Punkte_Demokratie;
+    }
+
+    public Integer getPunkte_Justiz() {
+        return Punkte_Justiz;
+    }
+
+    public Integer getPunkte_Sozial() {
+        return Punkte_Sozial;
+    }
+
+    public Integer getPunkte_Landwirtschaft() {
+        return Punkte_Landwirtschaft;
+    }
+
+    public Integer getPunkte_Familien() {
+        return Punkte_Familien;
+    }
+
+    public Integer getPunkte_Renten() {
+        return Punkte_Renten;
+    }
+
+    public Integer getPunkte_Gesundheit() {
+        return Punkte_Gesundheit;
+    }
+
+    public Integer getPunkte_Verkehr() {
+        return Punkte_Verkehr;
+    }
+
+    public Integer getPunkte_Digital() {
+        return Punkte_Digital;
+    }
+
+    public Integer getPunkte_InnenP() {
+        return Punkte_InnenP;
+    }
+
     public Integer getAnzahlThesenPositionen() {
         return beantworteteThesen.length();
     }
@@ -188,10 +277,53 @@ public class KandidatenModel {
         }else if(kategorie.equals("Aussenpolitik")){
             result = (double) getPunkte_AP()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLAP_POS);
             result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Drogenpolitik")){
+            result = (double) getPunkte_Drogen()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLDrogen_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Bildungspolitik")){
+            result = (double) getPunkte_Bildung()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLBildungs_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Wirtschaftspolitik")){
+            result = (double) getPunkte_Wirtschaft()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLWirtschaft_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Energiepolitik")){
+            result = (double) getPunkte_Energie()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLEnergie_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Demokratie")){
+            result = (double) getPunkte_Demokratie()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLDEMOKRATIE_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Justiz")){
+            result = (double) getPunkte_Justiz()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLJutiz_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Sozialpolitik")){
+            result = (double) getPunkte_Sozial()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLSozial_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Landwirtschaftspolitik")){
+            result = (double) getPunkte_Landwirtschaft()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLLandwirtschaft_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Familienpolitik")){
+            result = (double) getPunkte_Familien()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLFamilien_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Rentenpolitik")){
+            result = (double) getPunkte_Renten()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLRenten_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Innenpolitik")){
+            result = (double) getPunkte_InnenP()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLInnen_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Gesundheitspolitik")){
+            result = (double) getPunkte_Gesundheit()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLGesundheit_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Verkehrspolitik")){
+            result = (double) getPunkte_Verkehr()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLVerkehr_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
+        }else if(kategorie.equals("Digitalpolitik")){
+            result = (double) getPunkte_Digital()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLDigital_POS);
+            result = Math.round(1000.0 * result) / 1000.0;
         }else if(kategorie.equals("Satire")){
             result = (double) getPunkte_Satire()/getVerarbeitePositionen(mcontext, Database.KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS);
             result = Math.round(1000.0 * result) / 1000.0;
         }
+
         return result;
     }
 

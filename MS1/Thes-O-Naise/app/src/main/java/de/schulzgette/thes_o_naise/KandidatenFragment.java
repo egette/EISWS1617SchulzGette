@@ -108,6 +108,21 @@ public class KandidatenFragment extends Fragment {
                    if(kategorie.equals("Aussenpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_AP;
                    if(kategorie.equals("Umwelt")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT;
                    if(kategorie.equals("Satire")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE;
+                   if(kategorie.equals("Drogenpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_DrogenP;
+                   if(kategorie.equals("Bildungspolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_BildungsP;
+                   if(kategorie.equals("Innenpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_InnenP;
+                   if(kategorie.equals("Wirtschaftspolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_WirtschaftP;
+                   if(kategorie.equals("Energiepolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_EnergieP;
+                   if(kategorie.equals("Demokratie")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_Demokratie;
+                   if(kategorie.equals("Justiz")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_Justiz;
+                   if(kategorie.equals("Sozialpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_SozialP;
+                   if(kategorie.equals("Landwirtschaftspolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_LandwirtschaftP;
+                   if(kategorie.equals("Familienpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_FamilienP;
+                   if(kategorie.equals("Rentenpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_RentenP;
+                   if(kategorie.equals("Gesundheitspolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_GesundheitP;
+                   if(kategorie.equals("Verkehrspolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_VerkehrP;
+                   if(kategorie.equals("Digitalpolitik")) kategorie =  Database.KandidatenTable.COLUMN_NAME_PUNKTE_DigitalP;
+
                    sharedPreferences =  getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
                    sharedPreferences.edit().putString("ergebniskategorie", kategorie).apply();
                    Database db = new Database(getContext());

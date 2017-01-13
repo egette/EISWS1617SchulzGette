@@ -117,19 +117,52 @@ public class MatchingFragment extends Fragment {
                                 for (int i = 0; i < jArray.length(); i++) {
                                     kandidat_result = (JSONObject) jArray.get(i);
                                     String KID = (String) kandidat_result.get("KID");
-                                    //TODO MEHR KATEGORIEN ?
+
                                     Integer Punkte_Ingesamt = (Integer) kandidat_result.get("Zaehler");
                                     Integer Punkte_Lokal = (Integer) kandidat_result.get("Lokal");
                                     Integer Punkte_Umwelt = (Integer) kandidat_result.get("Umwelt");
                                     Integer Punkte_AP = (Integer) kandidat_result.get("Aussenpolitik");
                                     Integer Punkte_Satire = (Integer) kandidat_result.get("Satire");
+                                    Integer Punkte_Drogen = (Integer) kandidat_result.get("DrogenP");
+                                    Integer Punkte_Bildung = (Integer) kandidat_result.get("BildungsP");
+                                    Integer Punkte_InnenP = (Integer) kandidat_result.get("InnenP");
+                                    Integer Punkte_WirtschaftsP = (Integer) kandidat_result.get("WirtschaftsP");
+                                    Integer Punkte_EnergieP = (Integer) kandidat_result.get("EnergieP");
+                                    Integer Punkte_Demokratie = (Integer) kandidat_result.get("Demokratie");
+                                    Integer Punkte_Justiz = (Integer) kandidat_result.get("Justiz");
+                                    Integer Punkte_SozialP = (Integer) kandidat_result.get("SozialP");
+                                    Integer Punkte_LandwirtschatsP = (Integer) kandidat_result.get("LandwirtschaftsP");
+                                    Integer Punkte_FamilienP = (Integer) kandidat_result.get("FamilienP");
+                                    Integer Punkte_RentenP = (Integer) kandidat_result.get("RentenP");
+                                    Integer Punkte_GesundheitsP = (Integer) kandidat_result.get("GesundheitsP");
+                                    Integer Punkte_VerkehrsP = (Integer) kandidat_result.get("VerkehrsP");
+                                    Integer Punkte_DigitalP = (Integer) kandidat_result.get("DigitalP");
                                     Integer verarbeitete_pos = (Integer) kandidat_result.get("AnzahlPOS");
                                     Integer anzahlLokal = (Integer) kandidat_result.get("AnzahlLokal");
                                     Integer anzahlUmwelt = (Integer) kandidat_result.get("AnzahlUmwelt");
                                     Integer anzahlAP = (Integer) kandidat_result.get("AnzahlAussenpolitik");
                                     Integer anzahlSatire = (Integer) kandidat_result.get("AnzahlSatire");
+                                    Integer anzahlDrogen = (Integer) kandidat_result.get("AnzahlDrogenP");
+                                    Integer anzahlBildung = (Integer) kandidat_result.get("AnzahlBildungsP");
+                                    Integer anzahlInnenP = (Integer) kandidat_result.get("AnzahlInnenP");
+                                    Integer anzahlWirtschaftsP = (Integer) kandidat_result.get("AnzahlWirtschatsP");
+                                    Integer anzahlEnergieP = (Integer) kandidat_result.get("AnzahlEnergieP");
+                                    Integer anzahlDemokratie = (Integer) kandidat_result.get("AnzahlDemokratie");
+                                    Integer anzahlJustiz = (Integer) kandidat_result.get("AnzahlJustiz");
+                                    Integer anzahlSozialP = (Integer) kandidat_result.get("AnzahlSozialP");
+                                    Integer anzahlLandwirtschaftsP = (Integer) kandidat_result.get("AnzahlLandwirtschaftsP");
+                                    Integer anzahlFamilienP = (Integer) kandidat_result.get("AnzahlFamilienP");
+                                    Integer anzahlRentenP = (Integer) kandidat_result.get("AnzahlRentenP");
+                                    Integer anzahlGesundheitsP = (Integer) kandidat_result.get("AnzahlGesundheitsP");
+                                    Integer anzahlVerkehrP = (Integer) kandidat_result.get("AnzahlVerkehrsP");
+                                    Integer anzahlDigitalP = (Integer) kandidat_result.get("AnzahlDigitalP");
 
-                                    db.updateKandidatScore(KID,Punkte_Ingesamt,Punkte_Lokal,Punkte_Umwelt,Punkte_AP,Punkte_Satire, verarbeitete_pos, anzahlLokal, anzahlUmwelt, anzahlAP, anzahlSatire);
+                                    db.updateKandidatScore(KID,Punkte_Ingesamt,Punkte_Lokal,Punkte_Umwelt,Punkte_AP, Punkte_Drogen,
+                                            Punkte_Bildung, Punkte_InnenP, Punkte_WirtschaftsP, Punkte_EnergieP, Punkte_Demokratie,
+                                            Punkte_Justiz, Punkte_SozialP, Punkte_LandwirtschatsP, Punkte_FamilienP, Punkte_RentenP,
+                                            Punkte_GesundheitsP, Punkte_VerkehrsP, Punkte_DigitalP,Punkte_Satire, verarbeitete_pos, anzahlLokal, anzahlUmwelt, anzahlAP,
+                                            anzahlDrogen, anzahlBildung, anzahlInnenP, anzahlWirtschaftsP, anzahlEnergieP, anzahlDemokratie, anzahlJustiz, anzahlSozialP,
+                                            anzahlLandwirtschaftsP, anzahlFamilienP, anzahlRentenP, anzahlGesundheitsP, anzahlVerkehrP, anzahlDigitalP, anzahlSatire);
                                 }
                             }
                             toErgebnisFragment();

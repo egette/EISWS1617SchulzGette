@@ -92,7 +92,6 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
         String anzahlpositionen = "000";
         String durchschnittpunkte = "000";
         String anzahlinsgesammt = "000";
-        //TODO MEHR KATEGORIEN ?
         if(ergebnisKategorie.equals("punkte_insgesamt")){
             Score = kandidatenModel.getPunkte_Insgesamt().toString() + " Punkte";
             anzahlinsgesammt = kandidatenModel.getAnzahlThesenPositionen().toString();
@@ -118,6 +117,76 @@ public class KandidatenErgebnisListAdapter extends ArrayAdapter<KandidatenModel>
             anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Satire").toString();
             anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS).toString();
             durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Satire", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_DrogenP)){
+            Score = kandidatenModel.getPunkte_Drogen().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Drogenpolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLDrogen_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Drogenpolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_BildungsP)){
+            Score = kandidatenModel.getPunkte_Bildung().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Bildungspolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLBildungs_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Bildungspolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_InnenP)){
+            Score = kandidatenModel.getPunkte_InnenP().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Innenpolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLInnen_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Innenpolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_WirtschaftP)){
+            Score = kandidatenModel.getPunkte_Wirtschaft().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Wirtschaftspolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLWirtschaft_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Wirtschaftspolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_EnergieP)){
+            Score = kandidatenModel.getPunkte_Energie().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Energiepolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLEnergie_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Energiepolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_Demokratie)){
+            Score = kandidatenModel.getPunkte_Demokratie().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Demokratie").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLDEMOKRATIE_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Demokratie", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_Justiz)){
+            Score = kandidatenModel.getPunkte_Justiz().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Justiz").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLJutiz_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Justiz", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_SozialP)){
+            Score = kandidatenModel.getPunkte_Sozial().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Sozialpolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLSozial_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Sozialpolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_LandwirtschaftP)){
+            Score = kandidatenModel.getPunkte_Landwirtschaft().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Landwirtschaftspolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLLandwirtschaft_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Landwirtschaftspolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_FamilienP)){
+            Score = kandidatenModel.getPunkte_Familien().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Famillienpolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLFamilien_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Famillienpolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_RentenP)){
+            Score = kandidatenModel.getPunkte_Renten().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Rentenpolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLRenten_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Rentenpolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_GesundheitP)){
+            Score = kandidatenModel.getPunkte_Gesundheit().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Gesundheitspolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLGesundheit_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Gesundheitspolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_VerkehrP)){
+            Score = kandidatenModel.getPunkte_Verkehr().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Verkehrspolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLVerkehr_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Verkehrspolitik", getContext()).toString();
+        }else if(ergebnisKategorie.equals(Database.KandidatenTable.COLUMN_NAME_PUNKTE_DigitalP)){
+            Score = kandidatenModel.getPunkte_Digital().toString() + " Punkte";
+            anzahlinsgesammt = kandidatenModel.getAnzahlPositionenZuThesenMitKategorie("Digitalpolitik").toString();
+            anzahlpositionen = kandidatenModel.getVerarbeitePositionen(getContext(), Database.KandidatenTable.COLUMN_NAME_ANZAHLDigital_POS).toString();
+            durchschnittpunkte = kandidatenModel.durchschnittlichePunkteProThesen("Digitalpolitik", getContext()).toString();
         }
 
         viewHolder.txtscore.setText(Score);

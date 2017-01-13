@@ -60,7 +60,7 @@ public class Database {
         public static final String COLUMN_NAME_KPOSITIONLÄNGE = "kposition";
     }
 
-    //TODO MEHR KATEGORIEN ?
+
     public static abstract  class KandidatenTable implements BaseColumns{
         public static final String TABLE_NAME = "kandidaten";
         public static final String COLUMN_NAME_KID = "kid";
@@ -74,11 +74,39 @@ public class Database {
         public static final String COLUMN_NAME_PUNKTE_LOKAL = "punkte_lokal";
         public static final String COLUMN_NAME_PUNKTE_UMWELT = "punkte_umwelt";
         public static final String COLUMN_NAME_PUNKTE_AP = "punkte_ap";
+        public static final String COLUMN_NAME_PUNKTE_DrogenP = "punkte_drogen";
+        public static final String COLUMN_NAME_PUNKTE_BildungsP = "punkte_bildung";
+        public static final String COLUMN_NAME_PUNKTE_InnenP = "punkte_innenp";
+        public static final String COLUMN_NAME_PUNKTE_WirtschaftP = "punkte_witschaftp";
+        public static final String COLUMN_NAME_PUNKTE_EnergieP = "punkte_energiep";
+        public static final String COLUMN_NAME_PUNKTE_Demokratie = "punkte_demokratie";
+        public static final String COLUMN_NAME_PUNKTE_Justiz = "punkte_justiz";
+        public static final String COLUMN_NAME_PUNKTE_SozialP = "punkte_sozial";
+        public static final String COLUMN_NAME_PUNKTE_LandwirtschaftP = "punkte_landwirtschaft";
+        public static final String COLUMN_NAME_PUNKTE_FamilienP = "punkte_familien";
+        public static final String COLUMN_NAME_PUNKTE_RentenP = "punkte_renten";
+        public static final String COLUMN_NAME_PUNKTE_GesundheitP = "punkte_gesundheit";
+        public static final String COLUMN_NAME_PUNKTE_VerkehrP = "punkte_verkehrp";
+        public static final String COLUMN_NAME_PUNKTE_DigitalP = "punkte_digitalp";
         public static final String COLUMN_NAME_PUNKTE_SATIRE = "punkte_satire";
         public static final String COLUMN_NAME_VERARBEITE_POS = "verarbeite_pos";
         public static final String COLUMN_NAME_ANZAHLLOKAL_POS = "anzahllokal_pos";
         public static final String COLUMN_NAME_ANZAHLUMWELT_POS = "anzahlumwelt_pos";
         public static final String COLUMN_NAME_ANZAHLAP_POS = "anzahlap_pos";
+        public static final String COLUMN_NAME_ANZAHLDrogen_POS = "anzahldrogen_pos";
+        public static final String COLUMN_NAME_ANZAHLBildungs_POS = "anzahlbildung_pos";
+        public static final String COLUMN_NAME_ANZAHLInnen_POS = "anzahlinnen_pos";
+        public static final String COLUMN_NAME_ANZAHLWirtschaft_POS = "anzahlwirtschaft_pos";
+        public static final String COLUMN_NAME_ANZAHLEnergie_POS = "anzahlenergie_pos";
+        public static final String COLUMN_NAME_ANZAHLDEMOKRATIE_POS = "anzahldemokratie_pos";
+        public static final String COLUMN_NAME_ANZAHLJutiz_POS = "anzahljustiz_pos";
+        public static final String COLUMN_NAME_ANZAHLSozial_POS = "anzahlsozial_pos";
+        public static final String COLUMN_NAME_ANZAHLLandwirtschaft_POS = "anzahllandwirtschaft_pos";
+        public static final String COLUMN_NAME_ANZAHLFamilien_POS = "anzahlfamilien_pos";
+        public static final String COLUMN_NAME_ANZAHLRenten_POS = "anzahlrenten_pos";
+        public static final String COLUMN_NAME_ANZAHLGesundheit_POS = "anzahlgesundheit_pos";
+        public static final String COLUMN_NAME_ANZAHLVerkehr_POS = "anzahlverkehr_pos";
+        public static final String COLUMN_NAME_ANZAHLDigital_POS = "anzahldigital_pos";
         public static final String COLUMN_NAME_ANZAHLSATIRE_POS = "anzahlsatire_pos";
         public static final String COLUMN_NAME_BIOGRAPHIE = "biographie";
         public static final String COLUMN_NAME_WAHLPROGRAMM = "wahlprogramm";
@@ -174,7 +202,7 @@ public class Database {
                     AbonnierteKandidatenTable.COLUMN_NAME_KPOSITIONLÄNGE + " INTEGER" +
                     " )";
 
-    //TODO MEHR KATEGORIEN ?
+
 
     public static final String SQL_CREATE_KANDIDATENTABLE =
             "CREATE TABLE " + KandidatenTable.TABLE_NAME + " (" +
@@ -189,11 +217,39 @@ public class Database {
                     KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_AP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_DrogenP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_BildungsP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_InnenP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_WirtschaftP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_EnergieP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_Demokratie + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_Justiz + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_SozialP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_LandwirtschaftP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_FamilienP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_RentenP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_GesundheitP+ " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_VerkehrP + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_PUNKTE_DigitalP + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_VERARBEITE_POS + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_ANZAHLLOKAL_POS + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_ANZAHLUMWELT_POS + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_ANZAHLAP_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLDrogen_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLBildungs_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLInnen_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLWirtschaft_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLEnergie_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLDEMOKRATIE_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLJutiz_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLSozial_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLLandwirtschaft_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLFamilien_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLRenten_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLGesundheit_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLVerkehr_POS + " INTEGER," +
+                    KandidatenTable.COLUMN_NAME_ANZAHLDigital_POS + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS + " INTEGER," +
                     KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN + " TEXT," +
                     KandidatenTable.COLUMN_NAME_BIOGRAPHIE + " TEXT," +
@@ -256,7 +312,7 @@ public class Database {
 
 
     public class ThesenDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 16;
+        public static final int DATABASE_VERSION = 19;
         public static final String DATABASE_NAME = "Thes-O-Naise.db";
 
         public ThesenDbHelper(Context context) {
@@ -1219,7 +1275,11 @@ public class Database {
         }
     }
 
-    public void updateKandidatScore(String KID, Integer Insgesamt, Integer Lokal, Integer Umwelt, Integer AP, Integer Satire, Integer verarbeitete_pos, Integer anzahlLokal, Integer anzahlumwelt, Integer anzahlap, Integer anzahlsatire){
+    public void updateKandidatScore(String KID, Integer Insgesamt, Integer Lokal, Integer Umwelt, Integer AP, Integer Drogenp, Integer Bildungp, Integer Innenp, Integer Wirtschaftsp, Integer Energiep,
+                                    Integer Demokratie, Integer Justiz, Integer Sozialp, Integer Landwirtschaft, Integer Familien, Integer Renten, Integer Gesundheit, Integer Verkehr, Integer Digital, Integer Satire,
+                                    Integer verarbeitete_pos, Integer anzahlLokal, Integer anzahlumwelt, Integer anzahlap, Integer anzahldrogen, Integer anzahlbildung, Integer anzahlinnen, Integer anzahlwirtschaft,
+                                    Integer anzahlenergie, Integer anzahldemokratie, Integer anzahljustiz, Integer anzahlsozial, Integer anzahllandwirtschaft, Integer anzahlfamilien, Integer anzahlrenten,
+                                    Integer anzahlgesundheit, Integer anzahlverkehr, Integer anzahldigital, Integer anzahlsatire){
         ThesenDbHelper thesenDbHelper = new ThesenDbHelper(context);
         SQLiteDatabase dbwrite = thesenDbHelper.getWritableDatabase();
         try {
@@ -1227,16 +1287,44 @@ public class Database {
                 Log.d("Update KandidatenScore:", KID);
                     ContentValues values = new ContentValues();
                     values.put(KandidatenTable.COLUMN_NAME_KID, KID);
-                    //TODO MEHR KATEGORIEN ?
+
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, Insgesamt);
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, Lokal);
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, Umwelt);
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_AP, AP);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_DrogenP, Drogenp);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_BildungsP, Bildungp);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_InnenP, Innenp);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_WirtschaftP, Wirtschaftsp);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_EnergieP, Energiep);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_Demokratie, Demokratie);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_Justiz, Justiz);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_SozialP, Sozialp);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_LandwirtschaftP, Landwirtschaft);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_FamilienP, Familien);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_RentenP, Renten);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_GesundheitP, Gesundheit);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_VerkehrP, Verkehr);
+                values.put(KandidatenTable.COLUMN_NAME_PUNKTE_DigitalP, Digital);
                     values.put(KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, Satire);
                     values.put(KandidatenTable.COLUMN_NAME_VERARBEITE_POS, verarbeitete_pos);
                     values.put(KandidatenTable.COLUMN_NAME_ANZAHLLOKAL_POS, anzahlLokal);
                     values.put(KandidatenTable.COLUMN_NAME_ANZAHLUMWELT_POS, anzahlumwelt);
                     values.put(KandidatenTable.COLUMN_NAME_ANZAHLAP_POS, anzahlap);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLDrogen_POS, anzahldrogen);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLBildungs_POS, anzahlbildung);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLInnen_POS, anzahlinnen);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLWirtschaft_POS, anzahlwirtschaft);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLEnergie_POS, anzahlenergie);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLDEMOKRATIE_POS, anzahldemokratie);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLJutiz_POS, anzahljustiz);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLSozial_POS, anzahlsozial);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLLandwirtschaft_POS, anzahllandwirtschaft);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLFamilien_POS, anzahlfamilien);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLRenten_POS, anzahlrenten);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLGesundheit_POS, anzahlgesundheit);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLVerkehr_POS, anzahlverkehr);
+                values.put(KandidatenTable.COLUMN_NAME_ANZAHLDigital_POS, anzahldigital);
                     values.put(KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS, anzahlsatire);
                     dbwrite.update(KandidatenTable.TABLE_NAME, values, "kid=?", new String[]{KID});
                 }
@@ -1268,7 +1356,14 @@ public class Database {
 
         try{
             if(wahlkreis != null) {
-                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, null);
+                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME,
+                        KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_DrogenP,  KandidatenTable.COLUMN_NAME_PUNKTE_BildungsP,  KandidatenTable.COLUMN_NAME_PUNKTE_InnenP, KandidatenTable.COLUMN_NAME_PUNKTE_WirtschaftP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_EnergieP, KandidatenTable.COLUMN_NAME_PUNKTE_Demokratie, KandidatenTable.COLUMN_NAME_PUNKTE_Justiz, KandidatenTable.COLUMN_NAME_PUNKTE_SozialP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_LandwirtschaftP, KandidatenTable.COLUMN_NAME_PUNKTE_FamilienP, KandidatenTable.COLUMN_NAME_PUNKTE_RentenP, KandidatenTable.COLUMN_NAME_PUNKTE_GesundheitP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_VerkehrP, KandidatenTable.COLUMN_NAME_PUNKTE_DigitalP}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, null);
 
                 try {
                     while (c.moveToNext()) {
@@ -1279,7 +1374,7 @@ public class Database {
                         String partei = c.getString(3);
                         String email = c.getString(4);
                         String beantwortete_Thesen = c.getString(6);
-                        //TODO MEHR KATEGORIEN ?
+
                         Integer Punkte_Insgesamt = c.getInt(7);
                         Integer Punkte_Lokal = c.getInt(8);
                         Integer Punkte_Umwelt = c.getInt(9);
@@ -1288,12 +1383,28 @@ public class Database {
                         String begruendungen2 = c.getString(12);
                         String biografie2 = c.getString(13);
                         String wahlprogramm2 = c.getString(14);
+                        Integer Punkte_Drogen = c.getInt(15);
+                        Integer Punkte_Bildung = c.getInt(16);
+                        Integer Punkte_InnenP = c.getInt(17);
+                        Integer Punkte_Wirtschaft = c.getInt(18);
+                        Integer Punkte_Energie = c.getInt(19);
+                        Integer Punkte_Demokratie = c.getInt(20);
+                        Integer Punkte_Justiz = c.getInt(21);
+                        Integer Punkte_Sozial = c.getInt(22);
+                        Integer Punkte_Landwirtschaft = c.getInt(23);
+                        Integer Punkte_Familien = c.getInt(24);
+                        Integer Punkte_Renten = c.getInt(25);
+                        Integer Punkte_Gesundheit = c.getInt(26);
+                        Integer Punkte_Verkehr = c.getInt(27);
+                        Integer Punkte_Digital = c.getInt(28);
                         JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
                         JSONArray begruendungen = new JSONArray(begruendungen2);
                         JSONObject biografie = new JSONObject(biografie2);
                         JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
                         Boolean abo = istKandidatAbonniert(kid);
-                        kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm, abo));
+                        kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP,
+                                Punkte_Satire, begruendungen, biografie, wahlprogramm, abo, Punkte_Drogen, Punkte_Bildung, Punkte_InnenP, Punkte_Wirtschaft, Punkte_Energie, Punkte_Demokratie, Punkte_Justiz, Punkte_Sozial,
+                                Punkte_Landwirtschaft, Punkte_Familien, Punkte_Renten, Punkte_Gesundheit, Punkte_Verkehr, Punkte_Digital));
                     }
 
                 } catch (JSONException e) {
@@ -1316,7 +1427,19 @@ public class Database {
 
         try{
             if(kategorie != null && wahlkreis != null) {
-                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, kategorie + " ASC");
+                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME,
+                        KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_DrogenP,  KandidatenTable.COLUMN_NAME_PUNKTE_BildungsP,  KandidatenTable.COLUMN_NAME_PUNKTE_InnenP, KandidatenTable.COLUMN_NAME_PUNKTE_WirtschaftP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_EnergieP, KandidatenTable.COLUMN_NAME_PUNKTE_Demokratie, KandidatenTable.COLUMN_NAME_PUNKTE_Justiz, KandidatenTable.COLUMN_NAME_PUNKTE_SozialP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_LandwirtschaftP, KandidatenTable.COLUMN_NAME_PUNKTE_FamilienP, KandidatenTable.COLUMN_NAME_PUNKTE_RentenP, KandidatenTable.COLUMN_NAME_PUNKTE_GesundheitP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_VerkehrP, KandidatenTable.COLUMN_NAME_PUNKTE_DigitalP, KandidatenTable.COLUMN_NAME_VERARBEITE_POS, KandidatenTable.COLUMN_NAME_ANZAHLLOKAL_POS,
+                        KandidatenTable.COLUMN_NAME_ANZAHLUMWELT_POS, KandidatenTable.COLUMN_NAME_ANZAHLAP_POS, KandidatenTable.COLUMN_NAME_ANZAHLSATIRE_POS, KandidatenTable.COLUMN_NAME_ANZAHLDrogen_POS,
+                        KandidatenTable.COLUMN_NAME_ANZAHLBildungs_POS, KandidatenTable.COLUMN_NAME_ANZAHLInnen_POS, KandidatenTable.COLUMN_NAME_ANZAHLWirtschaft_POS, KandidatenTable.COLUMN_NAME_ANZAHLEnergie_POS,
+                        KandidatenTable.COLUMN_NAME_ANZAHLDEMOKRATIE_POS, KandidatenTable.COLUMN_NAME_ANZAHLJutiz_POS, KandidatenTable.COLUMN_NAME_ANZAHLSozial_POS, KandidatenTable.COLUMN_NAME_ANZAHLLandwirtschaft_POS,
+                        KandidatenTable.COLUMN_NAME_ANZAHLFamilien_POS, KandidatenTable.COLUMN_NAME_ANZAHLRenten_POS, KandidatenTable.COLUMN_NAME_ANZAHLGesundheit_POS, KandidatenTable.COLUMN_NAME_ANZAHLVerkehr_POS,
+                        KandidatenTable.COLUMN_NAME_ANZAHLDigital_POS}, "wahlkreis = ?", new String[]{wahlkreis}, null, null, kategorie + " ASC");
 
                 try {
                     while (c.moveToNext()) {
@@ -1327,7 +1450,7 @@ public class Database {
                         String partei = c.getString(3);
                         String email = c.getString(4);
                         String beantwortete_Thesen = c.getString(6);
-                        //TODO MEHR KATEGORIEN ?
+
                         Integer Punkte_Insgesamt = c.getInt(7);
                         Integer Punkte_Lokal = c.getInt(8);
                         Integer Punkte_Umwelt = c.getInt(9);
@@ -1336,30 +1459,110 @@ public class Database {
                         String begruendungen2 = c.getString(12);
                         String biografie2 = c.getString(13);
                         String wahlprogramm2 = c.getString(14);
+                        Integer Punkte_Drogen = c.getInt(15);
+                        Integer Punkte_Bildung = c.getInt(16);
+                        Integer Punkte_InnenP = c.getInt(17);
+                        Integer Punkte_Wirtschaft = c.getInt(18);
+                        Integer Punkte_Energie = c.getInt(19);
+                        Integer Punkte_Demokratie = c.getInt(20);
+                        Integer Punkte_Justiz = c.getInt(21);
+                        Integer Punkte_Sozial = c.getInt(22);
+                        Integer Punkte_Landwirtschaft = c.getInt(23);
+                        Integer Punkte_Familien = c.getInt(24);
+                        Integer Punkte_Renten = c.getInt(25);
+                        Integer Punkte_Gesundheit = c.getInt(26);
+                        Integer Punkte_Verkehr = c.getInt(27);
+                        Integer Punkte_Digital = c.getInt(28);
+                        Integer Anzahl_Insgesamt = c.getInt(29);
+                        Integer Anzahl_Lokal = c.getInt(30);
+                        Integer Anzahl_Umwelt = c.getInt(31);
+                        Integer Anzahl_AP = c.getInt(32);
+                        Integer Anzahl_Satire = c.getInt(33);
+                        Integer Anzahl_Drogen = c.getInt(34);
+                        Integer Anzahl_Bildung = c.getInt(35);
+                        Integer Anzahl_InnenP = c.getInt(36);
+                        Integer Anzahl_Wirtschaft = c.getInt(37);
+                        Integer Anzahl_Energie = c.getInt(38);
+                        Integer Anzahl_Demokratie = c.getInt(39);
+                        Integer Anzahl_Justiz = c.getInt(40);
+                        Integer Anzahl_Sozial = c.getInt(41);
+                        Integer Anzahl_Landwirtschaft = c.getInt(42);
+                        Integer Anzahl_Familien = c.getInt(43);
+                        Integer Anzahl_Renten = c.getInt(44);
+                        Integer Anzahl_Gesundheit = c.getInt(45);
+                        Integer Anzahl_Verkehr = c.getInt(46);
+                        Integer Anzahl_Digital = c.getInt(47);
                         JSONArray beantworteteThesen = new JSONArray(beantwortete_Thesen);
                         JSONArray begruendungen = new JSONArray(begruendungen2);
                         JSONObject biografie = new JSONObject(biografie2);
                         JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
-                        Integer check = 0;
-                        String kategorie2 = "";
+
+                        Boolean check = false;
+
                         if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT)){
-                            if(Punkte_Insgesamt==0){
-                                check = 0;
-                            }else{
-                                check = 1;
-                            }
+                            if(Anzahl_Insgesamt>0)check=true;
                         }
-                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL)) kategorie2 = "Lokal";
-                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT)) kategorie2 = "Umwelt";
-                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_AP)) kategorie2 = "Aussenpolitik";
-                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE)) kategorie2 = "Satire";
-                        for (int i =0; i<beantworteteThesen.length(); i++){
-                            JSONObject object = (JSONObject) beantworteteThesen.get(i);
-                            String objectKategorie = object.getString("KATEGORIE");
-                            if(objectKategorie.equals(kategorie2))check = 1;
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL)){
+                            if(Anzahl_Lokal>0)check=true;
                         }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT)){
+                            if(Anzahl_Umwelt>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_AP)) {
+                            if(Anzahl_AP>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_DrogenP)){
+                            if(Anzahl_Drogen>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_BildungsP)) {
+                            if(Anzahl_Bildung>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_InnenP)) {
+                            if(Anzahl_InnenP>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_WirtschaftP)){
+                            if(Anzahl_Wirtschaft>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_EnergieP)){
+                            if(Anzahl_Energie>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_Demokratie)){
+                            if(Anzahl_Demokratie>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_Justiz)){
+                            if(Anzahl_Justiz>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_SozialP)){
+                            if(Anzahl_Sozial>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_LandwirtschaftP)){
+                            if(Anzahl_Landwirtschaft>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_FamilienP)){
+                            if(Anzahl_Familien>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_RentenP)){
+                            if(Anzahl_Renten>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_GesundheitP)){
+                            if(Anzahl_Gesundheit>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_VerkehrP)){
+                            if(Anzahl_Verkehr>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_DigitalP)){
+                            if(Anzahl_Digital>0)check=true;
+                        }
+                        if(kategorie.equals(KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE)){
+                            if(Anzahl_Satire>0)check=true;
+                        }
+
                         Boolean abo = istKandidatAbonniert(kid);
-                        if (check == 1) kandidatenModels.add(new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm, abo));
+                        if (check) {
+                            kandidatenModels.add(new KandidatenModel(kid, vorname, nachname, partei, email, wahlkreis, beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP,
+                                    Punkte_Satire, begruendungen, biografie, wahlprogramm, abo, Punkte_Drogen, Punkte_Bildung, Punkte_InnenP, Punkte_Wirtschaft, Punkte_Energie, Punkte_Demokratie, Punkte_Justiz, Punkte_Sozial,
+                                    Punkte_Landwirtschaft, Punkte_Familien, Punkte_Renten, Punkte_Gesundheit, Punkte_Verkehr, Punkte_Digital));
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -1382,7 +1585,14 @@ public class Database {
 
         try{
             if(kid != null) {
-                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME, KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN, KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP, KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM}, "kid = ?", new String[]{kid}, null, null, null);
+                Cursor  c = db.query(KandidatenTable.TABLE_NAME, new String[]{KandidatenTable.COLUMN_NAME_KID, KandidatenTable.COLUMN_NAME_VORNAME, KandidatenTable.COLUMN_NAME_NACHNAME,
+                        KandidatenTable.COLUMN_NAME_PARTEI, KandidatenTable.COLUMN_NAME_EMAIL, KandidatenTable.COLUMN_NAME_WAHLKREIS, KandidatenTable.COLUMN_NAME_BEANTWORTETETHESEN,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_INSGESAMT, KandidatenTable.COLUMN_NAME_PUNKTE_LOKAL, KandidatenTable.COLUMN_NAME_PUNKTE_UMWELT, KandidatenTable.COLUMN_NAME_PUNKTE_AP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_SATIRE, KandidatenTable.COLUMN_NAME_BEGRUENDUNGEN, KandidatenTable.COLUMN_NAME_BIOGRAPHIE, KandidatenTable.COLUMN_NAME_WAHLPROGRAMM,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_DrogenP,  KandidatenTable.COLUMN_NAME_PUNKTE_BildungsP,  KandidatenTable.COLUMN_NAME_PUNKTE_InnenP, KandidatenTable.COLUMN_NAME_PUNKTE_WirtschaftP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_EnergieP, KandidatenTable.COLUMN_NAME_PUNKTE_Demokratie, KandidatenTable.COLUMN_NAME_PUNKTE_Justiz, KandidatenTable.COLUMN_NAME_PUNKTE_SozialP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_LandwirtschaftP, KandidatenTable.COLUMN_NAME_PUNKTE_FamilienP, KandidatenTable.COLUMN_NAME_PUNKTE_RentenP, KandidatenTable.COLUMN_NAME_PUNKTE_GesundheitP,
+                        KandidatenTable.COLUMN_NAME_PUNKTE_VerkehrP, KandidatenTable.COLUMN_NAME_PUNKTE_DigitalP}, "kid = ?", new String[]{kid}, null, null, null);
 
                 try {
                     while (c.moveToNext()) {
@@ -1401,14 +1611,30 @@ public class Database {
                         JSONArray begruendungen = new JSONArray(begruendungen2);
                         JSONObject biografie = new JSONObject(biografie2);
                         JSONObject wahlprogramm = new JSONObject(wahlprogramm2);
-                        //TODO MEHR KATEGORIEN ?
+
                         Integer Punkte_Insgesamt = c.getInt(7);
                         Integer Punkte_Lokal = c.getInt(8);
                         Integer Punkte_Umwelt = c.getInt(9);
                         Integer Punkte_AP = c.getInt(10);
                         Integer Punkte_Satire = c.getInt(11);
+                        Integer Punkte_Drogen = c.getInt(15);
+                        Integer Punkte_Bildung = c.getInt(16);
+                        Integer Punkte_InnenP = c.getInt(17);
+                        Integer Punkte_Wirtschaft = c.getInt(18);
+                        Integer Punkte_Energie = c.getInt(19);
+                        Integer Punkte_Demokratie = c.getInt(20);
+                        Integer Punkte_Justiz = c.getInt(21);
+                        Integer Punkte_Sozial = c.getInt(22);
+                        Integer Punkte_Landwirtschaft = c.getInt(23);
+                        Integer Punkte_Familien = c.getInt(24);
+                        Integer Punkte_Renten = c.getInt(25);
+                        Integer Punkte_Gesundheit = c.getInt(26);
+                        Integer Punkte_Verkehr = c.getInt(27);
+                        Integer Punkte_Digital = c.getInt(28);
                         Boolean abo = istKandidatAbonniert(kid);
-                        kandidatenModel = new KandidatenModel(kid,  vorname, nachname,  partei,  email, wahlkreis,  beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP, Punkte_Satire, begruendungen, biografie, wahlprogramm, abo);
+                        kandidatenModel = new KandidatenModel(kid, vorname, nachname, partei, email, wahlkreis, beantworteteThesen, Punkte_Insgesamt, Punkte_Lokal, Punkte_Umwelt, Punkte_AP,
+                                Punkte_Satire, begruendungen, biografie, wahlprogramm, abo, Punkte_Drogen, Punkte_Bildung, Punkte_InnenP, Punkte_Wirtschaft, Punkte_Energie, Punkte_Demokratie, Punkte_Justiz, Punkte_Sozial,
+                                Punkte_Landwirtschaft, Punkte_Familien, Punkte_Renten, Punkte_Gesundheit, Punkte_Verkehr, Punkte_Digital);
                     }
 
                 } catch (JSONException e) {
