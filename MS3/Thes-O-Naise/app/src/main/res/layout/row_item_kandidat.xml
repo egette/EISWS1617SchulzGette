@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/kandidatlayout"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_weight="0.7"
+        app:srcCompat="@mipmap/user"
+        android:id="@+id/avatar"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:id="@+id/kandidateninfo"
+        android:layout_marginLeft="10dp">
+
+    <TextView
+        android:id="@+id/vornamekandidat"
+        android:text="TEST"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/nachnamekandidat"
+        android:textColor="@android:color/black" />
+    <TextView
+        android:id="@+id/nachnamekandidat"
+        android:text="Schmied-Mülller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/vornamekandidat"
+        android:textColor="@android:color/black"
+        android:padding="15dp"/>
+    <TextView
+        android:id="@+id/partei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Partei: "
+        android:layout_alignBaseline="@+id/parteikandidat"
+        android:layout_below="@+id/nachnamekandidat"
+        android:textColor="@android:color/holo_blue_dark"/>
+    <TextView
+        android:id="@+id/parteikandidat"
+        android:text="TEST"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nachnamekandidat"
+        android:layout_toRightOf="@+id/partei"
+        android:textColor="@android:color/black"
+        android:padding="5dp"/>
+
+</RelativeLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.8"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button
+            android:text="Mehr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/einkandidatbutton"
+            android:textColor="@color/colorPrimaryDark"
+            style="@style/Widget.AppCompat.Button.Colored"/>
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/abonnierenbutton"
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textOff="@string/abonnierten"
+            android:textOn="@string/deabonnierten" />
+    </LinearLayout>
+
+
+</LinearLayout>

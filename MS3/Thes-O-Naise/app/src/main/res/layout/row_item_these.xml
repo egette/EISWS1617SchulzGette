@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/thesentext22"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/thesentext_item"
+            android:text="ADIUSDHIUASDIUZAHSDHAISDHAISUDHAIUSDHIUASUDHAISDHAISDHUi"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:padding="15dp"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content">
+            <Button
+                android:text="Mehr"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="false"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:textColor="@color/colorPrimaryDark"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/einethesebutton" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thesentext22"
+        android:orientation="horizontal"
+        android:id="@+id/abolayout">
+        <LinearLayout
+            android:padding="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageButton
+                android:layout_height="25dp"
+                android:layout_width="match_parent"
+                android:id="@+id/like"
+                android:src="@drawable/ic_thumb_up_black_24dp"
+                android:focusable="false"
+                android:background="@color/colorPrimary"/>
+            <TextView
+                android:id="@+id/likestext"
+                android:text="1000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginRight="3dp"
+                android:layout_marginEnd="3dp"/>
+
+        </LinearLayout>
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/abonnierenbutton"
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimaryDark"
+
+            android:textOff="@string/abonnierten"
+            android:textOn="@string/deabonnierten" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/abolayout"
+        android:layout_marginTop="10dp">
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton android:id="@+id/pro_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Pro"
+            android:onClick="onRadioButtonClicked" />
+
+        <RadioButton android:id="@+id/neutral_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Neutral"
+            android:onClick="onRadioButtonClicked" />
+
+        <RadioButton android:id="@+id/contra_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Contra"
+            android:onClick="onRadioButtonClicked"/>
+    </RadioGroup>
+</LinearLayout>
+
+
+</RelativeLayout>

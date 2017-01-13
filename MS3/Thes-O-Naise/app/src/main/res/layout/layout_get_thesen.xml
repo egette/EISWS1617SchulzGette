@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@android:color/background_light">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/kategorielayout"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorAccent">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:text="Kategorie:"/>
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_kategorie"
+            android:spinnerMode="dropdown"
+            android:theme="?android:attr/spinnerItemStyle"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/kategorielayout"
+        android:id="@+id/sortierlayout"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:background="@color/colorPrimaryDark">
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:id="@+id/neuethesenbutton"
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textOff="Alt > Neu"
+            android:textOn="Neu > Alt" />
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:id="@+id/beliebtethesenbutton"
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textOff="Beliebte"
+            android:textOn="Beliebte" />
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:id="@+id/unbeantwortetethesenbutton"
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textOff="Unbeantwortet"
+            android:textOn="Unbeantwortet" />
+    </LinearLayout>
+
+    <ListView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/listviewthesen"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/sortierlayout"
+        android:background="@android:color/white"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="5.0sp">
+   </ListView>
+
+
+
+
+</RelativeLayout>
