@@ -429,6 +429,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         String Typ = sharedPreferences.getString("typ", "");
         String UID = sharedPreferences.getString("UID", "");
         String username = sharedPreferences.getString("username", "");
+        String token = sharedPreferences.getString("token", "");
         String positionUpperCase = position.toUpperCase();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -438,6 +439,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
             jsonObject.accumulate("tid", tid);
             jsonObject.accumulate("uid", UID);
             jsonObject.accumulate("textdata", text);
+            jsonObject.accumulate("token", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -485,15 +487,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     }
                 }
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
 
@@ -503,6 +497,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
         String UID = sharedPreferences.getString("UID", "");
         String username = sharedPreferences.getString("username", "");
+        String token = sharedPreferences.getString("token", "");
         String positionUpperCase = position.toUpperCase();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -513,6 +508,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
             jsonObject.accumulate("uid", UID);
             jsonObject.accumulate("kommentar",  kommentartext);
             jsonObject.accumulate("beguid", begruendungsid);
+            jsonObject.accumulate("token", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -560,21 +556,15 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     }
                 }
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
 
     public void likeBegruendungToServer(String BID, String Typ, Integer like){
         String positionUpperCase = position.toUpperCase();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.accumulate("typ", Typ);
@@ -582,6 +572,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
             jsonObject.accumulate("tid", tid);
             jsonObject.accumulate("like",  like);
             jsonObject.accumulate("beguid", BID);
+            jsonObject.accumulate("token", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -630,15 +621,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     }
                 }
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

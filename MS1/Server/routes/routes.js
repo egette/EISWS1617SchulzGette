@@ -58,7 +58,7 @@ module.exports = function(app,io, db, redis, jwt, Promise, apiRoutes) {
 	});
 
 	//Routen mit Login
-	//app.use('/', apiRoutes);
+	app.use('/', apiRoutes);
 	app.post('/matching', matching.match(db, Promise)); 
 	app.post('/thesen', thesen.publish(db));
 	app.put('/thesen', thesen.putPosition(db));

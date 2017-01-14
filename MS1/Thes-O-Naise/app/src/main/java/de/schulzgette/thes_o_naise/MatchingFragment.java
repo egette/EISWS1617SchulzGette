@@ -94,7 +94,9 @@ public class MatchingFragment extends Fragment {
             mainObj.accumulate("UID", "null");
         }
         String wahlkreis = sharedPreferences.getString("wahlkreis", "");
+        String token = sharedPreferences.getString("token", "");
         mainObj.accumulate("wahlkreis", wahlkreis);
+        mainObj.accumulate("token", token);
         String positiondata = mainObj.toString();
         Log.d("Jobject:", positiondata);
         try {
@@ -182,15 +184,7 @@ public class MatchingFragment extends Fragment {
                     }
                 }
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
 

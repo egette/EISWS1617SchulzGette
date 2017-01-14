@@ -91,15 +91,7 @@ public class TheseToLokalDatabase extends Application {
                     }
                 }
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
