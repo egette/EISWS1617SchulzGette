@@ -7,6 +7,10 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Map;
 
 import de.schulzgette.thes_o_naise.database.Database;
@@ -37,12 +41,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public void updateKandidat(String kid){
         Database db = new Database(getBaseContext());
-        TheseToLokalDatabase.updateKandidatData(kid, db);
+        TheseToLokalDatabase.updateKandidatData(kid, db, getApplicationContext());
     }
 
     public void updateThese(String tid){
         try {
-            HttpClient.GET("thesen/"+ tid,  new Callback() {
+            HttpClient.GET("thesen/"+ tid, getApplicationContext(), new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -71,6 +75,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             });
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
 

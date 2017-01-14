@@ -20,6 +20,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.adapter.MeinProfilKandidatAdapter;
@@ -52,7 +56,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
         {
             kid = (String) bd.get("KID");
             MODE = (String) bd.get("MODE");
-            TheseToLokalDatabase.updateKandidatData(kid, db);
+            TheseToLokalDatabase.updateKandidatData(kid, db, getApplicationContext());
             updateKandidatView(kid);
             adapter = new MeinProfilKandidatAdapter(getSupportFragmentManager(), kid, MODE);
         }
@@ -198,7 +202,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
         }
         String jsondata = jsonObject.toString();
         try {
-            HttpClient.PUT("user", jsondata, new Callback() {
+            HttpClient.PUT("user", jsondata, getApplicationContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -217,7 +221,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
                                 Toast.makeText(getBaseContext(), "Ihr Profil wurde überarbeitet", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        TheseToLokalDatabase.updateKandidatData(kid, db);
+                        TheseToLokalDatabase.updateKandidatData(kid, db, getApplicationContext());
                         updateKandidat(kid);
                         response.body().close();
                     } else {
@@ -232,6 +236,14 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
                 }
             });
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
     }

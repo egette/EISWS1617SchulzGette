@@ -10,6 +10,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
@@ -51,7 +55,7 @@ public class GetThesenFromAPI extends Service {
     private  void getThesen (String kategorie) {
 
         try {
-            HttpClient.GET("thesen"+ "?kategorie=" + kategorie,  new Callback() {
+            HttpClient.GET("thesen"+ "?kategorie=" + kategorie, getApplicationContext(),  new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -110,6 +114,14 @@ public class GetThesenFromAPI extends Service {
 
             });
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
         EventBus.fireThesenUpdate();

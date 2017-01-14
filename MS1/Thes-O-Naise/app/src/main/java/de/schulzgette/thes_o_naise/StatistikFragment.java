@@ -18,6 +18,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 import de.schulzgette.thes_o_naise.Models.BegruendungModel;
@@ -68,7 +72,7 @@ public class StatistikFragment extends Fragment {
 
     public void getPrognosenModels(String wahlkreis){
         try {
-            HttpClient.GET("statistik/"+ wahlkreis,  new Callback() {
+            HttpClient.GET("statistik/"+ wahlkreis,  getContext(), new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -133,6 +137,14 @@ public class StatistikFragment extends Fragment {
 
             });
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
     }

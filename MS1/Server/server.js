@@ -1,6 +1,7 @@
 //Module
 var http        = require('http'),
 	https       = require('https');
+var fs = require('fs');
 const   express 	= require('express');
 const   bodyParser 	= require('body-parser');
 const	jsonParser  = bodyParser.json();
@@ -13,6 +14,12 @@ var apiRoutes   =  express.Router();
 
 const host = '127.0.0.1';
 const port = 3000;
+const portHTTPS = 3001;
+
+var options = {
+	key : fs.readFileSync('./https/server.key'),
+	cert : fs.readFileSync('./https/server.crt')
+};
 
 var	Promise    = require('bluebird');
 	Promise.promisifyAll(redis.RedisClient.prototype);
@@ -45,6 +52,10 @@ db.on("error", function (err) {
     console.log('Error ' + err);
 });
 
+https.createServer(options, app).listen(3001, function(){
+	console.log(`HTTPS STARTED at https://${host}:${portHTTPS}/`);
+});
+
 //Send server log with time stamp
 app.use(function (req, res, next) {
 	console.log('Time: %d ' + ' Request-Pfad: ' + req.path, Date.now());
@@ -55,6 +66,7 @@ var listen = app.listen(port,  function() {
   console.log(`Server running at http://${host}:${port}/`);
 });
 var socket = io.listen(listen);
+
 
 //Die Routen werden festgelegt
 require('./routes/routes')(app, socket, db, redis, jwt, Promise, apiRoutes);
