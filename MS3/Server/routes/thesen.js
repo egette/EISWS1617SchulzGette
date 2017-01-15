@@ -210,7 +210,7 @@ exports.putPosition = function(db){
 							if (neu == 1) These.K_NEUTRAL.push(position_json);
 						}
 						if(richtungsarrayname == "W_NEUTRAL"){
-							for(i = 0; i < These.W_PRO.length; i++){
+							for(i = 0; i < These.W_NEUTRAL.length; i++){
 								if(These.W_NEUTRAL[i].UID == uid){
 									These.W_NEUTRAL[i].Text = position_json.Text;
 									neu = 0;

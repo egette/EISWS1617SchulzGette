@@ -16,6 +16,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
@@ -78,7 +82,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
     public void authUser(String authData) {
 
         try {
-            HttpClient.POST("login", authData, new Callback() {
+            HttpClient.POST("login", authData, getApplicationContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     runOnUiThread(new Runnable() {
@@ -139,14 +143,14 @@ public class AuthActivity extends AccountAuthenticatorActivity {
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
     private  void getAllThesenFromWahlkreis (String wahlkreis) {
 
         try {
-            HttpClient.GET("thesen"+ "?wahlkreis=" + wahlkreis+"&anzahl=10000",  new Callback() {
+            HttpClient.GET("thesen"+ "?wahlkreis=" + wahlkreis+"&anzahl=10000", getApplicationContext(), new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -204,14 +208,14 @@ public class AuthActivity extends AccountAuthenticatorActivity {
                 }
 
             });
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException | KeyManagementException | CertificateException | KeyStoreException e) {
             e.printStackTrace();
         }
     }
 
     public  void getKandidaten(String wahlkreis) {
         try {
-            HttpClient.GET("kandidaten"+ "?wahlkreis=" + wahlkreis,  new Callback() {
+            HttpClient.GET("kandidaten"+ "?wahlkreis=" + wahlkreis, getApplicationContext(), new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -262,7 +266,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

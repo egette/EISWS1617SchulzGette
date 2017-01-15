@@ -32,7 +32,8 @@ import okhttp3.RequestBody;
  * Statischer HTTP Client
  */
 public class HttpClient extends Application {
-    //private static final String BASE_URL ="https://192.168.188.35:3001/";
+    //private static final String BASE_URL ="https://192.168.188.27:3001/";
+    private static final String verifyHostname = "192.168.188.27";
 
     //SERVER URL für GENYMOTION
     private static final String BASE_URL ="https://10.0.3.2:3001/";
@@ -75,7 +76,7 @@ public class HttpClient extends Application {
         builder.hostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
-                if ("10.0.3.2".equalsIgnoreCase(hostname) || "10.0.2.2".equalsIgnoreCase(hostname) ) {
+                if ("10.0.3.2".equalsIgnoreCase(hostname) || "10.0.2.2".equalsIgnoreCase(hostname) || verifyHostname.equalsIgnoreCase(hostname) ) {
                     return true;
                 }
                 return false;

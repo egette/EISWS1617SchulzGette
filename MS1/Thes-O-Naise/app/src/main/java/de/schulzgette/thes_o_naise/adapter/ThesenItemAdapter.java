@@ -140,7 +140,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
                 if (typ.equals("kandidat")) kandidatPosToServer("PRO", thesenModel.getTID());
                 db.insertposition("PRO", thesenModel.getTID());
                 thesenModel.setPosition("PRO");
-                Toast.makeText(getContext(), "Pro Button von These " + thesenModel.getTID(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Pro", Toast.LENGTH_SHORT).show();
             }
         });
 

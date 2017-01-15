@@ -5,6 +5,20 @@
     android:layout_height="match_parent"
     android:id="@+id/tab_layout2">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/keinebegruendungen"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:id="@+id/keinebegründungentxt"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +32,6 @@
             android:id="@+id/expandablelistviewthesen"
             android:divider="@color/colorPrimary"
             android:dividerHeight="5.0sp"/>
-
 
         <LinearLayout
             android:orientation="horizontal"

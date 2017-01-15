@@ -19,6 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 import de.schulzgette.thes_o_naise.Models.ThesenModel;
@@ -136,7 +140,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
                 if (typ.equals("kandidat")) kandidatPosToServer("PRO", thesenModel.getTID());
                 db.insertposition("PRO", thesenModel.getTID());
                 thesenModel.setPosition("PRO");
-                Toast.makeText(getContext(), "Pro Button von These " + thesenModel.getTID(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Pro", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -239,7 +243,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             e.printStackTrace();
         }
         try {
-            HttpClient.PUT("thesen", positionData, new Callback() {
+            HttpClient.PUT("thesen", positionData, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -260,6 +264,14 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             });
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
         }
     }
 
@@ -276,7 +288,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
             e.printStackTrace();
         }
         try {
-            HttpClient.PUT("thesen/likes", jsonData, new Callback() {
+            HttpClient.PUT("thesen/likes", jsonData, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -311,7 +323,7 @@ public class ThesenItemAdapter extends ArrayAdapter<ThesenModel> implements View
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

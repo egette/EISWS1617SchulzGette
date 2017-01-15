@@ -18,6 +18,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
@@ -90,11 +94,13 @@ public class MatchingFragment extends Fragment {
             mainObj.accumulate("UID", "null");
         }
         String wahlkreis = sharedPreferences.getString("wahlkreis", "");
+        String token = sharedPreferences.getString("token", "");
         mainObj.accumulate("wahlkreis", wahlkreis);
+        mainObj.accumulate("token", token);
         String positiondata = mainObj.toString();
         Log.d("Jobject:", positiondata);
         try {
-            HttpClient.POST("matching", positiondata, new Callback() {
+            HttpClient.POST("matching", positiondata, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -178,7 +184,7 @@ public class MatchingFragment extends Fragment {
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
 

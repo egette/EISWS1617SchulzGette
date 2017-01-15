@@ -11,6 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
@@ -57,7 +61,7 @@ public class RegistrationIntentService extends IntentService{
         }
         String jsondata = jsonObject.toString();
         try {
-            HttpClient.POST("devices", jsondata, new Callback() {
+            HttpClient.POST("devices", jsondata, getApplicationContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -77,7 +81,7 @@ public class RegistrationIntentService extends IntentService{
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
 
@@ -94,7 +98,7 @@ public class RegistrationIntentService extends IntentService{
         }
         String jsondata = jsonObject.toString();
         try {
-            HttpClient.DELETE("devices/"+registrationId, jsondata, new Callback() {
+            HttpClient.DELETE("devices/"+registrationId, jsondata, getApplicationContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -114,7 +118,7 @@ public class RegistrationIntentService extends IntentService{
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

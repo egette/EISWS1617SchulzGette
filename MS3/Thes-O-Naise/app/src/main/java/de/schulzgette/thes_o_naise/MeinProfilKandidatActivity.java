@@ -20,6 +20,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.Models.KandidatenModel;
 import de.schulzgette.thes_o_naise.adapter.MeinProfilKandidatAdapter;
@@ -52,7 +56,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
         {
             kid = (String) bd.get("KID");
             MODE = (String) bd.get("MODE");
-            TheseToLokalDatabase.updateKandidatData(kid, db);
+            TheseToLokalDatabase.updateKandidatData(kid, db, getApplicationContext());
             updateKandidatView(kid);
             adapter = new MeinProfilKandidatAdapter(getSupportFragmentManager(), kid, MODE);
         }
@@ -127,6 +131,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
         final EditText parteiedit = (EditText) findViewById(R.id.parteieditid);
         final EditText wahlkreisedit = (EditText) findViewById(R.id.wahlkreiseditid);
         final EditText emailedit = (EditText) findViewById(R.id.emaileditid);
+        final EditText pw = (EditText) findViewById(R.id.passwortid);
 
         if (kandidat != null) {
             vorname.setText(kandidat.getVorname());
@@ -150,6 +155,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
                 emailedit.setText(email.getText().toString());
 
                 veröffentlichen.setVisibility(View.VISIBLE);
+                pw.setVisibility(View.VISIBLE);
                 bearbeiten.setVisibility(View.GONE);
             }
         });
@@ -159,19 +165,25 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
                 String parteitext2 = parteiedit.getText().toString();
                 String wahlkreistext2 = wahlkreisedit.getText().toString();
                 String emailtext2 = emailedit.getText().toString();
-                partei.setText(parteitext2);
-                wahlkreis.setText(wahlkreistext2);
-                email.setText(emailtext2);
-                partei.setVisibility(View.VISIBLE);
-                wahlkreis.setVisibility(View.VISIBLE);
-                email.setVisibility(View.VISIBLE);
-                sendKandidatenProfilToServer(parteitext2, wahlkreistext2, emailtext2);
-                parteiedit.setVisibility(View.GONE);
-                wahlkreisedit.setVisibility(View.GONE);
-                emailedit.setVisibility(View.GONE);
+                String passwort = pw.getText().toString();
+                if(passwort.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Bitte Passwort eingeben", Toast.LENGTH_SHORT).show();
+                }else {
+                    partei.setText(parteitext2);
+                    wahlkreis.setText(wahlkreistext2);
+                    email.setText(emailtext2);
+                    partei.setVisibility(View.VISIBLE);
+                    wahlkreis.setVisibility(View.VISIBLE);
+                    email.setVisibility(View.VISIBLE);
+                    sendKandidatenProfilToServer(parteitext2, wahlkreistext2, emailtext2, passwort);
+                    parteiedit.setVisibility(View.GONE);
+                    wahlkreisedit.setVisibility(View.GONE);
+                    emailedit.setVisibility(View.GONE);
 
-                veröffentlichen.setVisibility(View.GONE);
-                bearbeiten.setVisibility(View.VISIBLE);
+                    pw.setVisibility(View.GONE);
+                    veröffentlichen.setVisibility(View.GONE);
+                    bearbeiten.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -179,7 +191,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
     public void updateKandidat(String kid){
         kandidat = db.getKandidat(kid);
     }
-    public void sendKandidatenProfilToServer(String partei, String wahlkreis, String email){
+    public void sendKandidatenProfilToServer(String partei, String wahlkreis, String email, String passwort){
 
         SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
@@ -193,12 +205,13 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
             jsonObject.accumulate("token", token);
             jsonObject.accumulate("typ", "kandidat");
             jsonObject.accumulate("uid", uid);
+            jsonObject.accumulate("passwort", passwort);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String jsondata = jsonObject.toString();
         try {
-            HttpClient.PUT("user", jsondata, new Callback() {
+            HttpClient.PUT("user", jsondata, getApplicationContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -217,7 +230,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
                                 Toast.makeText(getBaseContext(), "Ihr Profil wurde überarbeitet", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        TheseToLokalDatabase.updateKandidatData(kid, db);
+                        TheseToLokalDatabase.updateKandidatData(kid, db, getApplicationContext());
                         updateKandidat(kid);
                         response.body().close();
                     } else {
@@ -231,7 +244,7 @@ public class MeinProfilKandidatActivity extends FragmentActivity {
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

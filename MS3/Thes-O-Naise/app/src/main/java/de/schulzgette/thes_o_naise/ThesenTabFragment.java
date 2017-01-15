@@ -21,6 +21,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 import de.schulzgette.thes_o_naise.Models.BegruendungModel;
@@ -49,6 +53,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
     private int ChildClickStatus=-1;
     String position;
     EditText begruendungtext;
+    TextView keinebegruendungen;
 
     public ThesenTabFragment() {
     }
@@ -59,6 +64,9 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         myView = inflater.inflate(R.layout.thesentabfragment, container, false);
         position = this.getArguments().getString("pos");
         tid = this.getArguments().getString("TID");
+
+        keinebegruendungen = (TextView) myView.findViewById(R.id.keinebegründungentxt);
+
 
         begruendungtext = (EditText) myView.findViewById(R.id.editbegruendung);
         begruendungtext.setHint("Begründung " + position);
@@ -131,6 +139,12 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         for (int i= 0; i < begruendungen.size() ; i++){
             BegruendungModel test = begruendungen.get(i);
             if(test.getUID().equals(UID))  begruendungtext.setHint("Ihre Begründung bearbeiten");
+        }
+
+        if(begruendungen.isEmpty()){
+            keinebegruendungen.setVisibility(View.VISIBLE);
+        }else{
+            keinebegruendungen.setVisibility(View.GONE);
         }
 
         // Check for ExpandableListAdapter object
@@ -425,6 +439,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         String Typ = sharedPreferences.getString("typ", "");
         String UID = sharedPreferences.getString("UID", "");
         String username = sharedPreferences.getString("username", "");
+        String token = sharedPreferences.getString("token", "");
         String positionUpperCase = position.toUpperCase();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -434,6 +449,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
             jsonObject.accumulate("tid", tid);
             jsonObject.accumulate("uid", UID);
             jsonObject.accumulate("textdata", text);
+            jsonObject.accumulate("token", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -441,7 +457,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         String json_data = jsonObject.toString();
 
         try {
-            HttpClient.PUT("thesen", json_data, new Callback() {
+            HttpClient.PUT("thesen", json_data, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     getActivity().runOnUiThread(new Runnable() {
@@ -481,7 +497,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
 
@@ -491,6 +507,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
         String UID = sharedPreferences.getString("UID", "");
         String username = sharedPreferences.getString("username", "");
+        String token = sharedPreferences.getString("token", "");
         String positionUpperCase = position.toUpperCase();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -501,6 +518,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
             jsonObject.accumulate("uid", UID);
             jsonObject.accumulate("kommentar",  kommentartext);
             jsonObject.accumulate("beguid", begruendungsid);
+            jsonObject.accumulate("token", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -508,7 +526,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         String json_data = jsonObject.toString();
 
         try {
-            HttpClient.PUT("thesen/kommentar", json_data, new Callback() {
+            HttpClient.PUT("thesen/kommentar", json_data, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     getActivity().runOnUiThread(new Runnable() {
@@ -548,13 +566,15 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
 
     public void likeBegruendungToServer(String BID, String Typ, Integer like){
         String positionUpperCase = position.toUpperCase();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("einstellungen", MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.accumulate("typ", Typ);
@@ -562,6 +582,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
             jsonObject.accumulate("tid", tid);
             jsonObject.accumulate("like",  like);
             jsonObject.accumulate("beguid", BID);
+            jsonObject.accumulate("token", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -569,7 +590,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         String json_data = jsonObject.toString();
 
         try {
-            HttpClient.PUT("thesen/begruendungen/likes", json_data, new Callback() {
+            HttpClient.PUT("thesen/begruendungen/likes", json_data, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     getActivity().runOnUiThread(new Runnable() {
@@ -610,7 +631,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

@@ -19,6 +19,10 @@ import org.json.JSONObject;
 
 import java.io.Console;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 import de.schulzgette.thes_o_naise.Models.BeantworteteThesenKandidatenModel;
@@ -227,7 +231,7 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
             e.printStackTrace();
         }
         try {
-            HttpClient.PUT("thesen", positionData, new Callback() {
+            HttpClient.PUT("thesen", positionData, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -246,7 +250,7 @@ public class KandidatBeantworteteThesenAdapter extends ArrayAdapter<Beantwortete
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

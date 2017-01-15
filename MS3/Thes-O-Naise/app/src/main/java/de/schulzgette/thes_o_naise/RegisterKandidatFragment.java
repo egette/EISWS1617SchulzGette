@@ -16,6 +16,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.utils.HttpClient;
 import okhttp3.Call;
@@ -106,7 +110,7 @@ public class RegisterKandidatFragment extends Fragment {
     public void registerUser(String registerData) {
 
         try {
-            HttpClient.POST("register", registerData, new Callback() {
+            HttpClient.POST("register", registerData, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     getActivity().runOnUiThread(new Runnable() {
@@ -131,7 +135,7 @@ public class RegisterKandidatFragment extends Fragment {
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -45,6 +46,8 @@ public class StatistikFragment extends Fragment {
     PrognosenAdapter listadapter;
     Integer anzahlwaehler;
     Integer anzahlkandidaten;
+    TextView anzahlwaehlertxt;
+    TextView anzahlkandidatentxt;
 
     public StatistikFragment() {
         // Required empty public constructor
@@ -63,7 +66,8 @@ public class StatistikFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_statistik, container, false);
         lv = (ListView) myView.findViewById(R.id.listviewprognose);
-
+        anzahlwaehlertxt = (TextView) myView.findViewById(R.id.anzahlwaehler);
+        anzahlkandidatentxt = (TextView) myView.findViewById(R.id.anzahlkandidaten);
 
 
         return myView;
@@ -76,6 +80,11 @@ public class StatistikFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "Keine Verbindung zum Server", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
 
@@ -92,7 +101,16 @@ public class StatistikFragment extends Fragment {
                             JSONObject Jobject = new JSONObject(jsonData);
                             JSONArray jArray = Jobject.getJSONArray("Prognose");
                             anzahlwaehler = Jobject.getInt("AnzahlWaehler");
+                            final String anzahlwaehler2 = anzahlwaehler.toString();
                             anzahlkandidaten = Jobject.getInt("AnzahlKandidaten");
+                            final String anzahlkandidaten2 = anzahlkandidaten.toString();
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                    anzahlwaehlertxt.setText(anzahlwaehler2);
+                                    anzahlkandidatentxt.setText(anzahlkandidaten2);
+                                }
+                            });
+
                             JSONObject prognose_data;
                             ArrayList<PrognosenModel> neueprognosenModels = new ArrayList<>();
                             if (jArray != null) {

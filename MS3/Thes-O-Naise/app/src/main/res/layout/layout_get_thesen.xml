@@ -20,6 +20,8 @@
             android:layout_weight="0.3"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="Kategorie:"/>
         <Spinner
             android:layout_width="0dp"
@@ -77,6 +79,21 @@
         android:divider="@color/colorPrimary"
         android:dividerHeight="5.0sp">
    </ListView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/keinethesen"
+        android:layout_below="@+id/sortierlayout"
+        android:layout_marginTop="50dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:id="@+id/keinethesentext"/>
 
 
 

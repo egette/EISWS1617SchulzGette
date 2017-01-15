@@ -380,7 +380,7 @@ exports.match = function(db, Promise){
 			}
 			console.log("PrognoseALT", prognose);
 			//altes Matching Ergebnis des Nutzers
-			db.get(UID+"_matchingResult", function(err, reply){
+			db.get(UID+"_matchingResult_"+wahlkreis, function(err, reply){
 				if(err) throw err;
 				if(!reply){
 					var oldResult = null;
@@ -418,7 +418,7 @@ exports.match = function(db, Promise){
 				prognose = _.sortBy(prognose, ['Platz']);
 				console.log("PrognoseNEU", prognose);
 				db.set(wahlkreis+"_Prognose", JSON.stringify(prognose));
-				db.set(UID+"_matchingResult", JSON.stringify(sortedResult));
+				db.set(UID+"_matchingResult_"+wahlkreis, JSON.stringify(sortedResult));
 			});
 		});
 	}

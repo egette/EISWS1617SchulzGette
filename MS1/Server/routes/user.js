@@ -1,6 +1,7 @@
 var devicesFunction = require('../functions/devices');
 var sendFunction = require('../functions/send-message');
 var constants = require('../constants/constants.json');
+var argon2 = require('argon2');
 
 //Funktion um die Daten des Benutzers zu aktuallisieren
 exports.updateUserdata = function(db){
@@ -29,7 +30,7 @@ exports.updateUserdata = function(db){
 					res.status(400).end();
 				}else{
 					var kandidat = JSON.parse(reply);
-					if(passwort == kandidat.password){
+					argon2.verify(kandidat.password, passwort).then(() => { 
 						if(biografie) kandidat.Biografie = biografie;
 						if(wahlprogramm) kandidat.Wahlprogramm = wahlprogramm;
 						if(wahlkreis) kandidat.wahlkreis = wahlkreis;
@@ -42,10 +43,10 @@ exports.updateUserdata = function(db){
 								console.log(callback);
 							});
 						});
-					}else{
-					//falsches passwort
-					res.status(403).end();
-					}
+					}).catch(() => {
+					  console.log('Invalid password supplied!');
+					  res.status(403).end();
+					});
 				}
 			});
 		}else if(typ == 'waehler'){

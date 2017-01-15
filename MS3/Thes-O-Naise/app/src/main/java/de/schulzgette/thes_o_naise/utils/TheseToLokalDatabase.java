@@ -1,6 +1,7 @@
 package de.schulzgette.thes_o_naise.utils;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -8,6 +9,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.database.Database;
 import okhttp3.Call;
@@ -45,9 +50,9 @@ public class TheseToLokalDatabase extends Application {
             e.printStackTrace();
         }
     }
-    public static void updateKandidatData(String KID, final Database db){
+    public static void updateKandidatData(String KID, final Database db, Context context){
         try {
-            HttpClient.GET("kandidaten?KID="+KID,  new Callback() {
+            HttpClient.GET("kandidaten?KID="+KID, context, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -86,7 +91,7 @@ public class TheseToLokalDatabase extends Application {
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

@@ -19,6 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import de.schulzgette.thes_o_naise.database.Database;
 import de.schulzgette.thes_o_naise.utils.HttpClient;
@@ -117,7 +121,7 @@ public class publishThesenFragment extends Fragment{
     private void publishThese(String Thesendata) {
 
         try {
-            HttpClient.POST("thesen", Thesendata, new Callback() {
+            HttpClient.POST("thesen", Thesendata, getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     getActivity().runOnUiThread(new Runnable() {
@@ -164,7 +168,7 @@ public class publishThesenFragment extends Fragment{
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }

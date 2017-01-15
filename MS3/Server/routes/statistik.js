@@ -12,13 +12,26 @@ exports.getStatistik = function (db, redis) {
 		
 		db.get(wahlkreis+"_anzahlwaehler", function (err, reply) {
 			if (err) throw err;
-			var anzahlwaehler = reply;
+			if(!reply){
+				var anzahlwaehler = 0;
+			}else{
+				var anzahlwaehler = reply;
+			}
+			
 			db.get(wahlkreis+"_anzahlkandidaten", function (err, reply2) {
 				if (err) throw err;
-				var anzahlkandidaten = reply2;
+				if(!reply2){
+					var anzahlkandidaten = 0;
+				}else{
+					var anzahlkandidaten = reply2;
+				}
 				db.get(wahlkreis+"_Prognose", function (err, reply3) {
 					if (err) throw err;
-					var prognose = JSON.parse(reply3);
+					if(!reply3){
+						var prognose = [];
+					}else{
+						var prognose = JSON.parse(reply3);
+					}
 					var result = {
 						AnzahlWaehler: anzahlwaehler,
 						AnzahlKandidaten: anzahlkandidaten,
