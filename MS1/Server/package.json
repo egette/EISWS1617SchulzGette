@@ -1,6 +1,6 @@
 {
   "name": "thes-o-naise_server",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Der Server fuer Thes-O-Nese EIS PROJEKT",
   "main": "server.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "author": "Jessica Lee Schulz & Enrico Gette",
   "license": "GPL-3.0",
   "dependencies": {
+    "argon2": "^0.15.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",

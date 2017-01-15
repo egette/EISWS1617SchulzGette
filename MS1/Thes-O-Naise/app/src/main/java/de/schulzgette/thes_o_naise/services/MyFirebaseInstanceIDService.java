@@ -1,5 +1,7 @@
 package de.schulzgette.thes_o_naise.services;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -24,6 +26,14 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("einstellungen", MODE_PRIVATE);
+        String firebase = sharedPreferences.getString("firebase", "");
+
+        if(firebase.equals("true")){
+            Intent intent = new Intent(getApplicationContext(), RegistrationIntentService.class);
+            intent.putExtra("register", "true");
+            getApplicationContext().startService(intent);
+        }
     }
     // [END refresh_token]
 

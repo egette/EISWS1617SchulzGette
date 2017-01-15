@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
     Boolean neueThesen;
     Boolean beliebteThesen;
     Boolean unbeantworteteThesen;
+    TextView keinethesen;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,6 +117,7 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
             }
         });
 
+        keinethesen = (TextView) myView.findViewById(R.id.keinethesentext);
 
 
         return myView;
@@ -145,6 +148,11 @@ public class getThesenFragment extends Fragment implements EventBus.IEventListne
 
             Log.d("Thesenmodels aus Db", "nicht null");
             listadapter.notifyDataSetChanged();
+            if(thesenModels.isEmpty()){
+                keinethesen.setVisibility(View.VISIBLE);
+            }else{
+                keinethesen.setVisibility(View.GONE);
+            }
         }
     }
 

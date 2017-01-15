@@ -47,10 +47,11 @@ function getDB(data, db) {
  };
 //Funktion zum Erzeugen eines Tokens  
 function makeToken(userID, db, reqPassword, app, res, jwt){
+	var argon2 = require('argon2');
 	getDB(userID, db).then(function(reply){ 
 		var userDataJSON = JSON.parse(reply);
-		console.log("user data json:  ", userDataJSON); 
-		if(userDataJSON.password == reqPassword){
+		argon2.verify(userDataJSON.password, reqPassword).then(() => { 
+			console.log('Successful password supplied!');
 			var token = jwt.sign(userID, app.get('superSecret'));
 			
 			res.json({
@@ -60,8 +61,9 @@ function makeToken(userID, db, reqPassword, app, res, jwt){
 			token: token,
 			username: userDataJSON.username
 			}).status(200).end();
-		}else{
-			res.status(403).end();
-		};
+		}).catch(() => {
+		  console.log('Invalid password supplied!');
+		  res.status(403).end();
+		});
 	});
 };

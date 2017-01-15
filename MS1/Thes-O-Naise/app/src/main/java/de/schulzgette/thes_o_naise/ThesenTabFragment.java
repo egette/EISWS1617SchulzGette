@@ -53,6 +53,7 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
     private int ChildClickStatus=-1;
     String position;
     EditText begruendungtext;
+    TextView keinebegruendungen;
 
     public ThesenTabFragment() {
     }
@@ -63,6 +64,9 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         myView = inflater.inflate(R.layout.thesentabfragment, container, false);
         position = this.getArguments().getString("pos");
         tid = this.getArguments().getString("TID");
+
+        keinebegruendungen = (TextView) myView.findViewById(R.id.keinebegründungentxt);
+
 
         begruendungtext = (EditText) myView.findViewById(R.id.editbegruendung);
         begruendungtext.setHint("Begründung " + position);
@@ -135,6 +139,12 @@ public class ThesenTabFragment extends Fragment implements EventBus.ThesenAnsich
         for (int i= 0; i < begruendungen.size() ; i++){
             BegruendungModel test = begruendungen.get(i);
             if(test.getUID().equals(UID))  begruendungtext.setHint("Ihre Begründung bearbeiten");
+        }
+
+        if(begruendungen.isEmpty()){
+            keinebegruendungen.setVisibility(View.VISIBLE);
+        }else{
+            keinebegruendungen.setVisibility(View.GONE);
         }
 
         // Check for ExpandableListAdapter object
