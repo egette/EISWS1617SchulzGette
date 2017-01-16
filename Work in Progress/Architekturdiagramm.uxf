@@ -100,7 +100,7 @@ SQLite</panel_attributes>
 Benachrichtungen zu
 eigenen Thesen und
 abonnierten Thesen/
-Kandidaten</panel_attributes>
+Kandidaten berechnen</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -172,18 +172,6 @@ Datenübergabe</panel_attributes>
     <panel_attributes>lt=&lt;-&gt;
 Daten speichern</panel_attributes>
     <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>490</x>
-      <y>500</y>
-      <w>190</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.&gt;&gt;
-HTTP/JSON</panel_attributes>
-    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -275,11 +263,11 @@ Datenübergabe</panel_attributes>
     <coordinates>
       <x>730</x>
       <y>70</y>
-      <w>250</w>
+      <w>210</w>
       <h>150</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
-HTTP/JSON</panel_attributes>
+HTTP</panel_attributes>
     <additional_attributes>160.0;130.0;160.0;20.0;13.0;17.0</additional_attributes>
   </element>
   <element>
@@ -290,8 +278,8 @@ HTTP/JSON</panel_attributes>
       <w>190</w>
       <h>150</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.&gt;&gt;
-HTTP/JSON</panel_attributes>
+    <panel_attributes>lt=.&gt;&gt;
+</panel_attributes>
     <additional_attributes>170.0;20.0;10.0;20.0;10.0;130.0</additional_attributes>
   </element>
 </diagram>
